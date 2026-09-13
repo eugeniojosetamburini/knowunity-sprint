@@ -38,7 +38,8 @@
 - `docs/reference/*.png` — beta-app screenshots. Read when you need to see what already shipped, not as the target.
 - `app/layout.tsx` — root layout, fonts, HTML shell. Read before changing global structure or fonts.
 - `app/page.tsx` — current page (still Next.js boilerplate, not the feature). Read/replace when building the first real screen.
-- `app/globals.css` — global resets and CSS vars. Read before adding global styles.
+- `app/globals.css` — global resets and CSS vars; imports `build/css/tokens.css`. Read before adding global styles.
+- `build/css/tokens.css` — generated from `tokens/tokens.json` by Style Dictionary. Never edit it by hand — edit `tokens/tokens.json` and run `npm run tokens`.
 - `app/page.module.css` — styles scoped to `page.tsx`. Read/replace alongside `page.tsx`.
 - `public/images/*.png` — Knowie mascot art actually served by the app. Use these for any `Mascot`/`mascotSlot` instance.
 - `public/next.svg`, `public/vercel.svg` — used by the current boilerplate `page.tsx`; remove only when replacing that page.
