@@ -27,6 +27,13 @@
 - Never give Knowie a voice/audio output.
 - Never trap the student with no way forward (skip/text fallback always available).
 
+# Storybook
+
+When working on UI, use the storybook tools to read the component library
+before answering or writing anything. Never assume a component prop exists.
+Query the documentation, and use only props that are documented or shown in
+a story. If a prop isn't there, stop and ask me.
+
 # File map
 
 - `AGENTS.md` — Next.js version-specific agent rules; read before writing any Next.js code, don't touch.
