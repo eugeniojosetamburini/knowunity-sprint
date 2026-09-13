@@ -4,7 +4,7 @@
 
 - Read `docs/design-brief.md` and `docs/voice-ux.md` before designing any flow or screen.
 - Read `docs/design-system.md` before touching any component — it says which component to use and how to name things.
-- Look up every color/size/type value in `docs/tokens.json` by path.
+- Look up every color/size/type value in `tokens/tokens.json` by path.
 - Match `docs/reference/*.png` against `docs/design-brief.md` — the brief overrides the beta shown in the screenshots.
 - Follow the Next.js rules injected below this file's own header (`AGENTS.md`) before writing any code.
 - One Primary button per screen, one Destructive max, never both (`docs/design-system.md`).
@@ -18,7 +18,7 @@
 # Never
 
 - Never edit `AGENTS.md`.
-- Never invent a design-token value not present in `docs/tokens.json`.
+- Never invent a design-token value not present in `tokens/tokens.json`.
 - Never hardcode a value that has a token.
 - Never use a CSS fallback like `var(--token, #333)`.
 - Never read a primitive token directly from a component — go through the semantic layer.
@@ -34,7 +34,7 @@
 - `docs/sprint-context.md` — decisions already made and explicitly out of scope. Read before proposing a flow or feature.
 - `docs/voice-ux.md` — voice-UX principles and a prioritized states checklist. Read before designing the recording/processing/result loop.
 - `docs/design-system.md` — component selection rules and naming conventions. Read before adding or using any UI component.
-- `docs/tokens.json` — every color, size, type, and spacing value. Read whenever you need an actual value.
+- `tokens/tokens.json` — every color, size, type, and spacing value. Read whenever you need an actual value.
 - `docs/reference/*.png` — beta-app screenshots. Read when you need to see what already shipped, not as the target.
 - `app/layout.tsx` — root layout, fonts, HTML shell. Read before changing global structure or fonts.
 - `app/page.tsx` — current page (still Next.js boilerplate, not the feature). Read/replace when building the first real screen.

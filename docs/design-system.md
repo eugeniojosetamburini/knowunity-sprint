@@ -2,7 +2,7 @@
 
 This is the rules file. It says which component to reach for and how things
 are named. It does not contain values — for any actual color, size, or type
-setting, look it up in `tokens.json` by path. If a path you need isn't there,
+setting, look it up in `tokens/tokens.json` by path. If a path you need isn't there,
 that's a gap to raise, not something to fill in here.
 
 ---
@@ -62,7 +62,7 @@ that's a gap to raise, not something to fill in here.
   other.
 - **A due-count indicator anchored to a nav icon** → `badge`.
 - **A named type style** (Display, Headline, Body, Caption tiers) →
-  `semantic.typography.*` in tokens.json. Don't hand-set family, weight,
+  `semantic.typography.*` in tokens/tokens.json. Don't hand-set family, weight,
   size, and line height separately when a matching named style already
   covers the combination.
 
@@ -74,7 +74,7 @@ This section covers components added after the initial file was written, in
 more depth than the one-line entries above — properties, every state, and
 what each one means. Descriptions are quoted directly from each component in
 Figma, not paraphrased. As with everything else in this file, look up any
-color/size/spacing value in `tokens.json`; nothing here repeats a raw value.
+color/size/spacing value in `tokens/tokens.json`; nothing here repeats a raw value.
 
 ### `badge`
 A single component, no variants.
@@ -289,7 +289,7 @@ it — it already handles the safe areas.
   (`onBold`, `primaryActive`).
 - **Size scale (icon, illustration, radius, space, stroke):** a step number
   that does not map 1:1 to its pixel value (`icon.300` is not 300px) — always
-  resolve through tokens.json rather than guessing the pixel value from the
+  resolve through tokens/tokens.json rather than guessing the pixel value from the
   name.
 - **Components:** camelCase (`buttonIcon`, `progressIndicator`,
   `voiceInput`, `chatBubble`, `radio`). One exception in practice: `Mascot`
@@ -357,7 +357,7 @@ it — it already handles the safe areas.
 
 ## Never do this
 
-- **Never invent a value that isn't in `tokens.json`.** If something is
+- **Never invent a value that isn't in `tokens/tokens.json`.** If something is
   missing, say so instead of filling the gap.
 - **Never use a CSS fallback value like `var(--token, #333)`.** If a token
   resolves to nothing, that's a bug to fix, not to hide.

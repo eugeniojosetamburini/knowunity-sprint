@@ -1,0 +1,316 @@
+/**
+ * This file is generated from tokens/tokens.json by Style Dictionary.
+ * Do not edit it by hand — your changes will be overwritten the next
+ * time `npm run tokens` runs. Edit tokens/tokens.json instead.
+ */
+
+:root {
+  --color-alpha-dark-10: rgba(10, 10, 10, 0.10196078568696976);
+  --color-alpha-dark-50: rgba(10, 10, 10, 0.501960813999176);
+  --color-alpha-glass-60: rgba(61, 61, 61, 0.6000000238418579);
+  --color-alpha-light-10: rgba(255, 255, 255, 0.10196078568696976);
+  --color-alpha-light-18: rgba(255, 255, 255, 0.18039216101169586);
+  --color-alpha-light-24: rgba(255, 255, 255, 0.239215686917305);
+  --color-alpha-light-25: rgba(255, 255, 255, 0.250980406999588);
+  --color-alpha-light-40: rgba(255, 255, 255, 0.4000000059604645);
+  --color-alpha-light-48: rgba(245, 243, 255, 0.47843137383461);
+  --color-alpha-light-68: rgba(245, 243, 255, 0.6784313917160034);
+  --color-blue-300: #7ba8f2;
+  --color-blue-400: #5fa0fc;
+  --color-blue-900: #0a1635;
+  --color-blue-950: #06173b;
+  --color-coral-200: #ffb59b;
+  --color-coral-400: #fb7e5b;
+  --color-coral-900: #512e2c;
+  --color-coral-950: #2e0f06;
+  --color-gold-300: #fcd34d;
+  --color-gold-400: #f5b53d;
+  --color-gold-900: #3a2d0b;
+  --color-gold-950: #2a1d04;
+  --color-green-300: #4ae5b0;
+  --color-green-500: #00c386;
+  --color-green-900: #0a2e22;
+  --color-green-950: #0a1f18;
+  --color-magenta-200: #f7b5de;
+  --color-magenta-400: #e879c0;
+  --color-magenta-900: #380d29;
+  --color-magenta-950: #2c0a20;
+  --color-navy-800: #22242f;
+  --color-navy-900: #1a1c26;
+  --color-navy-950: #090c18;
+  --color-neutral-0: #ffffff;
+  --color-neutral-950: #0a0a0a;
+  --color-red-200: #fca5a5;
+  --color-red-300: #ff8585;
+  --color-red-400: #ff6b6b;
+  --color-red-500: #e85555;
+  --color-red-900: #532831;
+  --color-red-950: #2a0808;
+  --color-violet-50: #f4f2ff;
+  --color-violet-100: #e4e0ff;
+  --color-violet-200: #d2ccfa;
+  --color-violet-300: #a78bfa;
+  --color-violet-400: #7b65e0;
+  --color-violet-500: #9178e6;
+  --color-violet-900: #15103a;
+  --color-violet-950: #0e0a18;
+  --color-homie-eyes: #0a0a0a;
+  --color-homie-inkwell: #9178e6;
+  --size-icon-100: 8px;
+  --size-icon-150: 12px;
+  --size-icon-200: 16px;
+  --size-icon-250: 20px;
+  --size-icon-300: 24px;
+  --size-icon-400: 32px;
+  --size-illustration-500: 40px;
+  --size-illustration-800: 64px;
+  --size-illustration-1500: 120px;
+  --size-illustration-2500: 200px;
+  --size-illustration-4000: 320px;
+  --size-radius-100: 4px;
+  --size-radius-150: 6px;
+  --size-radius-200: 8px;
+  --size-radius-400: 16px;
+  --size-radius-600: 24px;
+  --size-radius-800: 32px;
+  --size-radius-900: 36px;
+  --size-radius-full: 9999px;
+  --size-space-0: 0px;
+  --size-space-100: 4px;
+  --size-space-150: 6px;
+  --size-space-200: 8px;
+  --size-space-300: 12px;
+  --size-space-400: 16px;
+  --size-space-600: 24px;
+  --size-space-700: 28px;
+  --size-space-800: 32px;
+  --size-space-1200: 48px;
+  --size-space-1600: 64px;
+  --size-space-2400: 96px;
+  --size-space-4000: 160px;
+  --size-space-050: 2px;
+  --size-space-negative-100: -4px;
+  --size-space-negative-200: -8px;
+  --size-space-negative-300: -12px;
+  --size-space-negative-400: -16px;
+  --size-space-negative-600: -24px;
+  --size-stroke-border: 1px;
+  --size-stroke-heavy-border: 2px;
+  --font-family-default: 'Greed Standard-TRIAL';
+  --font-family-display: 'Greed Standard-TRIAL';
+  --font-weight-bold: bold;
+  --font-weight-heavy: heavy;
+  --font-weight-regular: regular;
+  --font-weight-semibold: semi-bold;
+  --font-size-2xl: 33px;
+  --font-size-2xs: 9px;
+  --font-size-3xl: 44px;
+  --font-size-4xl: 59px;
+  --font-size-5xl: 76px;
+  --font-size-6xl: 103px;
+  --font-size-lg: 21px;
+  --font-size-md: 18px;
+  --font-size-root: 16px;
+  --font-size-sm: 15px;
+  --font-size-xl: 28px;
+  --font-size-xs: 12px;
+  --font-lineHeight-2xl: 44px;
+  --font-lineHeight-2xs: 12px;
+  --font-lineHeight-3xl: 60px;
+  --font-lineHeight-4xl: 76px;
+  --font-lineHeight-5xl: 104px;
+  --font-lineHeight-lg: 28px;
+  --font-lineHeight-md: 24px;
+  --font-lineHeight-sm: 20px;
+  --font-lineHeight-xl: 36px;
+  --font-lineHeight-xs: 16px;
+  --font-tracking-loose: 1px;
+  --font-tracking-none: 0px;
+  --font-tracking-tight: -1px;
+  --responsive-device-desktop: desktop;
+  --responsive-device-mobile: mobile;
+  --responsive-device-tablet: tablet;
+  --responsive-device-width-desktop: 1200px;
+  --responsive-device-width-mobile: 375px;
+  --responsive-device-width-tablet: 768px;
+  --responsive-root-font-size: 16px;
+  --responsive-scale-desktop: 1;
+  --responsive-scale-mobile: 1.25;
+  --responsive-scale-tablet: 1;
+  --color-accent-blue-bold: #5fa0fc; /** Solid blue fill for informational chips and secondary category tags, not links (use text.link). */
+  --color-accent-blue-onBold: #06173b; /** Text and icons on accent.blue.bold. */
+  --color-accent-blue-onSubtle: #7ba8f2; /** Text and icons on accent.blue.subtle. */
+  --color-accent-blue-subtle: #0a1635; /** Low emphasis blue fill. */
+  --color-accent-brand-bold: #9178e6; /** Solid brand-violet fill for brand moments and onboarding hero panels, not primary CTAs (use interactive.primary). */
+  --color-accent-brand-onBold: #0e0a18; /** Text and icons on accent.brand.bold. */
+  --color-accent-brand-onSubtle: #7b65e0; /** Text and icons on accent.brand.subtle. */
+  --color-accent-brand-subtle: #15103a; /** Low emphasis brand fill, for tinted brand panels. */
+  --color-accent-coral-bold: #fb7e5b; /** Solid coral fill for decorative emphasis, category tags, and illustration accents, not errors or warnings. */
+  --color-accent-coral-onBold: #2e0f06; /** Text and icons on accent.coral.bold. */
+  --color-accent-coral-onSubtle: #ffb59b; /** Text and icons on accent.coral.subtle. */
+  --color-accent-coral-subtle: #512e2c; /** Low emphasis coral fill. */
+  --color-accent-green-bold: #00c386; /** Solid green fill for streak counters, progress markers, and positive stat chips, not validation success (use feedback.success.bold). */
+  --color-accent-green-onBold: #0a1f18; /** Text and icons on accent.green.bold. */
+  --color-accent-green-onSubtle: #4ae5b0; /** Text and icons on accent.green.subtle. */
+  --color-accent-green-subtle: #0a2e22; /** Low emphasis green fill, for tinted background behind a green stat or chip. */
+  --color-accent-magenta-bold: #e879c0; /** Solid magenta accent fill, for decorative category tags. */
+  --color-accent-magenta-onBold: #2c0a20; /** Text and icons on accent.magenta.bold. */
+  --color-accent-magenta-onSubtle: #f7b5de; /** Text and icons on accent.magenta.subtle. */
+  --color-accent-magenta-subtle: #380d29; /** Low emphasis magenta fill. */
+  --color-background-floating: rgba(61, 61, 61, 0.6000000238418579); /** Translucent frosted-glass fill for dropdowns, tooltips, and popovers floating above content. */
+  --color-background-input: #1a1c26; /** Fill for text inputs, textareas, and search fields at rest, not read-only surfaces (use background.surface). */
+  --color-background-inverse: #f4f2ff; /** Dark block for tooltips, toasts, and snackbars on light backgrounds, not the page background. */
+  --color-background-page: #090c18; /** Base background for every screen; not for cards, sheets, or modals, which use background.surface instead. */
+  --color-background-scrim: rgba(10, 10, 10, 0.501960813999176); /** Semi-transparent overlay behind modals, dialogs, and bottom sheets, always paired with a foreground surface on top. */
+  --color-background-stacking: rgba(255, 255, 255, 0.10196078568696976); /** Additive white layer giving toasts and floating notifications subtle lift above dark surfaces. */
+  --color-background-surface: #22242f; /** Elevated fill for cards, sheets, modals, dropdowns, chat bubbles, and toasts; not the page-level background. */
+  --color-border-default: rgba(255, 255, 255, 0.10196078568696976); /** Standard edge for card outlines, dividers, and resting input borders, not selected-element borders. */
+  --color-border-error: #ff6b6b; /** Edge for text fields and selects that failed validation, paired with text.error for the message underneath. */
+  --color-border-focus: #a78bfa; /** Keyboard focus ring for the visible focus indicator; pair with the heavy 2px stroke and never remove without a replacement. */
+  --color-border-selected: #9178e6; /** Edge for selected cards, active tabs, and chosen answer options, paired with highlight.surface as the fill. */
+  --color-border-strong: rgba(255, 255, 255, 0.250980406999588); /** Higher-contrast edge for dividers, table rules, and busy surfaces, not default card outlines (use border.default). */
+  --color-border-success: #00c386; /** Validated input edge, for fields confirmed correct. */
+  --color-feedback-error-bold: #ff6b6b; /** Solid fill for incorrect-answer banners and failed-validation summaries, not destructive buttons (use interactive.destructive). */
+  --color-feedback-error-onBold: #2a0808; /** Text and icons on feedback.error.bold. */
+  --color-feedback-error-onSubtle: #fca5a5; /** Text and icons on feedback.error.subtle. */
+  --color-feedback-error-subtle: #532831; /** Tinted error background, for the panel behind a wrong result. */
+  --color-feedback-success-bold: #00c386; /** Solid fill for correct-answer banners and completion states, not decorative green accents (use accent.green.bold). */
+  --color-feedback-success-onBold: #0a1f18; /** Text and icons on feedback.success.bold. */
+  --color-feedback-success-onSubtle: #4ae5b0; /** Text and icons on feedback.success.subtle. */
+  --color-feedback-success-subtle: #0a2e22; /** Tinted success background, for the panel behind a correct result. */
+  --color-highlight-border: #7b65e0; /** Edge that pairs with highlight.surface; never used alone. */
+  --color-highlight-surface: #15103a; /** Fill for selected cards, active tabs, and the answer a student picked, not primary CTAs (use interactive.primary). */
+  --color-interactive-destructive: #ff6b6b; /** Fill for irreversible destructive actions like delete, remove, or block, not for validation errors. */
+  --color-interactive-destructiveActive: #e85555; /** Pressed state of interactive.destructive. */
+  --color-interactive-destructiveHover: #ff8585; /** Hover state of interactive.destructive, for pointer hover on delete and remove buttons. */
+  --color-interactive-disabled: rgba(255, 255, 255, 0.10196078568696976); /** Fill for disabled buttons, toggles, and sliders signaling an unavailable control, not active secondary buttons. */
+  --color-interactive-onDestructive: #2a0808; /** Text and icons on interactive.destructive fills; must contrast at least 4.5:1 against it. */
+  --color-interactive-onPrimary: #090c18; /** Text and icons on interactive.primary fills; must contrast at least 4.5:1 against it. */
+  --color-interactive-onSecondary: #f4f2ff; /** Text and icons on interactive.secondary fills, such as secondary button labels, toggle text, and filter chips. */
+  --color-interactive-pressed: rgba(255, 255, 255, 0.10196078568696976); /** Press-state overlay for primary buttons and elements on light or vivid fills, not dark surfaces (use interactive.pressedInverse there). */
+  --color-interactive-pressedInverse: rgba(10, 10, 10, 0.10196078568696976); /** Press-state overlay for secondary buttons, icon buttons, and cards on dark surfaces, not light or vivid fills. */
+  --color-interactive-primary: #f4f2ff; /** Main CTA fill for buttons like Continue, Check, or Start practice, and progress bar fills; limit to one per screen. */
+  --color-interactive-primaryActive: #d2ccfa; /** Pressed state of interactive.primary, for the moment of click or tap on a primary button. */
+  --color-interactive-primaryHover: #e4e0ff; /** Hover state of interactive.primary, for pointer hover on primary buttons. */
+  --color-interactive-secondary: rgba(255, 255, 255, 0.10196078568696976); /** Supporting-action fill for Skip, Cancel, filter chips, outlined buttons, and toggles, not the primary CTA. */
+  --color-interactive-secondaryActive: rgba(255, 255, 255, 0.239215686917305); /** Pressed state of interactive.secondary. */
+  --color-interactive-secondaryHover: rgba(255, 255, 255, 0.18039216101169586); /** Hover state of interactive.secondary, for pointer hover on secondary buttons, chips and toggles. */
+  --color-mascot-eyes: #ffffff; /** Homie eye whites, for mascot illustration only. */
+  --color-mascot-primary: #9178e6; /** Homie's signature violet, used for mascot illustrations and mascot-hero moments only, not buttons, links, PRO badges, or selected states. */
+  --color-mascot-pupils: #0a0a0a; /** Homie pupils, for mascot illustration only. */
+  --color-pro-accent: #f5b53d; /** Alias of pro.bold for PRO badges and upgrade prompts, kept for legacy naming. */
+  --color-pro-bold: #f5b53d; /** Solid fill for PRO badges and upgrade banners, not warnings (use text.warning). */
+  --color-pro-onBold: #2a1d04; /** Text and icons on pro.bold. */
+  --color-pro-onSubtle: #fcd34d; /** Text and icons on pro.subtle. */
+  --color-pro-subtle: #3a2d0b; /** Low emphasis PRO fill. */
+  --color-text-disabled: rgba(255, 255, 255, 0.4000000059604645); /** Low-contrast text for disabled controls and empty-field placeholders, not secondary labels or metadata. */
+  --color-text-error: #fca5a5; /** Validation message text for the line under a failed field, not destructive button labels. */
+  --color-text-inverse: #090c18; /** Dark text for use on background.inverse and bright accent fills, not on the dark page background. */
+  --color-text-link: #9178e6; /** Inline hyperlink text for linked body copy and "Learn more" links only, not buttons, nav items, or non-clickable accent text. */
+  --color-text-linkHover: #a78bfa; /** Hover state of text.link, for pointer hover on inline hyperlinks. */
+  --color-text-onAccent: #0e0a18; /** Text on any accent.*.bold fill; must contrast at least 4.5:1 against it. */
+  --color-text-primary: #f4f2ff; /** Highest-contrast text for headlines, body copy, titles, and card labels; the default choice when unsure. */
+  --color-text-secondary: rgba(245, 243, 255, 0.6784313917160034); /** Reduced-emphasis text for subtitles, captions, timestamps, and metadata, not primary headlines or disabled labels. */
+  --color-text-success: #4ae5b0; /** Confirmation text for messages like "Correct," not for use as a fill (use feedback.success.bold). */
+  --color-text-tertiary: rgba(245, 243, 255, 0.47843137383461); /** Lowest-emphasis text for timestamps, counts, and inline hints, never anything a student must read to proceed. */
+  --color-text-warning: #fcd34d; /** Caution text, for limits, expiry notices, "one attempt left". */
+  --color-voice-idle: rgba(255, 255, 255, 0.10196078568696976); /** Mic fill before the student starts speaking. Same value as interactive.secondary (color/alpha/light-10), aliased directly to the primitive rather than through that token, matching how every other semantic color in this file references its primitive. */
+  --color-voice-listening: #e879c0; /** Mic fill while actively recording the student's answer. Matches the magenta glow already visible in the beta screens. PAIR: voice.onListening for the waveform mark on top. */
+  --color-voice-onListening: #2c0a20; /** Waveform mark drawn on top of voice.listening. */
+  --color-voice-processing: rgba(255, 255, 255, 0.18039216101169586); /** Mic fill during the STT + judge wait (the brief's <4s window). Not tappable during this state. Aliased to color/alpha/light-18, the same primitive as interactive.pressed and interactive.secondaryHover, one step up from voice.idle's light-10 so the two no longer read as identical. */
+  --typography-display-l-fontFamily: 'Greed Standard-TRIAL'; /** Largest display size, for hero numbers and level-up moments. */
+  --typography-display-l-fontWeight: heavy; /** Largest display size, for hero numbers and level-up moments. */
+  --typography-display-l-fontSize: 103px; /** Largest display size, for hero numbers and level-up moments. */
+  --typography-display-l-lineHeight: 104px; /** Largest display size, for hero numbers and level-up moments. */
+  --typography-display-l-letterSpacing: -1.03px; /** Largest display size, for hero numbers and level-up moments. */
+  --typography-display-m-fontFamily: 'Greed Standard-TRIAL'; /** Large display size, for prominent standalone numerals or short hero text. */
+  --typography-display-m-fontWeight: bold; /** Large display size, for prominent standalone numerals or short hero text. */
+  --typography-display-m-fontSize: 76px; /** Large display size, for prominent standalone numerals or short hero text. */
+  --typography-display-m-lineHeight: 76px; /** Large display size, for prominent standalone numerals or short hero text. */
+  --typography-display-m-letterSpacing: -0.76px; /** Large display size, for prominent standalone numerals or short hero text. */
+  --typography-display-s-fontFamily: 'Greed Standard-TRIAL'; /** Smallest display size, for secondary hero text below a Display L or M element. */
+  --typography-display-s-fontWeight: bold; /** Smallest display size, for secondary hero text below a Display L or M element. */
+  --typography-display-s-fontSize: 59px; /** Smallest display size, for secondary hero text below a Display L or M element. */
+  --typography-display-s-lineHeight: 60px; /** Smallest display size, for secondary hero text below a Display L or M element. */
+  --typography-display-s-letterSpacing: -0.59px; /** Smallest display size, for secondary hero text below a Display L or M element. */
+  --typography-headline-xl-fontFamily: 'Greed Standard-TRIAL'; /** Largest headline size, for a screen's primary title. */
+  --typography-headline-xl-fontWeight: bold; /** Largest headline size, for a screen's primary title. */
+  --typography-headline-xl-fontSize: 44px; /** Largest headline size, for a screen's primary title. */
+  --typography-headline-xl-lineHeight: 44px; /** Largest headline size, for a screen's primary title. */
+  --typography-headline-xl-letterSpacing: -0.44px; /** Largest headline size, for a screen's primary title. */
+  --typography-headline-l-fontFamily: 'Greed Standard-TRIAL'; /** Large headline size, for section or screen titles below Headline XL. */
+  --typography-headline-l-fontWeight: bold; /** Large headline size, for section or screen titles below Headline XL. */
+  --typography-headline-l-fontSize: 33px; /** Large headline size, for section or screen titles below Headline XL. */
+  --typography-headline-l-lineHeight: 36px; /** Large headline size, for section or screen titles below Headline XL. */
+  --typography-headline-l-letterSpacing: -0.33px; /** Large headline size, for section or screen titles below Headline XL. */
+  --typography-headline-m-fontFamily: 'Greed Standard-TRIAL'; /** Medium headline size, for card titles and sub-section headers. */
+  --typography-headline-m-fontWeight: bold; /** Medium headline size, for card titles and sub-section headers. */
+  --typography-headline-m-fontSize: 28px; /** Medium headline size, for card titles and sub-section headers. */
+  --typography-headline-m-lineHeight: 28px; /** Medium headline size, for card titles and sub-section headers. */
+  --typography-headline-m-letterSpacing: -0.28px; /** Medium headline size, for card titles and sub-section headers. */
+  --typography-headline-s-fontFamily: 'Greed Standard-TRIAL'; /** Small headline size, for minor headers and prompt titles. */
+  --typography-headline-s-fontWeight: bold; /** Small headline size, for minor headers and prompt titles. */
+  --typography-headline-s-fontSize: 21px; /** Small headline size, for minor headers and prompt titles. */
+  --typography-headline-s-lineHeight: 24px; /** Small headline size, for minor headers and prompt titles. */
+  --typography-headline-s-letterSpacing: 0px; /** Small headline size, for minor headers and prompt titles. */
+  --typography-headline-xs-bold-fontFamily: 'Greed Standard-TRIAL'; /** Extra-small bold headline, for compact emphasized headers, e.g. list group titles. */
+  --typography-headline-xs-bold-fontWeight: semi-bold; /** Extra-small bold headline, for compact emphasized headers, e.g. list group titles. */
+  --typography-headline-xs-bold-fontSize: 18px; /** Extra-small bold headline, for compact emphasized headers, e.g. list group titles. */
+  --typography-headline-xs-bold-lineHeight: 20px; /** Extra-small bold headline, for compact emphasized headers, e.g. list group titles. */
+  --typography-headline-xs-bold-letterSpacing: 0.18px; /** Extra-small bold headline, for compact emphasized headers, e.g. list group titles. */
+  --typography-headline-xs-regular-fontFamily: 'Greed Standard-TRIAL'; /** Extra-small regular headline, for compact non-emphasized headers. */
+  --typography-headline-xs-regular-fontWeight: regular; /** Extra-small regular headline, for compact non-emphasized headers. */
+  --typography-headline-xs-regular-fontSize: 18px; /** Extra-small regular headline, for compact non-emphasized headers. */
+  --typography-headline-xs-regular-lineHeight: 20px; /** Extra-small regular headline, for compact non-emphasized headers. */
+  --typography-headline-xs-regular-letterSpacing: 0.18px; /** Extra-small regular headline, for compact non-emphasized headers. */
+  --typography-headline-xxs-bold-fontFamily: 'Greed Standard-TRIAL'; /** Smallest bold headline, for dense emphasized labels above body copy. */
+  --typography-headline-xxs-bold-fontWeight: semi-bold; /** Smallest bold headline, for dense emphasized labels above body copy. */
+  --typography-headline-xxs-bold-fontSize: 15px; /** Smallest bold headline, for dense emphasized labels above body copy. */
+  --typography-headline-xxs-bold-lineHeight: 16px; /** Smallest bold headline, for dense emphasized labels above body copy. */
+  --typography-headline-xxs-bold-letterSpacing: 0.15px; /** Smallest bold headline, for dense emphasized labels above body copy. */
+  --typography-headline-xxs-regular-fontFamily: 'Greed Standard-TRIAL'; /** Smallest regular headline, for dense non-emphasized labels above body copy. */
+  --typography-headline-xxs-regular-fontWeight: regular; /** Smallest regular headline, for dense non-emphasized labels above body copy. */
+  --typography-headline-xxs-regular-fontSize: 15px; /** Smallest regular headline, for dense non-emphasized labels above body copy. */
+  --typography-headline-xxs-regular-lineHeight: 16px; /** Smallest regular headline, for dense non-emphasized labels above body copy. */
+  --typography-headline-xxs-regular-letterSpacing: 0.15px; /** Smallest regular headline, for dense non-emphasized labels above body copy. */
+  --typography-body-m-bold-fontFamily: 'Greed Standard-TRIAL'; /** Medium bold body text, for emphasized paragraph or list copy. */
+  --typography-body-m-bold-fontWeight: semi-bold; /** Medium bold body text, for emphasized paragraph or list copy. */
+  --typography-body-m-bold-fontSize: 18px; /** Medium bold body text, for emphasized paragraph or list copy. */
+  --typography-body-m-bold-lineHeight: 24px; /** Medium bold body text, for emphasized paragraph or list copy. */
+  --typography-body-m-bold-letterSpacing: 0.18px; /** Medium bold body text, for emphasized paragraph or list copy. */
+  --typography-body-m-regular-fontFamily: 'Greed Standard-TRIAL'; /** Medium regular body text, the default for paragraph copy. */
+  --typography-body-m-regular-fontWeight: regular; /** Medium regular body text, the default for paragraph copy. */
+  --typography-body-m-regular-fontSize: 18px; /** Medium regular body text, the default for paragraph copy. */
+  --typography-body-m-regular-lineHeight: 24px; /** Medium regular body text, the default for paragraph copy. */
+  --typography-body-m-regular-letterSpacing: 0.18px; /** Medium regular body text, the default for paragraph copy. */
+  --typography-body-s-bold-fontFamily: 'Greed Standard-TRIAL'; /** Small bold body text, for emphasized supporting copy. */
+  --typography-body-s-bold-fontWeight: semi-bold; /** Small bold body text, for emphasized supporting copy. */
+  --typography-body-s-bold-fontSize: 15px; /** Small bold body text, for emphasized supporting copy. */
+  --typography-body-s-bold-lineHeight: 20px; /** Small bold body text, for emphasized supporting copy. */
+  --typography-body-s-bold-letterSpacing: 0.15px; /** Small bold body text, for emphasized supporting copy. */
+  --typography-body-s-regular-fontFamily: 'Greed Standard-TRIAL'; /** Small regular body text, for supporting copy and secondary descriptions. */
+  --typography-body-s-regular-fontWeight: regular; /** Small regular body text, for supporting copy and secondary descriptions. */
+  --typography-body-s-regular-fontSize: 15px; /** Small regular body text, for supporting copy and secondary descriptions. */
+  --typography-body-s-regular-lineHeight: 20px; /** Small regular body text, for supporting copy and secondary descriptions. */
+  --typography-body-s-regular-letterSpacing: 0.15px; /** Small regular body text, for supporting copy and secondary descriptions. */
+  --typography-caption-m-bold-fontFamily: 'Greed Standard-TRIAL'; /** Medium bold caption, for emphasized helper text and metadata. */
+  --typography-caption-m-bold-fontWeight: semi-bold; /** Medium bold caption, for emphasized helper text and metadata. */
+  --typography-caption-m-bold-fontSize: 12px; /** Medium bold caption, for emphasized helper text and metadata. */
+  --typography-caption-m-bold-lineHeight: 16px; /** Medium bold caption, for emphasized helper text and metadata. */
+  --typography-caption-m-bold-letterSpacing: 0.12px; /** Medium bold caption, for emphasized helper text and metadata. */
+  --typography-caption-m-regular-fontFamily: 'Greed Standard-TRIAL'; /** Medium regular caption, for helper text, timestamps, and metadata. */
+  --typography-caption-m-regular-fontWeight: regular; /** Medium regular caption, for helper text, timestamps, and metadata. */
+  --typography-caption-m-regular-fontSize: 12px; /** Medium regular caption, for helper text, timestamps, and metadata. */
+  --typography-caption-m-regular-lineHeight: 16px; /** Medium regular caption, for helper text, timestamps, and metadata. */
+  --typography-caption-m-regular-letterSpacing: 0.12px; /** Medium regular caption, for helper text, timestamps, and metadata. */
+  --typography-caption-s-bold-fontFamily: 'Greed Standard-TRIAL'; /** Smallest bold caption, for emphasized micro-labels. */
+  --typography-caption-s-bold-fontWeight: semi-bold; /** Smallest bold caption, for emphasized micro-labels. */
+  --typography-caption-s-bold-fontSize: 9px; /** Smallest bold caption, for emphasized micro-labels. */
+  --typography-caption-s-bold-lineHeight: 12px; /** Smallest bold caption, for emphasized micro-labels. */
+  --typography-caption-s-bold-letterSpacing: 0.09px; /** Smallest bold caption, for emphasized micro-labels. */
+  --typography-caption-s-regular-fontFamily: 'Greed Standard-TRIAL'; /** Smallest regular caption, for micro-labels and fine print. */
+  --typography-caption-s-regular-fontWeight: regular; /** Smallest regular caption, for micro-labels and fine print. */
+  --typography-caption-s-regular-fontSize: 9px; /** Smallest regular caption, for micro-labels and fine print. */
+  --typography-caption-s-regular-lineHeight: 12px; /** Smallest regular caption, for micro-labels and fine print. */
+  --typography-caption-s-regular-letterSpacing: 0.09px; /** Smallest regular caption, for micro-labels and fine print. */
+}
