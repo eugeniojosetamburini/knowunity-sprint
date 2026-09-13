@@ -99,9 +99,9 @@
   --font-family-default: 'Greed Standard-TRIAL';
   --font-family-display: 'Greed Standard-TRIAL';
   --font-weight-bold: bold;
-  --font-weight-heavy: heavy;
+  --font-weight-heavy: 900;
   --font-weight-regular: regular;
-  --font-weight-semibold: semi-bold;
+  --font-weight-semibold: 600;
   --font-size-2xl: 33px;
   --font-size-2xs: 9px;
   --font-size-3xl: 44px;
@@ -219,7 +219,7 @@
   --color-voice-onListening: #2c0a20; /** Waveform mark drawn on top of voice.listening. */
   --color-voice-processing: rgba(255, 255, 255, 0.18039216101169586); /** Mic fill during the STT + judge wait (the brief's <4s window). Not tappable during this state. Aliased to color/alpha/light-18, the same primitive as interactive.pressed and interactive.secondaryHover, one step up from voice.idle's light-10 so the two no longer read as identical. */
   --typography-display-l-fontFamily: 'Greed Standard-TRIAL'; /** Largest display size, for hero numbers and level-up moments. */
-  --typography-display-l-fontWeight: heavy; /** Largest display size, for hero numbers and level-up moments. */
+  --typography-display-l-fontWeight: 900; /** Largest display size, for hero numbers and level-up moments. */
   --typography-display-l-fontSize: 103px; /** Largest display size, for hero numbers and level-up moments. */
   --typography-display-l-lineHeight: 104px; /** Largest display size, for hero numbers and level-up moments. */
   --typography-display-l-letterSpacing: -1.03px; /** Largest display size, for hero numbers and level-up moments. */
@@ -254,7 +254,7 @@
   --typography-headline-s-lineHeight: 24px; /** Small headline size, for minor headers and prompt titles. */
   --typography-headline-s-letterSpacing: 0px; /** Small headline size, for minor headers and prompt titles. */
   --typography-headline-xs-bold-fontFamily: 'Greed Standard-TRIAL'; /** Extra-small bold headline, for compact emphasized headers, e.g. list group titles. */
-  --typography-headline-xs-bold-fontWeight: semi-bold; /** Extra-small bold headline, for compact emphasized headers, e.g. list group titles. */
+  --typography-headline-xs-bold-fontWeight: 600; /** Extra-small bold headline, for compact emphasized headers, e.g. list group titles. */
   --typography-headline-xs-bold-fontSize: 18px; /** Extra-small bold headline, for compact emphasized headers, e.g. list group titles. */
   --typography-headline-xs-bold-lineHeight: 20px; /** Extra-small bold headline, for compact emphasized headers, e.g. list group titles. */
   --typography-headline-xs-bold-letterSpacing: 0.18px; /** Extra-small bold headline, for compact emphasized headers, e.g. list group titles. */
@@ -264,7 +264,7 @@
   --typography-headline-xs-regular-lineHeight: 20px; /** Extra-small regular headline, for compact non-emphasized headers. */
   --typography-headline-xs-regular-letterSpacing: 0.18px; /** Extra-small regular headline, for compact non-emphasized headers. */
   --typography-headline-xxs-bold-fontFamily: 'Greed Standard-TRIAL'; /** Smallest bold headline, for dense emphasized labels above body copy. */
-  --typography-headline-xxs-bold-fontWeight: semi-bold; /** Smallest bold headline, for dense emphasized labels above body copy. */
+  --typography-headline-xxs-bold-fontWeight: 600; /** Smallest bold headline, for dense emphasized labels above body copy. */
   --typography-headline-xxs-bold-fontSize: 15px; /** Smallest bold headline, for dense emphasized labels above body copy. */
   --typography-headline-xxs-bold-lineHeight: 16px; /** Smallest bold headline, for dense emphasized labels above body copy. */
   --typography-headline-xxs-bold-letterSpacing: 0.15px; /** Smallest bold headline, for dense emphasized labels above body copy. */
@@ -274,7 +274,7 @@
   --typography-headline-xxs-regular-lineHeight: 16px; /** Smallest regular headline, for dense non-emphasized labels above body copy. */
   --typography-headline-xxs-regular-letterSpacing: 0.15px; /** Smallest regular headline, for dense non-emphasized labels above body copy. */
   --typography-body-m-bold-fontFamily: 'Greed Standard-TRIAL'; /** Medium bold body text, for emphasized paragraph or list copy. */
-  --typography-body-m-bold-fontWeight: semi-bold; /** Medium bold body text, for emphasized paragraph or list copy. */
+  --typography-body-m-bold-fontWeight: 600; /** Medium bold body text, for emphasized paragraph or list copy. */
   --typography-body-m-bold-fontSize: 18px; /** Medium bold body text, for emphasized paragraph or list copy. */
   --typography-body-m-bold-lineHeight: 24px; /** Medium bold body text, for emphasized paragraph or list copy. */
   --typography-body-m-bold-letterSpacing: 0.18px; /** Medium bold body text, for emphasized paragraph or list copy. */
@@ -284,7 +284,7 @@
   --typography-body-m-regular-lineHeight: 24px; /** Medium regular body text, the default for paragraph copy. */
   --typography-body-m-regular-letterSpacing: 0.18px; /** Medium regular body text, the default for paragraph copy. */
   --typography-body-s-bold-fontFamily: 'Greed Standard-TRIAL'; /** Small bold body text, for emphasized supporting copy. */
-  --typography-body-s-bold-fontWeight: semi-bold; /** Small bold body text, for emphasized supporting copy. */
+  --typography-body-s-bold-fontWeight: 600; /** Small bold body text, for emphasized supporting copy. */
   --typography-body-s-bold-fontSize: 15px; /** Small bold body text, for emphasized supporting copy. */
   --typography-body-s-bold-lineHeight: 20px; /** Small bold body text, for emphasized supporting copy. */
   --typography-body-s-bold-letterSpacing: 0.15px; /** Small bold body text, for emphasized supporting copy. */
@@ -294,7 +294,7 @@
   --typography-body-s-regular-lineHeight: 20px; /** Small regular body text, for supporting copy and secondary descriptions. */
   --typography-body-s-regular-letterSpacing: 0.15px; /** Small regular body text, for supporting copy and secondary descriptions. */
   --typography-caption-m-bold-fontFamily: 'Greed Standard-TRIAL'; /** Medium bold caption, for emphasized helper text and metadata. */
-  --typography-caption-m-bold-fontWeight: semi-bold; /** Medium bold caption, for emphasized helper text and metadata. */
+  --typography-caption-m-bold-fontWeight: 600; /** Medium bold caption, for emphasized helper text and metadata. */
   --typography-caption-m-bold-fontSize: 12px; /** Medium bold caption, for emphasized helper text and metadata. */
   --typography-caption-m-bold-lineHeight: 16px; /** Medium bold caption, for emphasized helper text and metadata. */
   --typography-caption-m-bold-letterSpacing: 0.12px; /** Medium bold caption, for emphasized helper text and metadata. */
@@ -304,7 +304,7 @@
   --typography-caption-m-regular-lineHeight: 16px; /** Medium regular caption, for helper text, timestamps, and metadata. */
   --typography-caption-m-regular-letterSpacing: 0.12px; /** Medium regular caption, for helper text, timestamps, and metadata. */
   --typography-caption-s-bold-fontFamily: 'Greed Standard-TRIAL'; /** Smallest bold caption, for emphasized micro-labels. */
-  --typography-caption-s-bold-fontWeight: semi-bold; /** Smallest bold caption, for emphasized micro-labels. */
+  --typography-caption-s-bold-fontWeight: 600; /** Smallest bold caption, for emphasized micro-labels. */
   --typography-caption-s-bold-fontSize: 9px; /** Smallest bold caption, for emphasized micro-labels. */
   --typography-caption-s-bold-lineHeight: 12px; /** Smallest bold caption, for emphasized micro-labels. */
   --typography-caption-s-bold-letterSpacing: 0.09px; /** Smallest bold caption, for emphasized micro-labels. */
