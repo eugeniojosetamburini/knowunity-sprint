@@ -1,0 +1,13 @@
+/* Dark-mode-only backdrop for every story canvas, using the same
+   semantic tokens the real app uses (see build/css/tokens.css). */
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-background-page);
+  color: var(--color-text-primary);
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
