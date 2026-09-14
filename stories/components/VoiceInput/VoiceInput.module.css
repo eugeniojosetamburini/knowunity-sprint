@@ -1,0 +1,71 @@
+/*
+ * VoiceInput — the tap target that starts and shows the state of voice
+ * capture. USE: the tap target that starts and shows the state of voice
+ * capture. DON'T: rely on the glow color alone to convey Listening — mascot
+ * status already has to survive with motion and color stripped out, and
+ * this affordance carries the same requirement (per design-system.md, the
+ * Listening state also swaps in a waveform mark, not just a color change).
+ *
+ * Four values on this component (node 15810:5640) had no matching token in
+ * tokens/tokens.json when this was built. Per instruction, they were added
+ * to tokens.json rather than hardcoded here — see that file for the
+ * $description on each:
+ *   - size.illustration.950  → --size-illustration-950  (76px inner circle)
+ *   - size.illustration.1400 → --size-illustration-1400 (112px tap target)
+ *   - effect.voice.idleGlow  → --effect-voice-idleGlow   (Idle state glow)
+ *   - opacity.disabled       → --opacity-disabled        (Disabled dimming)
+ *
+ * One value remains genuinely un-tokenizable and is left raw in icons.tsx,
+ * not here: the Listening state's three drop-shadow layers use alpha steps
+ * (0.4/0.2/0.1) that don't match any token, though their color does
+ * (voice.listening). Flagged there, not silently invented.
+ */
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--size-illustration-1400);
+  height: var(--size-illustration-1400);
+  padding: var(--size-space-0);
+  border: var(--size-stroke-border) solid var(--color-border-default);
+  border-radius: var(--size-radius-full);
+  background: none;
+  cursor: pointer;
+}
+
+.root:disabled {
+  cursor: not-allowed;
+}
+
+.root:focus-visible {
+  outline: var(--size-stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--size-space-100);
+}
+
+.idle {
+  background-color: var(--color-voice-idle);
+  box-shadow: var(--effect-voice-idleGlow);
+}
+
+.disabled {
+  background-color: var(--color-voice-processing);
+  opacity: var(--opacity-disabled);
+}
+
+.listening {
+  overflow: visible;
+  border: none;
+}
+
+.innerCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--size-illustration-950);
+  height: var(--size-illustration-950);
+  border-radius: var(--size-radius-full);
+  background-color: var(--color-background-floating);
+}

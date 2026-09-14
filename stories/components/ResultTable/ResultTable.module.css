@@ -1,0 +1,116 @@
+/*
+ * ResultTable — a post-session breakdown of every term covered: how hard it
+ * was, and when it's due again. USE: the reference list at the end of a
+ * recall session, one row per term. DON'T: hand-set row borders per row —
+ * that's fragile if rows get reordered or the list length changes; the
+ * divider between rows is handled here by the list structure (a `.row + .row`
+ * sibling border), not baked into each row. design-system.md flagged the
+ * per-row-border version as a known gap in the Figma source; fixed here.
+ *
+ * The due-date pill ("Review in 1 week") is a plain non-interactive span,
+ * not the Chips component, even though its Figma instance is literally
+ * named "chips" — design-system.md's own component-selection rules call
+ * this out as a distinct case: a small, non-interactive scheduling label,
+ * not a removable/tappable tag, which is what Chips is for.
+ *
+ * Every value here had a matching token — no gaps to flag.
+ *
+ * box-sizing: border-box is set explicitly below rather than assumed. The
+ * app has a universal `* { box-sizing: border-box }` reset in
+ * app/globals.css, but .storybook/preview.tsx doesn't import that file (only
+ * fonts.css and tokens.css, to avoid pulling in page-level chrome) — so
+ * without this, `.row`'s width: 100% + padding-inline rendered 32px wider
+ * than the card in Storybook and got clipped by .root's overflow: hidden.
+ * Scoped here rather than fixed by editing the shared preview config, since
+ * that'd affect every other component's rendering too.
+ */
+
+.root {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  overflow: hidden;
+  border: var(--size-stroke-border) solid var(--color-border-strong);
+  border-radius: var(--size-radius-400);
+  background-color: var(--color-background-surface);
+}
+
+.root * {
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--size-space-300);
+  width: 100%;
+  padding-inline: var(--size-space-400);
+  padding-block: var(--size-space-300);
+}
+
+.row + .row {
+  border-top: var(--size-stroke-border) solid var(--color-border-strong);
+}
+
+.info {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.term {
+  margin: 0;
+  width: 100%;
+  overflow-wrap: break-word;
+  color: var(--color-text-primary);
+  font-family: var(--typography-body-s-bold-fontFamily);
+  font-weight: var(--typography-body-s-bold-fontWeight);
+  font-size: var(--typography-body-s-bold-fontSize);
+  line-height: var(--typography-body-s-bold-lineHeight);
+  letter-spacing: var(--typography-body-s-bold-letterSpacing);
+}
+
+.difficulty {
+  margin: 0;
+  font-family: var(--typography-caption-m-regular-fontFamily);
+  font-weight: var(--typography-caption-m-regular-fontWeight);
+  font-size: var(--typography-caption-m-regular-fontSize);
+  line-height: var(--typography-caption-m-regular-lineHeight);
+  letter-spacing: var(--typography-caption-m-regular-letterSpacing);
+}
+
+.difficulty.easy {
+  color: var(--color-feedback-success-bold);
+}
+
+.difficulty.medium {
+  color: var(--color-text-warning);
+}
+
+.difficulty.difficult {
+  color: var(--color-feedback-error-bold);
+}
+
+.duePill {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  height: var(--size-space-800);
+  min-width: var(--size-space-800);
+  padding-inline: var(--size-space-300);
+  border-radius: var(--size-radius-full);
+  background-color: var(--color-background-floating);
+  color: var(--color-text-primary);
+  font-family: var(--typography-caption-m-bold-fontFamily);
+  font-weight: var(--typography-caption-m-bold-fontWeight);
+  font-size: var(--typography-caption-m-bold-fontSize);
+  line-height: var(--typography-caption-m-bold-lineHeight);
+  letter-spacing: var(--typography-caption-m-bold-letterSpacing);
+  white-space: nowrap;
+}

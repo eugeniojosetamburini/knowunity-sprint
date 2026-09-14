@@ -14,6 +14,7 @@
   --color-alpha-light-25: rgba(255, 255, 255, 0.250980406999588);
   --color-alpha-light-40: rgba(255, 255, 255, 0.4000000059604645);
   --color-alpha-light-48: rgba(245, 243, 255, 0.47843137383461);
+  --color-alpha-light-52: rgba(245, 243, 255, 0.52); /** Same hue as light-48, bumped from 47.8% to 52% alpha — light-48 composited over background.surface measured 4.34:1 against text.tertiary's 4.5:1 WCAG AA requirement (axe-core, real render); 52% clears it with margin (measured passing from 50% up). Added as its own step rather than changing light-48 in place, since light-48 isn't referenced anywhere else and its name should keep meaning what it says. */
   --color-alpha-light-68: rgba(245, 243, 255, 0.6784313917160034);
   --color-blue-300: #7ba8f2;
   --color-blue-400: #5fa0fc;
@@ -64,6 +65,8 @@
   --size-icon-400: 32px;
   --size-illustration-500: 40px;
   --size-illustration-800: 64px;
+  --size-illustration-950: 76px; /** voiceInput's inner mic circle (Idle/Disabled states). */
+  --size-illustration-1400: 112px; /** voiceInput's outer tap-target diameter. */
   --size-illustration-1500: 120px;
   --size-illustration-2500: 200px;
   --size-illustration-4000: 320px;
@@ -98,6 +101,7 @@
   --size-stroke-heavy-border: 2px;
   --font-family-default: 'Greed Standard-TRIAL', Arial, Helvetica, sans-serif;
   --font-family-display: 'Greed Standard-TRIAL', Arial, Helvetica, sans-serif;
+  --font-family-condensed: 'Greed Condensed', Arial, Helvetica, sans-serif; /** radio's headline word (Easy/Medium/Difficult) only, so far. Registered in app/fonts.css under the same family name. */
   --font-weight-bold: bold;
   --font-weight-heavy: 900;
   --font-weight-regular: regular;
@@ -143,7 +147,7 @@
   --color-accent-blue-subtle: #0a1635; /** Low emphasis blue fill. */
   --color-accent-brand-bold: #9178e6; /** Solid brand-violet fill for brand moments and onboarding hero panels, not primary CTAs (use interactive.primary). */
   --color-accent-brand-onBold: #0e0a18; /** Text and icons on accent.brand.bold. */
-  --color-accent-brand-onSubtle: #7b65e0; /** Text and icons on accent.brand.subtle. */
+  --color-accent-brand-onSubtle: #a78bfa; /** Text and icons on accent.brand.subtle. Was violet.400 — failed WCAG AA color-contrast against accent.brand.subtle (4.09:1, needs 4.5:1; caught by an axe-core audit of every Storybook story, surfaced on Chips' brand color). violet.300 clears it (6.6:1) and matches the lighter primitive step every sibling accent color's onSubtle already uses (blue.300, green.300, coral.200, magenta.200) — violet.400 was the outlier. */
   --color-accent-brand-subtle: #15103a; /** Low emphasis brand fill, for tinted brand panels. */
   --color-accent-coral-bold: #fb7e5b; /** Solid coral fill for decorative emphasis, category tags, and illustration accents, not errors or warnings. */
   --color-accent-coral-onBold: #2e0f06; /** Text and icons on accent.coral.bold. */
@@ -212,12 +216,14 @@
   --color-text-primary: #f4f2ff; /** Highest-contrast text for headlines, body copy, titles, and card labels; the default choice when unsure. */
   --color-text-secondary: rgba(245, 243, 255, 0.6784313917160034); /** Reduced-emphasis text for subtitles, captions, timestamps, and metadata, not primary headlines or disabled labels. */
   --color-text-success: #4ae5b0; /** Confirmation text for messages like "Correct," not for use as a fill (use feedback.success.bold). */
-  --color-text-tertiary: rgba(245, 243, 255, 0.47843137383461); /** Lowest-emphasis text for timestamps, counts, and inline hints, never anything a student must read to proceed. */
+  --color-text-tertiary: rgba(245, 243, 255, 0.52); /** Lowest-emphasis text for timestamps, counts, and inline hints, never anything a student must read to proceed. Was alpha.light-48 (47.8%) — failed WCAG AA color-contrast (4.34:1 against background.surface, needs 4.5:1; caught by an axe-core audit of every Storybook story). Bumped to light-52 (52%), the smallest step that clears it with margin. */
   --color-text-warning: #fcd34d; /** Caution text, for limits, expiry notices, "one attempt left". */
   --color-voice-idle: rgba(255, 255, 255, 0.10196078568696976); /** Mic fill before the student starts speaking. Same value as interactive.secondary (color/alpha/light-10), aliased directly to the primitive rather than through that token, matching how every other semantic color in this file references its primitive. */
   --color-voice-listening: #e879c0; /** Mic fill while actively recording the student's answer. Matches the magenta glow already visible in the beta screens. PAIR: voice.onListening for the waveform mark on top. */
   --color-voice-onListening: #2c0a20; /** Waveform mark drawn on top of voice.listening. */
   --color-voice-processing: rgba(255, 255, 255, 0.18039216101169586); /** Mic fill during the STT + judge wait (the brief's <4s window). Not tappable during this state. Aliased to color/alpha/light-18, the same primitive as interactive.pressed and interactive.secondaryHover, one step up from voice.idle's light-10 so the two no longer read as identical. */
+  --effect-voice-idleGlow: 0px 0px 32px 0px rgb(90.98% 47.451% 75.294% / 0.15); /** Ambient glow behind voiceInput's Idle state — color/magenta/400 (same hue as voice.listening) at 15% alpha. Component-specific to voiceInput's Idle affordance, not a general-purpose elevation scale. */
+  --opacity-disabled: 0.5; /** Dimming applied on top of a control's own fill when it's non-interactive, e.g. voiceInput's Disabled state layers this over color.voice.processing. */
   --typography-display-l-fontFamily: 'Greed Standard-TRIAL', Arial, Helvetica, sans-serif; /** Largest display size, for hero numbers and level-up moments. */
   --typography-display-l-fontWeight: 900; /** Largest display size, for hero numbers and level-up moments. */
   --typography-display-l-fontSize: 103px; /** Largest display size, for hero numbers and level-up moments. */
@@ -273,6 +279,11 @@
   --typography-headline-xxs-regular-fontSize: 15px; /** Smallest regular headline, for dense non-emphasized labels above body copy. */
   --typography-headline-xxs-regular-lineHeight: 16px; /** Smallest regular headline, for dense non-emphasized labels above body copy. */
   --typography-headline-xxs-regular-letterSpacing: 0.15px; /** Smallest regular headline, for dense non-emphasized labels above body copy. */
+  --typography-headlineCondensed-fontFamily: 'Greed Condensed', Arial, Helvetica, sans-serif; /** radio's headline word (Easy/Medium/Difficult) — Greed Condensed, SemiBold, 24px, 100% line-height. Its own named style, not a rung on the headline.xl-xxs ladder (different family, and 24px doesn't fall between two adjacent rungs there). fontSize is inlined rather than routed through primitive.font.size since no step in that scale is 24px either; lineHeight reuses primitive.font.lineHeight.md, which already is 24px. */
+  --typography-headlineCondensed-fontWeight: 600; /** radio's headline word (Easy/Medium/Difficult) — Greed Condensed, SemiBold, 24px, 100% line-height. Its own named style, not a rung on the headline.xl-xxs ladder (different family, and 24px doesn't fall between two adjacent rungs there). fontSize is inlined rather than routed through primitive.font.size since no step in that scale is 24px either; lineHeight reuses primitive.font.lineHeight.md, which already is 24px. */
+  --typography-headlineCondensed-fontSize: 24px; /** radio's headline word (Easy/Medium/Difficult) — Greed Condensed, SemiBold, 24px, 100% line-height. Its own named style, not a rung on the headline.xl-xxs ladder (different family, and 24px doesn't fall between two adjacent rungs there). fontSize is inlined rather than routed through primitive.font.size since no step in that scale is 24px either; lineHeight reuses primitive.font.lineHeight.md, which already is 24px. */
+  --typography-headlineCondensed-lineHeight: 24px; /** radio's headline word (Easy/Medium/Difficult) — Greed Condensed, SemiBold, 24px, 100% line-height. Its own named style, not a rung on the headline.xl-xxs ladder (different family, and 24px doesn't fall between two adjacent rungs there). fontSize is inlined rather than routed through primitive.font.size since no step in that scale is 24px either; lineHeight reuses primitive.font.lineHeight.md, which already is 24px. */
+  --typography-headlineCondensed-letterSpacing: 0px; /** radio's headline word (Easy/Medium/Difficult) — Greed Condensed, SemiBold, 24px, 100% line-height. Its own named style, not a rung on the headline.xl-xxs ladder (different family, and 24px doesn't fall between two adjacent rungs there). fontSize is inlined rather than routed through primitive.font.size since no step in that scale is 24px either; lineHeight reuses primitive.font.lineHeight.md, which already is 24px. */
   --typography-body-m-bold-fontFamily: 'Greed Standard-TRIAL', Arial, Helvetica, sans-serif; /** Medium bold body text, for emphasized paragraph or list copy. */
   --typography-body-m-bold-fontWeight: 600; /** Medium bold body text, for emphasized paragraph or list copy. */
   --typography-body-m-bold-fontSize: 18px; /** Medium bold body text, for emphasized paragraph or list copy. */

@@ -1,0 +1,121 @@
+/*
+ * Radio — one choice in the post-answer recall-difficulty picker. USE:
+ * always shown as a full set, one row per grade, with one pre-selected.
+ * DON'T: ship an incomplete set — the spaced-repetition logic downstream
+ * needs a row for every grade it can receive (per design-system.md, the
+ * labeled grades here are Easy/Medium/Difficult; a fourth "Again" row the
+ * real spaced-repetition scale needs is a known gap, not solved here).
+ *
+ * Figma's row is a fixed 342px wide, which is 390px (this app's only
+ * viewport) minus two 24px screen margins, not a real component value — so
+ * this renders at width: 100% and expects the caller to provide those
+ * margins, rather than hardcoding a screen-specific px width with no token.
+ *
+ * One token was missing entirely and got added to tokens/tokens.json rather
+ * than hardcoded here (see that file's $description on each):
+ *   - primitive.font.family.condensed        → --font-family-condensed
+ *   - semantic.typography.headlineCondensed  → --typography-headlineCondensed-*
+ * (the headline word's Greed Condensed/SemiBold/24px style — design-system.md
+ * already flagged this as an open gap before this component existed.)
+ */
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--size-space-0);
+  width: 100%;
+  height: var(--size-space-1600);
+  padding-inline: var(--size-space-400);
+  padding-block: var(--size-space-100);
+  border: none;
+  border-radius: var(--size-radius-600);
+  cursor: pointer;
+}
+
+.root:focus-visible {
+  outline: var(--size-stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--size-space-100);
+}
+
+.default {
+  background-color: var(--color-background-surface);
+}
+
+.easy {
+  background-color: var(--color-accent-green-subtle);
+}
+
+.medium {
+  background-color: var(--color-accent-coral-bold);
+}
+
+.difficult {
+  background-color: var(--color-interactive-destructiveActive);
+}
+
+.text {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  align-items: center;
+  gap: var(--size-space-200);
+}
+
+.title {
+  flex-shrink: 0;
+  font-family: var(--typography-headlineCondensed-fontFamily);
+  font-weight: var(--typography-headlineCondensed-fontWeight);
+  font-size: var(--typography-headlineCondensed-fontSize);
+  line-height: var(--typography-headlineCondensed-lineHeight);
+  letter-spacing: var(--typography-headlineCondensed-letterSpacing);
+  white-space: nowrap;
+}
+
+.default .title,
+.easy .title {
+  color: var(--color-text-primary);
+}
+
+.medium .title {
+  color: var(--color-accent-coral-onBold);
+}
+
+.difficult .title {
+  color: var(--color-interactive-onDestructive);
+}
+
+.subtitle {
+  flex: 1 0 0;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--typography-headline-xxs-regular-fontFamily);
+  font-weight: var(--typography-headline-xxs-regular-fontWeight);
+  font-size: var(--typography-headline-xxs-regular-fontSize);
+  line-height: var(--typography-headline-xxs-regular-lineHeight);
+  letter-spacing: var(--typography-headline-xxs-regular-letterSpacing);
+}
+
+.default .subtitle,
+.easy .subtitle {
+  color: var(--color-text-secondary);
+}
+
+.medium .subtitle {
+  color: var(--color-accent-coral-onBold);
+}
+
+.difficult .subtitle {
+  color: var(--color-feedback-error-onBold);
+}
+
+.icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-icon-300);
+  height: var(--size-icon-300);
+}

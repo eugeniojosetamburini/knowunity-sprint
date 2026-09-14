@@ -1,0 +1,135 @@
+/*
+ * ResultCard — a post-session outcome breakdown: a percentage, a segmented
+ * bar showing correct/partial/incorrect distribution, a legend, and a short
+ * written summary. USE: once, at the end of a recall session, to summarize
+ * how the student did. DON'T: reuse the segmented bar on its own elsewhere
+ * as a generic progress indicator — its three colors (feedback.success.bold,
+ * pro.accent, feedback.error.bold) are specific to this outcome breakdown,
+ * not a general-purpose multi-part progress pattern (this is also why it's
+ * not built from ProgressIndicator, despite the visual similarity — that
+ * component is single-color/single-value, this one is a fixed three-part
+ * split with its own dedicated colors).
+ *
+ * Figma's card is a fixed 358px wide (390px viewport minus two 16px screen
+ * margins), not a real component value, so this renders at width: 100% —
+ * same reasoning as Radio's row width.
+ *
+ * Every value here had a matching token — no gaps to flag this time.
+ */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-space-300);
+  width: 100%;
+  padding: var(--size-space-400);
+  border: var(--size-stroke-border) solid var(--color-border-default);
+  border-radius: var(--size-radius-400);
+  background-color: var(--color-background-surface);
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--size-space-200);
+}
+
+.percentage {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-family: var(--typography-headline-xl-fontFamily);
+  font-weight: var(--typography-headline-xl-fontWeight);
+  font-size: var(--typography-headline-xl-fontSize);
+  line-height: var(--typography-headline-xl-lineHeight);
+  letter-spacing: var(--typography-headline-xl-letterSpacing);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-family: var(--typography-body-s-regular-fontFamily);
+  font-weight: var(--typography-body-s-regular-fontWeight);
+  font-size: var(--typography-body-s-regular-fontSize);
+  line-height: var(--typography-body-s-regular-lineHeight);
+  letter-spacing: var(--typography-body-s-regular-letterSpacing);
+}
+
+.bar {
+  display: flex;
+  width: 100%;
+  height: var(--size-space-200);
+  overflow: hidden;
+  border-radius: var(--size-radius-full);
+  background-color: var(--color-interactive-secondary);
+}
+
+.segmentCorrect,
+.segmentPartial,
+.segmentIncorrect {
+  display: block;
+  height: 100%;
+}
+
+.segmentCorrect {
+  background-color: var(--color-feedback-success-bold);
+}
+
+.segmentPartial {
+  background-color: var(--color-pro-accent);
+}
+
+.segmentIncorrect {
+  background-color: var(--color-feedback-error-bold);
+}
+
+.legend {
+  display: flex;
+  gap: var(--size-space-400);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--size-space-200);
+}
+
+.dotCorrect,
+.dotPartial,
+.dotIncorrect {
+  flex-shrink: 0;
+  width: var(--size-icon-100);
+  height: var(--size-icon-100);
+  border-radius: var(--size-radius-full);
+}
+
+.dotCorrect {
+  background-color: var(--color-feedback-success-bold);
+}
+
+.dotPartial {
+  background-color: var(--color-pro-accent);
+}
+
+.dotIncorrect {
+  background-color: var(--color-feedback-error-bold);
+}
+
+.legendText {
+  color: var(--color-text-secondary);
+  font-family: var(--typography-caption-m-regular-fontFamily);
+  font-weight: var(--typography-caption-m-regular-fontWeight);
+  font-size: var(--typography-caption-m-regular-fontSize);
+  line-height: var(--typography-caption-m-regular-lineHeight);
+  letter-spacing: var(--typography-caption-m-regular-letterSpacing);
+}
+
+.summary {
+  margin: 0;
+  width: 100%;
+  color: var(--color-text-primary);
+  font-family: var(--typography-body-m-regular-fontFamily);
+  font-weight: var(--typography-body-m-regular-fontWeight);
+  font-size: var(--typography-body-m-regular-fontSize);
+  line-height: var(--typography-body-m-regular-lineHeight);
+  letter-spacing: var(--typography-body-m-regular-letterSpacing);
+}
