@@ -1,0 +1,62 @@
+/*
+ * Pill — a content-type entry point (Scan / Flashcards / Quiz / Summarize).
+ * Structurally this is the design system's `chips` component (the Figma
+ * layer inside each variant is literally named "chips"), applied to four
+ * fixed icon+label pairings rather than the generic `Primary`/`pro` colors
+ * design-system.md documents for `chips`. Flagging the naming: the Figma
+ * frame that groups these four instances is called "pill", but the
+ * reusable component behind each one is `chips` — built as its own
+ * component here (`Pill`) because these four are fixed content variants,
+ * not a color restyle of a generic chip.
+ *
+ * Known gap against tokens/tokens.json — flagged, not silently invented:
+ * the 40px height and the inset emboss shadow have no matching tokens —
+ * same two gaps already flagged in Button.tsx and ButtonIcon.module.css.
+ * Width is intentionally not hardcoded per variant (each pill hugs its own
+ * icon+label content instead of a fixed pixel width), since Figma's
+ * per-variant widths (98.893px / 148px / 87px / 147px) are just the
+ * measured result of that content, not real tokens.
+ */
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-space-150);
+  height: 40px; /* no matching space token — see file header */
+  padding-inline: var(--size-space-300);
+  border: none;
+  border-radius: var(--size-radius-full);
+  background-color: var(--color-background-surface);
+  box-shadow: inset 0 -4px 0 0 rgba(0, 0, 0, 0.15); /* no fill/alpha token for box-shadow color — see file header */
+  cursor: pointer;
+}
+
+.root:focus-visible {
+  outline: var(--size-stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--size-space-100);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--size-icon-300);
+  flex-shrink: 0;
+}
+
+.icon svg {
+  height: 100%;
+  width: auto;
+}
+
+.label {
+  font-family: var(--font-family-default);
+  font-weight: var(--typography-body-m-bold-fontWeight);
+  font-size: var(--typography-body-m-bold-fontSize);
+  line-height: var(--typography-body-m-bold-lineHeight);
+  letter-spacing: var(--typography-body-m-bold-letterSpacing);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  padding-bottom: var(--size-space-100);
+}

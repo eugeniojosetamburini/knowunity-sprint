@@ -1,0 +1,185 @@
+/*
+ * ButtonIcon — a single icon-only tap target (close, back, menu, the voice
+ * add-topic control). One per corner slot. The icon is a swap-in `icon`
+ * prop, never baked in.
+ *
+ * Known gaps against tokens/tokens.json — flagged, not silently invented:
+ * 1. The circle's bottom emboss shadow (an inset shadow, so it has no
+ *    fill/alpha token to alias — box-shadow color isn't part of this token
+ *    set at all) is hardcoded per the same explicit instruction Button.tsx
+ *    already documents: rgba(0, 0, 0, 0.15).
+ * 2. The M (40px) and L (56px) circle diameters don't match any
+ *    primitive.size.space step (32 and 48 are the neighbors) — same gap
+ *    Button.tsx already has for its M/L heights. S (32px) does match
+ *    size.space.800.
+ * 3. variant="brand" is only built at size="xs" — the voice add-topic
+ *    control the Figma component describes by name. At size S/M/L, the
+ *    Figma component's Default/Pressed/Disabled states are baked raster
+ *    images (a pre-rendered button, not layered tokens), so there is no
+ *    token-backed way to reconstruct them here. Only brand's Loading state
+ *    at every size is composited from real tokens
+ *    (accent.brand.bold / accent.brand.subtle), so that part is included;
+ *    brand S/M/L Default/Pressed/Disabled are left unbuilt — flagging this
+ *    rather than guessing a fill.
+ */
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--size-space-1200);
+  min-width: var(--size-space-1200);
+  padding: var(--size-space-0);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.root:disabled {
+  cursor: not-allowed;
+}
+
+.root[data-state='loading'] {
+  cursor: default;
+}
+
+.root:focus-visible .circle {
+  outline: var(--size-stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--size-space-100);
+}
+
+.circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--size-radius-full);
+  box-sizing: border-box;
+}
+
+.iconSlot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sizes — circle diameter + iconSlot size. xs is brand-only (see gap #3). */
+
+.xs {
+  width: 40px; /* no matching space token — see file header */
+  height: 40px; /* no matching space token — see file header */
+}
+
+.s {
+  width: var(--size-space-800);
+  height: var(--size-space-800);
+}
+
+.m {
+  width: 40px; /* no matching space token — see file header */
+  height: 40px; /* no matching space token — see file header */
+}
+
+.l {
+  width: 56px; /* no matching space token — see file header */
+  height: 56px; /* no matching space token — see file header */
+}
+
+.iconSlot.xs,
+.iconSlot.s {
+  width: var(--size-icon-200);
+  height: var(--size-icon-200);
+}
+
+.iconSlot.m {
+  width: var(--size-icon-250);
+  height: var(--size-icon-250);
+}
+
+.iconSlot.l {
+  width: var(--size-icon-300);
+  height: var(--size-icon-300);
+}
+
+/* Bottom emboss shadow — filled variants only (primary/secondary/brand),
+   never tertiary, which has no fill to emboss. Figma inner-shadow spec:
+   x=0, blur=0, spread=0, color=#000000, opacity=15%; y=-2 at xs/s/m,
+   y=-4 at l. Hardcoded per explicit instruction; see file header. */
+.primary.xs,
+.primary.s,
+.primary.m,
+.secondary.xs,
+.secondary.s,
+.secondary.m,
+.brand.xs {
+  box-shadow: inset 0 -2px 0 0 rgba(0, 0, 0, 0.15);
+}
+
+.primary.l,
+.secondary.l,
+.brand.l {
+  box-shadow: inset 0 -4px 0 0 rgba(0, 0, 0, 0.15);
+}
+
+/* Primary — filled, bordered except when disabled */
+
+.primary {
+  border: var(--size-stroke-border) solid var(--color-border-default);
+  background-color: var(--color-interactive-primary);
+}
+
+.primary[data-state='pressed'] {
+  background-image: linear-gradient(var(--color-interactive-pressed), var(--color-interactive-pressed));
+}
+
+.primary[data-state='disabled'] {
+  border: none;
+  background-color: var(--color-background-surface);
+  background-image: none;
+  color: var(--color-text-disabled);
+  box-shadow: none;
+}
+
+/* Secondary — filled, no border */
+
+.secondary {
+  background-color: var(--color-background-surface);
+}
+
+.secondary[data-state='pressed'] {
+  background-image: linear-gradient(var(--color-interactive-pressed), var(--color-interactive-pressed));
+}
+
+.secondary[data-state='disabled'] {
+  color: var(--color-text-disabled);
+  box-shadow: none;
+}
+
+/* Tertiary — no fill, no border, no shadow, icon only */
+
+.tertiary {
+  background: none;
+  color: var(--color-text-primary);
+}
+
+.tertiary[data-state='disabled'] {
+  color: var(--color-text-disabled);
+}
+
+/* Brand (xs only — see gap #3) */
+
+.brand.xs {
+  border: var(--size-stroke-border) solid var(--color-accent-brand-bold);
+  background-color: var(--color-accent-brand-subtle);
+}
+
+.brand.xs[data-state='pressed'] {
+  background-image: linear-gradient(var(--color-interactive-pressed), var(--color-interactive-pressed));
+}
+
+.brand.xs[data-state='disabled'] {
+  border: none;
+  background-color: var(--color-background-surface);
+  background-image: none;
+  color: var(--color-text-disabled);
+  box-shadow: none;
+}

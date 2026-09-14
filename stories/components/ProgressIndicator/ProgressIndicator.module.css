@@ -1,0 +1,95 @@
+/*
+ * ProgressIndicator — top-of-screen progress bar. Primary/Coral colors ×
+ * 24/16 thickness × progress locked to 25% steps (0/25/50/75/100) — no
+ * continuous fill.
+ *
+ * USE: Coral tracks the exam-plan/orange-accented screens; Primary tracks
+ * everything else. Pick one per screen based on which surface you're in —
+ * don't mix Coral and Primary bars across steps of what should read as a
+ * single flow.
+ *
+ * DON'T: hardcode Coral for a feature just because it currently lives
+ * inside the exam plan. If the feature moves to a different surface, the
+ * color choice should move with it, not stay pinned to where it used to
+ * live.
+ *
+ * Known gap against tokens/tokens.json — flagged, not silently invented:
+ * the track's 12px corner radius doesn't match any radius step (100/4,
+ * 150/6, 200/8, 400/16 are the neighbors) — hardcoded per the same
+ * reasoning as Button/ButtonIcon/Card's own documented pixel gaps.
+ *
+ * Width is intentionally not hardcoded: Figma's frame is a fixed 350px,
+ * but design-system.md describes this as a "top-of-screen" bar, so it
+ * fills its container instead of carrying an arbitrary fixed width.
+ *
+ * Deviation from Figma (user-confirmed): at progress>50% the "n/total"
+ * label sits over the colored fill instead of the dark track. Figma uses
+ * interactive.onSecondary there regardless, which fails WCAG AA contrast
+ * against both accent.brand.bold and accent.coral.bold (~3.1:1 and ~2.3:1
+ * against the required 4.5:1). Past the 50% mark the label switches to
+ * text.onAccent — the token this design system already reserves for text
+ * on accent.*.bold fills — instead of matching Figma's contrast bug.
+ */
+
+.track {
+  position: relative;
+  width: 100%;
+  border-radius: 12px; /* no matching radius token — see file header */
+  background-color: var(--color-background-stacking);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.track.t16 {
+  height: var(--size-space-400);
+}
+
+.track.t24 {
+  height: var(--size-space-600);
+  padding: var(--size-space-050);
+}
+
+.fill {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  border-radius: var(--size-radius-full);
+  width: var(--progress);
+}
+
+.fill.t16 {
+  height: var(--size-space-400);
+  min-width: var(--size-space-400);
+}
+
+.fill.t24 {
+  height: calc(var(--size-space-600) - (2 * var(--size-space-050)));
+  min-width: calc(var(--size-space-600) - (2 * var(--size-space-050)));
+}
+
+.fill.primary {
+  background-color: var(--color-accent-brand-bold);
+}
+
+.fill.coral {
+  background-color: var(--color-accent-coral-bold);
+}
+
+.label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-default);
+  font-weight: var(--typography-caption-s-bold-fontWeight);
+  font-size: var(--typography-caption-s-bold-fontSize);
+  line-height: var(--typography-caption-s-bold-lineHeight);
+  letter-spacing: var(--typography-caption-s-bold-letterSpacing);
+  color: var(--color-interactive-onSecondary);
+}
+
+.labelOnFill {
+  color: var(--color-text-onAccent);
+}

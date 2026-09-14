@@ -1,0 +1,127 @@
+/*
+ * Chips — USE: removable tags, tool pills, multi-select report options,
+ * recap terms. DON'T: use for navigation, or to open menus or give
+ * options — use `button` for that instead.
+ *
+ * Naming note: the live Figma component names the unselected `primary`
+ * look "color=secondary" at size XXS but "color=Primary" at XS/S/M — same
+ * visual role (background.surface fill), just inconsistently cased/named
+ * at one size. Normalized here to a single `color="primary"` plus an
+ * `active` boolean, rather than carrying the XXS naming quirk into code.
+ *
+ * `brand` matches design-system.md's own warning: it's scoped to
+ * recap/topic tagging specifically — never a general-emphasis color.
+ *
+ * Known gaps against tokens/tokens.json — flagged, not silently invented:
+ * the XXS (20px) and M (40px) heights don't match any space token (24/32
+ * at XS/S do, via space.600/space.800) — same class of gap already
+ * flagged for Button's M/L sizes and ButtonIcon's diameters.
+ *
+ * Known accessibility issue (user-confirmed, left as-is): color="brand"
+ * fails WCAG AA contrast at every size (~4.09:1 vs the required 4.5:1)
+ * using Figma's own accent.brand.onSubtle-on-accent.brand.subtle pairing.
+ * Shipped pixel-faithful to Figma rather than silently substituting a
+ * higher-contrast token — same call already made for ProgressIndicator's
+ * own contrast gap, but with the opposite choice: there, the user asked
+ * for the token swap; here, for matching Figma as-is.
+ *
+ * The label has no vertical-centering padding hack. Measured directly
+ * (canvas TextMetrics against the actual resolved font): the glyph ink
+ * sits under 1px off the line-height box's own center, and flex
+ * align-items:center already centers that box within the chip — so a
+ * manual nudge isn't needed here. An earlier padding-bottom (copied from
+ * Button's convention without measuring) made this worse, not better: it
+ * grew the label's box asymmetrically at the bottom, which flex then
+ * centered as a whole — shifting the visible text ~2px *above* true
+ * center instead of correcting anything.
+ */
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--size-radius-full);
+  font-family: var(--font-family-default);
+  cursor: pointer;
+}
+
+.root:focus-visible {
+  outline: var(--size-stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--size-space-100);
+}
+
+.label {
+  white-space: nowrap;
+}
+
+/* Sizes */
+
+.XXS {
+  height: 20px; /* no matching space token — see file header */
+  min-width: 20px; /* no matching space token — see file header */
+  padding-inline: var(--size-space-150);
+}
+
+.XXS .label {
+  font-weight: var(--typography-caption-s-bold-fontWeight);
+  font-size: var(--typography-caption-s-bold-fontSize);
+  line-height: var(--typography-caption-s-bold-lineHeight);
+  letter-spacing: var(--typography-caption-s-bold-letterSpacing);
+}
+
+.XS {
+  height: var(--size-space-600);
+  min-width: var(--size-space-600);
+  padding-inline: var(--size-space-200);
+}
+
+.XS .label {
+  font-weight: var(--typography-caption-m-bold-fontWeight);
+  font-size: var(--typography-caption-m-bold-fontSize);
+  line-height: var(--typography-caption-m-bold-lineHeight);
+  letter-spacing: var(--typography-caption-m-bold-letterSpacing);
+}
+
+.S {
+  height: var(--size-space-800);
+  min-width: var(--size-space-800);
+  padding-inline: var(--size-space-300);
+}
+
+.S .label,
+.M .label {
+  font-weight: var(--typography-body-s-bold-fontWeight);
+  font-size: var(--typography-body-s-bold-fontSize);
+  line-height: var(--typography-body-s-bold-lineHeight);
+  letter-spacing: var(--typography-body-s-bold-letterSpacing);
+}
+
+.M {
+  height: 40px; /* no matching space token — see file header */
+  min-width: 40px; /* no matching space token — see file header */
+  padding-inline: var(--size-space-400);
+}
+
+/* Colors */
+
+.primary {
+  background-color: var(--color-background-surface);
+  color: var(--color-text-primary);
+}
+
+.primary.active {
+  background-color: var(--color-interactive-primary);
+  color: var(--color-interactive-onPrimary);
+}
+
+.pro {
+  background-color: var(--color-pro-bold);
+  color: var(--color-pro-onBold);
+}
+
+.brand {
+  background-color: var(--color-accent-brand-subtle);
+  border: var(--size-stroke-border) solid var(--color-accent-brand-bold);
+  color: var(--color-accent-brand-onSubtle);
+}

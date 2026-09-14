@@ -1,0 +1,98 @@
+/*
+ * Badge — a small count indicator anchored to a nav icon, signaling
+ * something is due without blocking access to it. USE: any corner-icon
+ * that needs an at-a-glance number. DON'T: use green for anything except a
+ * positive/actionable due-count — it isn't a generic notification color.
+ * (That rule is "recall"'s own — the other three variants each own their
+ * color pairing: fire/coral, streak/blue, pro/gold.)
+ *
+ * All four Figma variants (recall/fire/pro/streak) are built here, even
+ * though design-system.md still describes `badge` as "a single component,
+ * no variants" — the other three's baked icon/wordmark fills turned out to
+ * match real tokens exactly (accent.coral.*, accent.blue.*, pro.*), so
+ * there was nothing left to guess once that was confirmed. design-system.md
+ * is stale on this point and worth updating.
+ *
+ * Known gaps against tokens/tokens.json — flagged, not silently invented:
+ * 1. Figma reports this instance's height/radius/count-text size as
+ *    36.279px / 9068.861px / 21.767px — all ≈ a uniform 90.697% scale
+ *    artifact of the frame this instance sat in (dividing out that factor
+ *    recovers clean 40px / 9999px / 24px). radius-full (9999px) is a real
+ *    token; height 40px and the 24px count size are not — same class of gap
+ *    Button.tsx and ButtonIcon.module.css already carry for their own
+ *    non-matching M/L dimensions.
+ * 2. The count text's font ("Greed Condensed/Heavy", 24px) is the same
+ *    missing type-token design-system.md already flags under `radio`
+ *    ("Greed Condensed/Headline, 24px... nothing in the existing type scale
+ *    matched"). Falls back to font-family.default since no Condensed family
+ *    token exists.
+ * 3. The fixed 54px width (recall) and the check-circle mark's absolute
+ *    offset (left 3.5px, top 7.64px) have no matching space tokens —
+ *    authored pixel positioning for a baked icon overlay, same category as
+ *    the plus-icon offsets already hardcoded in ButtonIcon's Brand/XS
+ *    states. fire/streak/pro don't hardcode a width — they hug their own
+ *    icon+count content instead, same reasoning as Pill's variant widths.
+ */
+
+.root {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-space-100);
+  height: 40px; /* no matching space token — see file header, gap #1 */
+  min-width: 40px; /* no matching space token — see file header, gap #1 */
+  padding-inline: var(--size-space-100);
+  border-radius: var(--size-radius-full);
+  overflow: hidden;
+  font-family: var(--font-family-default);
+}
+
+.recall {
+  width: 54px; /* no matching space token — see file header, gap #3 */
+}
+
+.iconSlot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-icon-250);
+  height: var(--size-icon-250);
+  flex-shrink: 0;
+}
+
+.mark {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.recall .mark {
+  position: absolute;
+  left: 3.5px; /* baked icon overlay offset — see file header, gap #3 */
+  top: 7.64px; /* baked icon overlay offset — see file header, gap #3 */
+}
+
+.count {
+  flex: 1 0 0;
+  min-width: 0;
+  text-align: center;
+  font-weight: var(--font-weight-heavy);
+  font-size: 24px; /* no matching type token — see file header, gap #2 */
+  line-height: 1;
+}
+
+.recall .count {
+  color: var(--color-accent-green-bold);
+}
+
+.streak .count {
+  color: var(--color-accent-blue-onSubtle);
+}
+
+.fire .count {
+  color: var(--color-accent-coral-bold);
+}
+
+.pro {
+  padding-inline: 0;
+}

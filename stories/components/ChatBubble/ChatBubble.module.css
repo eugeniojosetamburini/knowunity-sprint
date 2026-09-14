@@ -1,0 +1,136 @@
+/*
+ * ChatBubble — Knowie's dialogue container, for anything Knowie says or
+ * asks. USE: anything Knowie says or asks, in any tone. DON'T: repurpose
+ * `textBlock` for this — that's an editable input, this is read-only
+ * display, which is exactly the mix-up design-system.md already warns
+ * against.
+ *
+ * design-system.md flags this component's Figma `State` property as
+ * capitalized, unlike every other component's lowercase `state`, and notes
+ * it "needs a fix, not... an equally-valid alternative." Fixed here:
+ * this component's prop is `state`, values 'default'/'correct'/'incorrect'.
+ *
+ * Known gap (already documented in design-system.md, not new): no Hint
+ * state. A hint-ladder nudge currently has nothing between Default and
+ * Correct/Incorrect — not invented here either.
+ *
+ * The tail is a plain CSS triangle (clip-path), not the Figma SVG asset.
+ * The asset is a non-square shape; rotating it with a CSS transform left a
+ * subpixel seam against the bubble's edge (transforms don't reflow layout,
+ * so the rotated shape's flat edge didn't land pixel-flush against the
+ * bubble). A clip-path triangle filled with the bubble's own
+ * background-color variable has no separate asset edge to misalign, so
+ * there's no seam regardless of subpixel rounding — and it happens to
+ * size cleanly to icon.150/icon.200, resolving the token gap the SVG
+ * version had.
+ */
+
+.root {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 256px;
+}
+
+.tail {
+  align-self: center;
+  flex-shrink: 0;
+  width: var(--size-icon-150);
+  height: var(--size-icon-200);
+  margin-right: -1px;
+  clip-path: polygon(100% 0%, 100% 100%, 0% 50%);
+}
+
+.tail.default {
+  background-color: var(--color-background-surface);
+}
+
+.tail.correct {
+  background-color: var(--color-feedback-success-subtle);
+}
+
+.tail.incorrect {
+  background-color: var(--color-feedback-error-bold);
+}
+
+.bubble {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  padding: var(--size-space-400);
+  border-radius: var(--size-radius-400);
+  font-family: var(--font-family-default);
+}
+
+.bubble.default {
+  align-items: flex-start;
+  justify-content: center;
+  background-color: var(--color-background-surface);
+}
+
+.bubble.correct,
+.bubble.incorrect {
+  flex-direction: column;
+  align-items: center;
+  gap: var(--size-space-200);
+}
+
+.bubble.correct {
+  background-color: var(--color-feedback-success-subtle);
+}
+
+.bubble.incorrect {
+  background-color: var(--color-feedback-error-bold);
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: var(--size-space-200);
+  width: 100%;
+}
+
+.label svg {
+  width: var(--size-icon-300);
+  height: var(--size-icon-300);
+  flex-shrink: 0;
+}
+
+.labelText {
+  font-weight: var(--typography-headline-xs-bold-fontWeight);
+  font-size: var(--typography-headline-xs-bold-fontSize);
+  line-height: var(--typography-headline-xs-bold-lineHeight);
+  letter-spacing: var(--typography-headline-xs-bold-letterSpacing);
+}
+
+.labelText.correct {
+  color: var(--color-text-primary);
+}
+
+.labelText.incorrect {
+  color: var(--color-feedback-error-onBold);
+}
+
+.body {
+  margin: 0;
+  font-weight: var(--typography-body-m-regular-fontWeight);
+  font-size: var(--typography-body-m-regular-fontSize);
+  line-height: var(--typography-body-m-regular-lineHeight);
+  letter-spacing: var(--typography-body-m-regular-letterSpacing);
+}
+
+.body.default {
+  flex: 1 0 0;
+  min-width: 0;
+  color: var(--color-text-primary);
+}
+
+.body.correct {
+  width: 100%;
+  color: var(--color-text-primary);
+}
+
+.body.incorrect {
+  width: 100%;
+  color: var(--color-feedback-error-onBold);
+}

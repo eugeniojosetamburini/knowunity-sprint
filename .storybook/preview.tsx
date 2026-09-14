@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/nextjs-vite'
 import { INITIAL_VIEWPORTS } from 'storybook/viewport'
+import '../app/fonts.css'
 import '../build/css/tokens.css'
 import './preview.css'
 

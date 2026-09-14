@@ -1,0 +1,78 @@
+/*
+ * Self-hosted Greed font faces. Shared between the Next.js app
+ * (imported from globals.css) and Storybook (imported from
+ * .storybook/preview.tsx) so both environments resolve the exact same
+ * font-family names tokens/tokens.json already references
+ * ("Greed Standard-TRIAL", "Greed Condensed") from the same files.
+ *
+ * Files live in public/fonts/, served at the same root-relative path by
+ * both Next.js (public/) and Storybook (staticDirs: ["../public"]).
+ *
+ * Only 4 weights are present per family (Regular/SemiBold/Bold/Heavy),
+ * matching every weight tokens/tokens.json's font.weight group defines
+ * (regular/semibold/bold/heavy) — no other weight is used by any token.
+ */
+
+@font-face {
+  font-family: 'Greed Standard-TRIAL';
+  src: url('/fonts/greed-standard/GreedStandard-TRIAL-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Greed Standard-TRIAL';
+  src: url('/fonts/greed-standard/GreedStandard-TRIAL-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Greed Standard-TRIAL';
+  src: url('/fonts/greed-standard/GreedStandard-TRIAL-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Greed Standard-TRIAL';
+  src: url('/fonts/greed-standard/GreedStandard-TRIAL-Heavy.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Greed Condensed';
+  src: url('/fonts/greed-condensed/GreedCondensed-TRIAL-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Greed Condensed';
+  src: url('/fonts/greed-condensed/GreedCondensed-TRIAL-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Greed Condensed';
+  src: url('/fonts/greed-condensed/GreedCondensed-TRIAL-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Greed Condensed';
+  src: url('/fonts/greed-condensed/GreedCondensed-TRIAL-Heavy.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
