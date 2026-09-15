@@ -50,9 +50,12 @@ that's a gap to raise, not something to fill in here.
   read-only copy. Knowie's own dialogue now has a real component —
   `chatBubble` — so this is no longer an open gap; see below.
 - **A top bar with one left icon and up to two elements on the right** →
-  `appBar`. If a bar needs more than that (the home screen's five-element bar
-  is the example), it's already outside this system — don't invent a seventh
-  variant to force it in.
+  `appBar` (built: `stories/components/AppBar`). If a bar needs more than
+  that (the home screen's five-element bar is the example), it's already
+  outside this system — don't invent a seventh variant to force it in.
+  Note the built bar is a left icon, a *centre* progress bar and a right
+  icon, which this line's "up to two elements on the right" doesn't quite
+  describe — the frames are what it follows; this wording wants tightening.
 - **The home-level five-element bar** (hamburger / PRO / streak / fire /
   due-count / alarm) → `topNav` (built: `stories/components/TopNav`). Its own
   component precisely because it doesn't fit `appBar`; home-level screens
@@ -61,6 +64,12 @@ that's a gap to raise, not something to fill in here.
   see "Scaffold composition" below). Every route renders inside it; a page
   never draws its own frame.
 - **A tappable summary row for a topic or study set** → `card`.
+- **A flow screen's footer actions, pinned to the bottom of the frame** →
+  `actionSheet` (built: `stories/components/ActionSheet`). A rounded-top
+  surface with a handle, holding that screen's buttons in one equal-width
+  row; it goes in the scaffold's bottom-nav slot, which is what pins it.
+  This is a *persistent footer*, not the scrimmed sheet in slot 5 — it never
+  dims what's behind it and is never dismissed.
 - **The tap target that starts and shows the state of voice capture** →
   `voiceInput`.
 - **A post-session outcome summary** → `resultCard` (percentage, segmented
@@ -292,6 +301,38 @@ each label turned out to have an exact match already: `typography.headline.xxs.r
 supporting recap/topic tagging — matches the treatment used elsewhere for
 Knowie's recap terms.
 
+### `actionSheet`
+No variant axis. One composition: a rounded-top surface carrying a drag
+handle and a single row of equal-width buttons. Sized by its content; the
+result screens' instances come out at the frames' 120px with a pair of
+`button` (size L) children.
+
+**Description, as written on the component:**
+> The sheet pinned to the bottom of a flow screen, carrying that screen's
+> footer actions.
+>
+> **USE:** in the scaffold's bottom-nav slot with `bottomNavFlush`, which
+> pins it to the frame's bottom and lets it run edge to edge; put the
+> screen's buttons in it as children and they share the row equally.
+>
+> **DON'T:** mistake it for slot 5 — that is the modal, scrimmed sheet the
+> exit-session confirm needs. This one is a persistent footer that never
+> dims the screen behind it and is never dismissed; its handle is drawn
+> because the frames draw it, not because it drags.
+
+**Where it came from:** inlined on the Pass result screen first, then
+promoted when Incorrect and Partial needed the identical sheet. The split is
+deliberate and worth preserving — the *positioning* (sticky to the viewport
+bottom, so it can't differ between routes) lives in the scaffold's slot 4,
+and only the *appearance* lives in this component.
+
+**Known gaps:** the handle is decorative — nothing drags, and there is no
+collapsed state, because no frame calls for one. One Primary per screen
+still applies inside it: the result screens pair a Secondary (Retry) with
+the Primary (Continue), never two Primaries. The frames' upward drop shadow
+is `effect.elevation.sheet`; its top edge is an inside stroke, reproduced as
+an inset shadow so it stays out of layout.
+
 ---
 
 ## Scaffold composition
@@ -312,10 +353,15 @@ bottom nav sticky to the viewport, so those can't differ between routes.
 4. **Slot – Bottom nav.** Either the tab bar (home-level screens) or the
    primary action button(s) for a flow screen. I haven't confirmed from the
    file whether a screen can use both at once — treat it as one or the
-   other until that's checked.
+   other until that's checked. The flow-screen form is an `actionSheet`,
+   which needs the slot's flush treatment (`bottomNavFlush`) so it can run
+   edge to edge and draw its own surface instead of taking the tab bar's
+   padding and page background.
 5. **Slot – Bottom-sheet, plus its scrim.** Collapsed to a sliver by default.
    The dimming background is already wired to appear once a sheet's content
-   is placed in the slot — don't hand-build a separate overlay for it.
+   is placed in the slot — don't hand-build a separate overlay for it. This
+   is the *modal* sheet, and it is not `actionSheet`: the two are different
+   components with different jobs, and slot 5 is still unbuilt.
 
 ---
 
@@ -425,6 +471,10 @@ bottom nav sticky to the viewport, so those can't differ between routes.
   with motion and color both stripped out. `voiceInput`'s Listening state
   and `Mascot`'s per-state descriptions both carry this same requirement —
   it isn't unique to the original mascot rule.
+- **Never use `actionSheet` as a modal.** It has no scrim, no dismissal and
+  no collapsed state by design. A sheet that needs to interrupt the student
+  and be dismissed is slot 5's, which isn't built — flag that instead of
+  bending this one into it.
 - **Never use `textBlock` to render read-only copy.** `chatBubble` now
   exists specifically to close this gap — reach for that instead of
   repurposing `textBlock` or inventing a one-off text container.

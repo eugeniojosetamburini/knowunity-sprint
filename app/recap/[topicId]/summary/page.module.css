@@ -1,0 +1,94 @@
+/*
+ * Summary (SPEC.md #10, Figma `knowledge-check-results`, node 15731:3960).
+ * The shell and the bar come from Scaffold and AppBar, and Continue sits in
+ * Scaffold's bottom slot in its default (non-flush) form — a single hugging
+ * pill, centred, which is exactly what the frame draws at x=127.5 w=135.
+ * This file styles the screen's own body only.
+ *
+ * Geometry is the frame's "scrollable-content" (15731:3972): 16px inline
+ * padding, a 12px gap between the title block, the card, the table and the
+ * footer link, and no top padding — the title sits directly under the bar.
+ *
+ * Two values with no matching token, flagged rather than invented:
+ * - The frame's 40px gap between the footer link and Continue falls between
+ *   space-800 (32) and space-1200 (48). space-800 is used; on this screen
+ *   the difference is invisible anyway, since Continue is sticky to the
+ *   viewport bottom and the content is shorter than the frame.
+ * - The mascot slot is 82×82 in Figma holding a 72.16px mascot. There is no
+ *   82px or 72px token (illustration steps are 40 / 64 / 76 / 112 / 120 …),
+ *   and `MascotSlot` can't carry an emotional state. So this is the real
+ *   `Mascot` component at its own intrinsic 70×75, placed so its left edge
+ *   and top land on the frame's (295.92, 105.92) — its right edge finishes
+ *   2px short of the frame's, the width difference between the two sizes.
+ */
+
+.content {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--size-space-300);
+  padding-inline: var(--size-space-400);
+  padding-bottom: var(--size-space-800); /* Figma is 40px — no matching token, see file header */
+}
+
+/* Absolutely placed, and painted *under* the card: the card below is
+   position: relative and later in the DOM, so it covers the mascot's lower
+   half the way the frame's z-order does. */
+.mascot {
+  position: absolute;
+  top: var(--size-space-300);
+  /* Offsets are from .content's padding box (the full 390px), not its
+     16px inset content box — space-600 puts the mascot's left edge on the
+     frame's 296 and its top on the frame's 106. */
+  right: var(--size-space-600);
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-space-100);
+  width: 100%;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-family: var(--typography-headline-s-fontFamily);
+  font-weight: var(--typography-headline-s-fontWeight);
+  font-size: var(--typography-headline-s-fontSize);
+  line-height: var(--typography-headline-s-lineHeight);
+  letter-spacing: var(--typography-headline-s-letterSpacing);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-family: var(--typography-body-s-regular-fontFamily);
+  font-weight: var(--typography-body-s-regular-fontWeight);
+  font-size: var(--typography-body-s-regular-fontSize);
+  line-height: var(--typography-body-s-regular-lineHeight);
+  letter-spacing: var(--typography-body-s-regular-letterSpacing);
+}
+
+/* Positioned only so it paints over the mascot behind it — see .mascot. */
+.resultCard {
+  position: relative;
+}
+
+/* The same underlined condensed drill-down link the due list uses for
+   "Choose your own topics", centred here as the frame draws it. */
+.drillDownLink {
+  align-self: center;
+  border: none;
+  background: none;
+  padding: var(--size-space-300) var(--size-space-200);
+  text-decoration: underline;
+  font-family: var(--typography-linkCondensed-fontFamily);
+  font-weight: var(--typography-linkCondensed-fontWeight);
+  font-size: var(--typography-linkCondensed-fontSize);
+  line-height: var(--typography-linkCondensed-lineHeight);
+  letter-spacing: var(--typography-linkCondensed-letterSpacing);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}

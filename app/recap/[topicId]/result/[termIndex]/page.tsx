@@ -10,7 +10,14 @@ import { ChatBubble, type ChatBubbleState } from "@/stories/components/ChatBubbl
 import { Mascot, type MascotState } from "@/stories/components/Mascot/Mascot";
 import { Button } from "@/stories/components/Button/Button";
 import { Radio } from "@/stories/components/Radio/Radio";
-import { getTopic, progressForTerm, type TermOutcome } from "../../../../due-terms";
+import {
+  GRADE_FOR_OUTCOME,
+  INTERVAL_FOR_GRADE,
+  getTopic,
+  progressForTerm,
+  type Grade,
+  type TermOutcome,
+} from "../../../../due-terms";
 import styles from "./page.module.css";
 
 // The result screen, in its three outcomes — one route, the term's scripted
@@ -40,20 +47,20 @@ import styles from "./page.module.css";
 //   since the spaced-repetition engine is mocked.
 // - Retry re-records the same term, so it returns to that term's prompt
 //   screen at idle. It is *not* part of the hint loop.
-// - Continue advances to the next term's prompt. On the last term it is
-//   inert: Summary (#10) has no route yet.
+// - Continue advances to the next term's prompt. On the last term it goes
+//   to the Summary (#10), which is now routed.
 // - The bubble copy is real per-term text for every outcome, not the
 //   frames' placeholder sentences. Decided 2026-09-15; see app/due-terms.ts.
 // - The progress bar reads this term's value and does not advance here —
 //   Continue advances it by changing term (see progressForTerm).
 
-type Grade = "easy" | "medium" | "difficult";
-
-// Interval copy is the frames', verbatim.
+// Interval copy is the frames', verbatim. It lives in app/due-terms.ts
+// because the Summary (#10) shows the same three strings on its own due
+// pills, and the two screens must not drift.
 const GRADES: { grade: Grade; title: string; subtitle: string }[] = [
-  { grade: "easy", title: "Easy", subtitle: "Review in 1 week" },
-  { grade: "medium", title: "Medium", subtitle: "Review in 2 days" },
-  { grade: "difficult", title: "Difficult", subtitle: "Review tomorrow" },
+  { grade: "easy", title: "Easy", subtitle: INTERVAL_FOR_GRADE.easy },
+  { grade: "medium", title: "Medium", subtitle: INTERVAL_FOR_GRADE.medium },
+  { grade: "difficult", title: "Difficult", subtitle: INTERVAL_FOR_GRADE.difficult },
 ];
 
 const BUBBLE_STATE: Record<TermOutcome, ChatBubbleState> = {
@@ -70,12 +77,10 @@ const MASCOT_STATE: Record<TermOutcome, MascotState> = {
 
 // The grade each outcome opens on — voice-ux.md's states table asks for a
 // recommended grade rather than an empty set. Pass and Incorrect are their
-// frames'; Partial's is decided (see the note above).
-const PRESELECTED: Record<TermOutcome, Grade> = {
-  pass: "easy",
-  incorrect: "difficult",
-  partial: "medium",
-};
+// frames'; Partial's is decided (see the note above). Shared with the
+// Summary, which reads these same recommendations because nothing stores
+// what the student actually tapped.
+const PRESELECTED = GRADE_FOR_OUTCOME;
 
 export default function Result() {
   const { topicId, termIndex } = useParams<{ topicId: string; termIndex: string }>();
@@ -117,11 +122,18 @@ export default function Result() {
           >
             Retry
           </Button>
-          {/* Inert on the last term — Summary (#10) isn't routed yet. */}
+          {/* On the last term this closes the session at the Summary (#10);
+              on any other, it advances to the next term's prompt. */}
           <Button
             variant="primary"
             size="l"
-            onClick={isLastTerm ? undefined : () => router.push(`/recap/${topicId}/prompt/${index + 1}`)}
+            onClick={() =>
+              router.push(
+                isLastTerm
+                  ? `/recap/${topicId}/summary`
+                  : `/recap/${topicId}/prompt/${index + 1}`,
+              )
+            }
           >
             Continue
           </Button>

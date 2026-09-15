@@ -41,6 +41,19 @@ export type AppBarProps = {
    */
   progress?: ProgressIndicatorProgress;
   /**
+   * A centred screen title, for a screen that has the bar but no session
+   * progress — the Summary (SPEC.md #10, node 15731:3970) is the only one,
+   * and its frame puts "Summary" exactly where the other frames put the
+   * bar. Mutually exclusive with `progress`: they share the centre slot,
+   * and no frame in the flow draws both.
+   *
+   * Figma sets this text in Greed Standard **Medium** (500). There is no
+   * 500 weight anywhere in tokens/tokens.json — only regular, 600 and bold
+   * — so it renders at typography.body.s.bold (600), the nearest rung.
+   * Flagged, not invented (see AppBar.module.css).
+   */
+  title?: string;
+  /**
    * The ⋯ menu (SPEC.md #16) isn't built, so this is unset everywhere and
    * the button is a real but inert tap target. Wiring the menu means
    * passing a handler here, not adding a button to each screen.
@@ -52,6 +65,7 @@ export function AppBar({
   backHref = '/due-list',
   backLabel = 'Back to due list',
   progress,
+  title,
   onMore,
   className,
   ...rest
@@ -76,6 +90,7 @@ export function AppBar({
             aria-label="Review session progress"
           />
         )}
+        {!progress && title && <p className={styles.title}>{title}</p>}
       </div>
       <ButtonIcon
         variant="tertiary"

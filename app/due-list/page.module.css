@@ -93,3 +93,17 @@
   color: var(--color-text-primary);
   cursor: pointer;
 }
+
+/* All caught up (SPEC.md #2a, `?caughtUp=1`) — no Figma frame. Sits where
+   the card list sits, at the cards' 16px inline edge plus the greeting
+   block's 8px, so the line starts on the same x as the headline above it. */
+.caughtUpBody {
+  margin: 0;
+  padding-inline: var(--size-space-200);
+  color: var(--color-text-secondary);
+  font-family: var(--typography-body-m-regular-fontFamily);
+  font-weight: var(--typography-body-m-regular-fontWeight);
+  font-size: var(--typography-body-m-regular-fontSize);
+  line-height: var(--typography-body-m-regular-lineHeight);
+  letter-spacing: var(--typography-body-m-regular-letterSpacing);
+}

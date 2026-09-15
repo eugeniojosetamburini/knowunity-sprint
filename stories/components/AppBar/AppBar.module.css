@@ -7,6 +7,18 @@
  * tap target), 4px inline padding, and a 24px gap between the icons and the
  * progress bar, which itself carries 8px of inline padding so the bar's
  * fill lands on the frames' x. Every value resolves to a token.
+ *
+ * The Summary frame (15731:3967) draws this bar 8px shorter — 56px, from a
+ * 40px tap target — and centres a title where the others centre progress.
+ * The bar keeps its 64px here: CLAUDE.md requires the bar sit in the same
+ * place on every route in the flow, and five screens are already measured
+ * against 64. The 8px difference is Figma's, flagged not resolved.
+ *
+ * One value with no token, flagged rather than invented: the title is
+ * Greed Standard **Medium** (500) in Figma and tokens/tokens.json has no
+ * 500 weight at all (regular / 600 / bold only), so it renders at
+ * typography.body.s.bold — right family, size, line-height and tracking,
+ * one rung heavy.
  */
 
 .root {
@@ -22,4 +34,18 @@
   flex: 1 0 0;
   min-width: 0;
   padding-inline: var(--size-space-200);
+}
+
+/* Summary only (SPEC.md #10) — the centre slot's second occupant, never
+   shown at the same time as the progress bar. */
+.title {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-family: var(--typography-body-s-bold-fontFamily);
+  font-weight: var(--typography-body-s-bold-fontWeight); /* Figma is Medium/500 — no such token, see file header */
+  font-size: var(--typography-body-s-bold-fontSize);
+  line-height: var(--typography-body-s-bold-lineHeight);
+  letter-spacing: var(--typography-body-s-bold-letterSpacing);
 }

@@ -58,3 +58,16 @@ export const NoProgress: Story = {
   },
   args: {},
 };
+
+export const WithTitle: Story = {
+  name: 'title="Summary"',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The Summary (SPEC.md #10, node 15731:3960) is the one flow screen with no session progress, and its frame centres a screen title in the slot the others give the bar. `title` and `progress` share that slot and are mutually exclusive — no frame draws both. Figma sets this text in Greed Standard Medium (500); tokens/tokens.json has no 500 weight, so it renders at typography.body.s.bold — flagged in AppBar.module.css, not invented.',
+      },
+    },
+  },
+  args: { title: 'Summary', backHref: '/due-list', backLabel: 'Back to due list' },
+};

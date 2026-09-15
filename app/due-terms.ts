@@ -173,3 +173,82 @@ const TERM_PROGRESS: ProgressIndicatorProgress[] = ["25", "75", "100"];
 export function progressForTerm(index: number): ProgressIndicatorProgress {
   return TERM_PROGRESS[index] ?? "100";
 }
+
+// ---------------------------------------------------------------------------
+// Session outcome — what the Summary (SPEC.md #10) reads.
+//
+// Nothing in this prototype stores what the student actually tapped on a
+// result screen (SPEC.md, "nothing consumes a grade" — the Radio selection
+// is local and resets on navigation). So the Summary reads the same grade
+// each result screen *opens on*: the recommendation its scripted outcome
+// carries. That keeps the two screens honest about each other without
+// inventing session state, which is explicitly out of scope.
+// ---------------------------------------------------------------------------
+
+export type Grade = "easy" | "medium" | "difficult";
+
+// Pass and Incorrect are their frames' pre-selected grades (15783:7408 and
+// 15783:7640); Partial's Medium was decided 2026-09-15 (SPEC.md #11).
+export const GRADE_FOR_OUTCOME: Record<TermOutcome, Grade> = {
+  pass: "easy",
+  incorrect: "difficult",
+  partial: "medium",
+};
+
+// The interval copy is the result screens' Radio subtitles, verbatim from
+// the frames. The Summary frame's own due pills use the same three strings.
+export const INTERVAL_FOR_GRADE: Record<Grade, string> = {
+  easy: "Review in 1 week",
+  medium: "Review in 2 days",
+  difficult: "Review tomorrow",
+};
+
+export type SessionTally = {
+  correct: number;
+  partial: number;
+  incorrect: number;
+  total: number;
+  /** Terms explained unaided, as a whole percentage of the session. */
+  percent: number;
+};
+
+export function tallyTopic(topic: DueTopic): SessionTally {
+  const correct = topic.terms.filter((t) => t.outcome === "pass").length;
+  const partial = topic.terms.filter((t) => t.outcome === "partial").length;
+  const incorrect = topic.terms.filter((t) => t.outcome === "incorrect").length;
+  const total = topic.terms.length;
+  return { correct, partial, incorrect, total, percent: Math.round((correct / total) * 100) };
+}
+
+// The Summary's written review. SPEC.md decided that this copy should react
+// to the unaided/hinted ratio (the brief's "was it earned?" problem) but
+// never wrote what it says at each band — this is that, in three bands.
+// Kept to the two lines the frame's paragraph is drawn at (measured: a
+// third line makes the card 210px tall against Figma's 186), so the card
+// stays the height Figma gives it whichever band the session lands in.
+export function summaryReview(tally: SessionTally): string {
+  if (tally.correct === tally.total) {
+    return "Every term came back on its own. Nothing here is at risk.";
+  }
+  if (tally.correct === 0) {
+    return "None came back unaided. They all come round again soon.";
+  }
+  return `${tally.correct} of ${tally.total} came back unaided. The rest come round again sooner.`;
+}
+
+// The line under the topic title. Factual, not a judgement — the judgement
+// is the review paragraph above.
+export function summarySubtitle(tally: SessionTally): string {
+  return tally.total === 1
+    ? "You just said 1 term back out loud."
+    : `You just said ${tally.total} terms back out loud.`;
+}
+
+// Which topic a finished session chains into (SPEC.md #10: Summary's
+// Continue goes to the next due topic's recap, not back through the due
+// list). Undefined after the last topic, where Continue lands on the due
+// list's all-caught-up state (#2a) instead.
+export function nextTopic(topicId: string): DueTopic | undefined {
+  const index = dueTopics.findIndex((topic) => topic.id === topicId);
+  return index === -1 ? undefined : dueTopics[index + 1];
+}
