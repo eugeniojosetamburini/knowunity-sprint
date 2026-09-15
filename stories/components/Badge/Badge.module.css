@@ -13,6 +13,11 @@
  * there was nothing left to guess once that was confirmed. design-system.md
  * is stale on this point and worth updating.
  *
+ * pro's mark is the real exported "PRO" wordmark asset (public/images/pro-mark.png,
+ * a 2x/82x46 raster export of the Figma wordmark), not a hand-traced SVG —
+ * its gold/black fill is baked into the pixels, so it can't be recolored via
+ * a CSS variable the way the other three variants' inline SVG icons are.
+ *
  * Known gaps against tokens/tokens.json — flagged, not silently invented:
  * 1. Figma reports this instance's height/radius/count-text size as
  *    36.279px / 9068.861px / 21.767px — all ≈ a uniform 90.697% scale
@@ -32,6 +37,16 @@
  *    the plus-icon offsets already hardcoded in ButtonIcon's Brand/XS
  *    states. fire/streak/pro don't hardcode a width — they hug their own
  *    icon+count content instead, same reasoning as Pill's variant widths.
+ *
+ * Root element is a real <button>, not a div with role="status" — badge is
+ * a tap target (variant="recall" navigates to the due list), and
+ * role="status" is a passive live-region role that doesn't belong on
+ * something interactive. Focus ring matches Button's own convention
+ * (border.focus + the heavy 2px stroke). aria-label defaults kick in only
+ * when the button would otherwise have no accessible text — pro's mark is
+ * a decorative wordmark image, and showCount=false leaves every variant
+ * down to an icon with nothing else to read; both are overridable via
+ * aria-label.
  */
 
 .root {
@@ -43,9 +58,18 @@
   height: 40px; /* no matching space token — see file header, gap #1 */
   min-width: 40px; /* no matching space token — see file header, gap #1 */
   padding-inline: var(--size-space-100);
+  padding-block: 0;
+  border: none;
   border-radius: var(--size-radius-full);
   overflow: hidden;
   font-family: var(--font-family-default);
+  background: none;
+  cursor: pointer;
+}
+
+.root:focus-visible {
+  outline: var(--size-stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--size-space-100);
 }
 
 .recall {
@@ -95,4 +119,9 @@
 
 .pro {
   padding-inline: 0;
+}
+
+.proMark {
+  width: 41px; /* matches the source asset's 2x export (82x46) — no matching space token, see file header gap #3 */
+  height: 23px;
 }

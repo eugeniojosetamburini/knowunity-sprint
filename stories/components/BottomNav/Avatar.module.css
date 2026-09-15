@@ -1,0 +1,33 @@
+/*
+ * Avatar — the circular profile-photo slot at the end of bottomNav (Figma
+ * node 15974:6897). Defaults to public/images/mascot-avatar.png rather than
+ * Figma's own "Avatar" fill — see Avatar.tsx header. background.surface is
+ * the fallback fill behind the image (and behind any empty slot, if a
+ * caller explicitly passes children={null}).
+ */
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--size-icon-300);
+  height: var(--size-icon-300);
+  padding: var(--size-space-0);
+  overflow: hidden;
+  border: var(--size-stroke-border) solid var(--color-border-default);
+  border-radius: var(--size-radius-full);
+  background-color: var(--color-background-surface);
+  cursor: pointer;
+}
+
+.root:focus-visible {
+  outline: var(--size-stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--size-space-100);
+}
+
+.root img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

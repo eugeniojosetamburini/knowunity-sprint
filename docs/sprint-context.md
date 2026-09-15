@@ -30,3 +30,5 @@ Voice-based active recall for Knowunity. Student speaks a term out loud, Knowie 
 - Language switching mid-answer
 - Pause and resume within one take
 - Mic-busy handling (student on a call, etc.)
+- Switching between voice and multiple-choice mode mid-round (the Figma
+  "Practice round voice flow" exploration is not the committed concept)

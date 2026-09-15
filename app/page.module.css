@@ -1,123 +1,86 @@
-.screen {
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  min-height: 100dvh;
-  background: var(--color-background-page);
-}
-
-.frame {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 390px;
-  min-height: 100dvh;
-  background: var(--color-background-page);
-}
-
-.appBar {
-  display: flex;
-  align-items: center;
-  padding: var(--size-space-400) var(--size-space-400);
-}
-
-.appBarTitle {
-  font-family: var(--typography-headline-s-fontFamily);
-  font-weight: var(--typography-headline-s-fontWeight);
-  font-size: var(--typography-headline-s-fontSize);
-  line-height: var(--typography-headline-s-lineHeight);
-  letter-spacing: var(--typography-headline-s-letterSpacing);
-  color: var(--color-text-primary);
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--size-space-600);
-  padding: 0 var(--size-space-400) var(--size-space-600);
-}
+/*
+ * Home screen (home-screen-knowie, node 15702:3864). The shell and both bars
+ * come from Scaffold / TopNav / BottomNav — this file only styles the
+ * screen's own content.
+ *
+ * Mismatches against the Figma frame, flagged rather than silently resolved:
+ *
+ * 1. Headline font: Figma specifies "Greed Narrow-TRIAL" Bold, 28px/34px
+ *    line-height, -0.28px tracking. No "Greed Narrow" font file or token
+ *    exists anywhere in this project (checked app/fonts.css and
+ *    tokens/tokens.json — unlike Radio's "Greed Condensed" gap, the font
+ *    asset itself isn't present, so a token couldn't be added faithfully).
+ *    Falls back to typography.headline.m (Greed Standard-TRIAL Bold, 28px,
+ *    -0.28px tracking — size and tracking match exactly) with its own 28px
+ *    line-height instead of Figma's 34px.
+ * 2. The center block's 40px vertical padding has no matching space token
+ *    (nearest: space-800/32, space-1200/48) — space-800 used.
+ * 3. The gap between the AiChat row and the bottom nav is 12px in Figma
+ *    (space-300), carried as this block's bottom padding since the nav
+ *    itself lives in Scaffold's slot.
+ */
 
 .intro {
   display: flex;
-  align-items: flex-start;
-  gap: var(--size-space-300);
-}
-
-.mascot {
-  flex-shrink: 0;
-  width: var(--size-illustration-800);
-  height: var(--size-illustration-800);
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-space-600);
+  padding: var(--size-space-800) var(--size-space-600); /* 40px vertical — no matching token, see file header */
+  text-align: center;
 }
 
 .introText {
   display: flex;
   flex-direction: column;
-  gap: var(--size-space-200);
+  align-items: center;
+  gap: var(--size-space-300);
 }
 
 .headline {
-  font-family: var(--typography-headline-l-fontFamily);
-  font-weight: var(--typography-headline-l-fontWeight);
-  font-size: var(--typography-headline-l-fontSize);
-  line-height: var(--typography-headline-l-lineHeight);
-  letter-spacing: var(--typography-headline-l-letterSpacing);
+  margin: 0;
   color: var(--color-text-primary);
+  font-family: var(--typography-headline-m-fontFamily); /* Figma: Greed Narrow-TRIAL — no such font/token exists, see file header */
+  font-weight: var(--typography-headline-m-fontWeight);
+  font-size: var(--typography-headline-m-fontSize);
+  line-height: var(--typography-headline-m-lineHeight); /* Figma: 34px, see file header */
+  letter-spacing: var(--typography-headline-m-letterSpacing);
 }
 
 .subcopy {
-  font-family: var(--typography-body-s-regular-fontFamily);
-  font-weight: var(--typography-body-s-regular-fontWeight);
-  font-size: var(--typography-body-s-regular-fontSize);
-  line-height: var(--typography-body-s-regular-lineHeight);
-  letter-spacing: var(--typography-body-s-regular-letterSpacing);
+  margin: 0;
   color: var(--color-text-secondary);
+  font-family: var(--typography-body-m-regular-fontFamily);
+  font-weight: var(--typography-body-m-regular-fontWeight);
+  font-size: var(--typography-body-m-regular-fontSize);
+  line-height: var(--typography-body-m-regular-lineHeight);
+  letter-spacing: var(--typography-body-m-regular-letterSpacing);
 }
 
-.dueList {
+.tools {
   display: flex;
   flex-direction: column;
   gap: var(--size-space-300);
-  list-style: none;
+  padding-inline: var(--size-space-400);
+  padding-bottom: var(--size-space-300);
 }
 
-.card {
+.pillRow {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--size-space-100);
-  width: 100%;
-  padding: var(--size-space-400);
-  border: var(--size-stroke-border) solid var(--color-border-default);
-  border-radius: var(--size-radius-400);
-  background: var(--color-background-surface);
-  text-align: left;
-  cursor: pointer;
+  gap: var(--size-space-200);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
-.cardTitle {
-  font-family: var(--typography-headline-xs-bold-fontFamily);
-  font-weight: var(--typography-headline-xs-bold-fontWeight);
-  font-size: var(--typography-headline-xs-bold-fontSize);
-  line-height: var(--typography-headline-xs-bold-lineHeight);
-  letter-spacing: var(--typography-headline-xs-bold-letterSpacing);
-  color: var(--color-text-primary);
+.pillRow::-webkit-scrollbar {
+  display: none;
 }
 
-.cardMeta {
-  display: flex;
-  align-items: center;
-  gap: var(--size-space-100);
-  font-family: var(--typography-caption-m-regular-fontFamily);
-  font-weight: var(--typography-caption-m-regular-fontWeight);
-  font-size: var(--typography-caption-m-regular-fontSize);
-  line-height: var(--typography-caption-m-regular-lineHeight);
-  letter-spacing: var(--typography-caption-m-regular-letterSpacing);
-  color: var(--color-text-tertiary);
-}
-
-.metaDot {
-  width: 3px;
-  height: 3px;
-  border-radius: var(--size-radius-full);
-  background: var(--color-text-tertiary);
+/* Pill's own root has flex-shrink unset (defaults to 1) since it's normally
+   laid out to hug its content, not squeeze — without this, the flex row
+   would compress each pill before falling back to horizontal scroll. */
+.pillRow > * {
+  flex-shrink: 0;
 }

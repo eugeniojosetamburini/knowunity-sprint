@@ -14,6 +14,11 @@
 - Build from the components `docs/design-system.md` already defines; stop and flag before adding a new one.
 - Sentence case on every label, button, and heading — capitals only for proper nouns (`docs/design-system.md`).
 - Build the committed concept in `docs/sprint-context.md` ("Committed concept:" line).
+- Match the Figma frame 100% — content as much as layout: the exact number of repeated instances (cards, chips, rows), the exact copy of every text node, the exact image in every image slot, and every component's variant state (e.g. `BottomNav`'s `chatActive`, a `Badge`'s count text, a `Chips` color). "Layout matches" is not done. If existing mocked data contradicts the frame, change the data (`app/due-terms.ts`), never the screen.
+- Before building or fixing any screen, `ls public/images/` (and `docs/reference/`): the assets a screen needs are uploaded there, and a name like `card-image-variation.png` is the second card's illustration. Use the uploaded file; never fall back to a component's default image or a downloaded Figma export when a matching file exists.
+- Every route renders inside `Scaffold` (`stories/components/Scaffold`); never hand-roll a screen shell in a page's CSS module. Shell behavior (width, centering, scrolling, sticky bottom nav) is fixed in `Scaffold` and `app/globals.css` only.
+- Before reporting any screen done, verify it by measurement in the real app on `localhost:3000` — `node scripts/verify-screen.mjs <route> --figma <png>` — against the Figma render, and confirm frame/bar/nav positions are identical to the route you came from. Not from Storybook, not by eye (`.claude/skills/build-screen`, step 9).
+- Storybook is the source of truth for components, not for screens: its preview does not load `app/globals.css` (no `box-sizing` reset), so screen layout is only trusted on `localhost:3000`.
 
 # Never
 
@@ -43,13 +48,20 @@ a story. If a prop isn't there, stop and ask me.
 - `docs/design-system.md` — component selection rules and naming conventions. Read before adding or using any UI component.
 - `tokens/tokens.json` — every color, size, type, and spacing value. Read whenever you need an actual value.
 - `docs/reference/*.png` — beta-app screenshots. Read when you need to see what already shipped, not as the target.
+- `component-gaps.md` — running list of things built inline during a screen build because they weren't in Storybook, and which have since been promoted to real components. Read before building a new screen.
+- `SPEC.md` — the screen list, per-screen states/components/actions, mocked-recall behavior, and open questions. Read first for any screen work; its "built/not built" labels can drift — confirm in Figma.
+- `stories/components/*` — the component library, one folder per component with its story. Storybook (`npm run storybook`, port 6006) is the source of truth for props. `Scaffold` is the screen shell; `TopNav` is the home-level bar.
+- `scripts/verify-screen.mjs` — measures a route at 390/1280px (frame, bars, glyph edges, text, cards, bottom nav) and pixel-scans a Figma PNG for the same edges. Run before calling any screen done.
 - `app/layout.tsx` — root layout, fonts, HTML shell. Read before changing global structure or fonts.
-- `app/page.tsx` — current page (still Next.js boilerplate, not the feature). Read/replace when building the first real screen.
-- `app/globals.css` — global resets and CSS vars; imports `build/css/tokens.css`. Read before adding global styles.
+- `app/globals.css` — font/token imports, the `box-sizing` reset, and the root overflow rules that keep every route's frame in the same place. Read before adding global styles; don't move `overflow` onto `body` (it breaks the sticky bottom nav).
+- `app/page.tsx` + `app/page.module.css` — the Home screen (SPEC.md #1, Figma `home-screen-knowie`), built 1:1 inside `Scaffold`.
+- `app/due-list/` — the Due list screen (SPEC.md #2, Figma "Direction C1 – Due list, delinearized").
+- `app/recap/[topicId]/` — the Entry/recap screen (SPEC.md #3), plus its `BackButton`.
+- `app/due-terms.ts` — the mocked due-term data shared by Home, Due list, and recap. The only place that data lives, and it mirrors the Figma frames' content (two "Renaissance Philosophy" cards, three terms, "5+" due) — when a frame and this file disagree, this file changes.
+- `public/images/` — every image asset the screens use, uploaded by the user: card illustrations (`card-image.png` first card, `card-image-variation.png` second), mascot states, the avatar, the PRO mark. Check here before assuming any image.
 - `build/css/tokens.css` — generated from `tokens/tokens.json` by Style Dictionary. Never edit it by hand — edit `tokens/tokens.json` and run `npm run tokens`.
-- `app/page.module.css` — styles scoped to `page.tsx`. Read/replace alongside `page.tsx`.
 - `public/images/*.png` — Knowie mascot art actually served by the app. Use these for any `Mascot`/`mascotSlot` instance.
-- `public/next.svg`, `public/vercel.svg` — used by the current boilerplate `page.tsx`; remove only when replacing that page.
+- `public/next.svg`, `public/vercel.svg` — create-next-app leftovers, referenced by nothing.
 - `.claude/skills/ui-designer/` — visual styling craft. Loads on styling/layout/design-token work.
 - `.claude/skills/ux-designer/` — UX flow and psychology. Loads on flow/IA/usability work.
 - `.claude/skills/ux-motion/` — animation/transition implementation. Loads on motion/micro-interaction work.

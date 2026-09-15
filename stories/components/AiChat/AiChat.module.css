@@ -1,0 +1,79 @@
+/*
+ * AiChat — no Figma description exists on this component (unlike mascot/
+ * mascotSlot/voiceInput etc., which do). Structure inferred from the node
+ * tree alone (15974:6891): a "+" entry point to start a new chat, paired
+ * with a pill showing a placeholder-styled prompt and a decorative mic
+ * glyph — a home-screen composer bar into the voice-recall flow.
+ *
+ * The left "+" button is a real Figma *instance* of buttonIcon (not just a
+ * lookalike) — variant="secondary" size="l" — so it's reused here via the
+ * existing ButtonIcon component rather than rebuilt. Its own PlusIcon glyph
+ * is new (24x24, distinct from ButtonIcon/PlusIcon.tsx's 16.5px voice
+ * add-topic glyph — different shape, different context, see PlusIcon.tsx
+ * header).
+ *
+ * The mic glyph in the pill is a plain 24px icon layer in Figma, not its
+ * own buttonIcon instance — so the whole pill is one tap target
+ * (onOpenChat), and the mic is decorative (aria-hidden, via MicIcon.tsx).
+ *
+ * Missing token — flagged, not silently invented: Figma applies a
+ * "Blurs/Surface" background-blur effect (radius 32) to the pill, a frosted
+ * -glass look. tokens/tokens.json has no matching effect token (only
+ * semantic.effect.voice.idleGlow exists, a drop-shadow, not a blur radius
+ * scale) — omitted here rather than hardcoding backdrop-filter: blur(32px).
+ * Flag if this needs a real token added.
+ *
+ * Known gap against tokens/tokens.json — flagged, not silently invented:
+ * the pill's 56px height (matching the "+" button's own l-size diameter so
+ * both sit flush) has no matching space token — same class of gap already
+ * flagged for Button/ButtonIcon/Badge/Pill's own non-matching dimensions.
+ */
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--size-space-200);
+  width: 100%;
+  max-width: 358px; /* Figma's own measured width — no matching space token, see file header */
+}
+
+.pill {
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--size-space-200);
+  height: 56px; /* no matching space token — see file header */
+  min-width: 0;
+  padding-block: 0;
+  padding-inline-start: var(--size-space-400);
+  padding-inline-end: var(--size-space-200);
+  border: none;
+  border-radius: var(--size-radius-full);
+  background-color: var(--color-background-surface);
+  cursor: pointer;
+}
+
+.pill:focus-visible {
+  outline: var(--size-stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--size-space-100);
+}
+
+.label {
+  flex: 1 0 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: start;
+  font-family: var(--font-family-default);
+  font-weight: var(--typography-body-m-regular-fontWeight);
+  font-size: var(--typography-body-m-regular-fontSize);
+  line-height: var(--typography-body-m-regular-lineHeight);
+  letter-spacing: var(--typography-body-m-regular-letterSpacing);
+  color: var(--color-text-secondary);
+}
+
+.pill svg {
+  flex-shrink: 0;
+}

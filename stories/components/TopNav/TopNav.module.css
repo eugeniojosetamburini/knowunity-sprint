@@ -1,0 +1,35 @@
+/*
+ * TopNav — the home-level five-element bar (hamburger / PRO / streak / fire
+ * / due-count / alarm). design-system.md's appBar entry explicitly puts this
+ * bar outside appBar's six layouts ("don't invent a seventh variant to force
+ * it in"), so it's its own component, not an appBar variant. Built once here
+ * after Home and Due list had each inlined an identical copy — the second
+ * use is the trigger for promoting a composition to a real component
+ * (.claude/skills/build-screen, step 5).
+ *
+ * Geometry was measured off Figma's own 390px render of both frames
+ * (home-screen-knowie 15702:3864, Due list 15734:4996) rather than read
+ * from the frame's ~0.907-scaled pixel values: the hamburger glyph starts at
+ * x≈23 and the clock glyph ends at x≈367, with each 24px glyph inset 2px in
+ * its 24px box. ButtonIcon "m" puts that glyph 14px inside its 48px tap
+ * target, so space-200 (8px) side padding lands both within 1px of Figma.
+ * Height: 48px tap targets + 2×space-100 = 56px, the frame's "Top Nav
+ * Default" height.
+ */
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--size-space-200);
+  padding-inline: var(--size-space-200);
+  padding-block: var(--size-space-100);
+}
+
+.badges {
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-space-200);
+  min-width: 0;
+}

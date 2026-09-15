@@ -1,0 +1,61 @@
+/*
+ * Scaffold — the screen shell every screen builds inside (design-system.md,
+ * "Scaffold composition"). It owns the things that must be identical on
+ * every route so nothing jumps when navigating: the 390px frame and its
+ * centering, the page background, and where the bottom nav sits.
+ *
+ * Slots, in design-system.md's order:
+ *   1. Status bar — not rendered; it's OS chrome, not app UI.
+ *   2. Top navigation — `topBar`, a <header>. The bar passed in owns its
+ *      own padding (TopNav, or a screen's progress/back row).
+ *   3. Content — `children`, inside <main>, which grows to fill the frame
+ *      so a screen's own flex: 1 blocks (e.g. Home's centered intro) work.
+ *   4. Bottom nav — `bottomNav`, sticky to the viewport bottom. On a
+ *      screen taller than the viewport it stays put while content scrolls;
+ *      on a short screen it sits at the frame's bottom edge. Same place
+ *      either way, which is what makes the nav feel fixed across routes.
+ *   5. Bottom sheet + scrim — not built yet (no sheet exists in Storybook).
+ *
+ * The frame is min-height: 100dvh (not height) so a tall screen scrolls
+ * the page rather than clipping; the horizontal-shift a classic scrollbar
+ * would cause is handled globally by scrollbar-gutter in app/globals.css.
+ */
+
+.screen {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  min-height: 100dvh;
+  background: var(--color-background-page);
+}
+
+.frame {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 390px;
+  min-height: 100dvh;
+  background: var(--color-background-page);
+}
+
+.topBar {
+  flex-shrink: 0;
+}
+
+.main {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.bottomNav {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  padding-inline: var(--size-space-400);
+  padding-bottom: var(--size-space-600);
+  background: var(--color-background-page);
+}

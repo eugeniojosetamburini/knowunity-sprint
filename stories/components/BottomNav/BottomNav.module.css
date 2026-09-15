@@ -1,0 +1,35 @@
+/*
+ * BottomNav — no Figma description exists on this component (like aiChat).
+ * Structure inferred from the node tree alone (15974:6912): four icon-only
+ * nav buttons (myai-chat, search-md, target-04, trophy-02) plus a profile
+ * avatar. Per design-system.md's Scaffold composition: "Slot – Bottom nav.
+ * Either the tab bar (home-level screens) or the primary action button(s)
+ * for a flow screen" — this is that tab bar.
+ *
+ * The four nav buttons reuse the existing `ButtonIcon` (variant="tertiary",
+ * size="m") rather than a new button shell — Figma's own "Navigation
+ * Button" instances render identically to tertiary (no fill, no border, no
+ * emboss, just padding + a 24px icon), even though they're a separate
+ * Figma component, not a buttonIcon instance-swap. No "active" prop is
+ * exposed: Figma shows a fixed per-icon color distinction (myai-chat is
+ * opaque text-primary, the other three are translucent text-secondary),
+ * not a toggleable variant — reproduced as real per-icon colors in
+ * icons.tsx instead.
+ *
+ * Known gap against tokens/tokens.json — flagged, not silently invented:
+ * this instance's real icon glyph is 24px (icon.300), same mismatch already
+ * flagged for MenuIcons — ButtonIcon's "m" size pairs a 40px circle
+ * (matching this instance exactly) with a 20px iconSlot (icon.250), not
+ * 24px. Shipped pixel-faithful to Figma's 24px glyph, same call as
+ * MenuIcons; the glyph overflows the 20px slot's flex box by ~2px/side
+ * (no clipping, since iconSlot has no overflow:hidden).
+ */
+
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 358px; /* Figma's own measured width — no matching space token */
+  padding-block: var(--size-space-100);
+}

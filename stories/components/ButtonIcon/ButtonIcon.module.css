@@ -62,6 +62,15 @@
   justify-content: center;
 }
 
+/* An svg is a flex item here, and Chromium shrinks it to the slot. That
+   silently scaled MenuIcons' and BottomNav's 24px glyphs down to the "m"
+   slot's 20px — contradicting both components' own comments, which say the
+   glyph ships at Figma's 24px and overhangs the slot by ~2px per side. Keep
+   the icon at its declared size; a glyph that fits its slot is unaffected. */
+.iconSlot > svg {
+  flex-shrink: 0;
+}
+
 /* Sizes — circle diameter + iconSlot size. xs is brand-only (see gap #3). */
 
 .xs {

@@ -1,0 +1,167 @@
+/*
+ * Entry / recap screen ("Voice Review Screen", Figma node 15783:6710). The
+ * shell comes from Scaffold; this styles the flow-screen bar and content.
+ *
+ * Geometry from the frame: bar = 48px buttons + 2×space-200 = 64px, padded
+ * space-100 at the sides with space-600 between items; body padded
+ * space-600 with space-700 (28px) between blocks; the trigger zone stacks
+ * with space-600 and space-400 gaps and a space-150 callout gap.
+ *
+ * Text styles: every hand-set text node on this frame (no Figma text style
+ * applied) now has a semantic typography token with the frame's exact values
+ * — overline.wide / overline.default (the eyebrows), callout.title / callout.hint
+ * (under the mic), linkCondensed (the footer link). See their $descriptions
+ * in tokens/tokens.json.
+ *
+ * Composed / flagged values:
+ * - The trigger zone's 44px bottom padding has no single token; it's
+ *   space-800 + space-300 (32 + 12), not a raw number.
+ * - The progress bar is 222px wide in the frame, centered in the space
+ *   between the two buttons — i.e. inset space-200 on each side of the slot.
+ * - The "+" add-topic control is a 40px box in the frame; ButtonIcon wraps
+ *   its 40px circle in a 48px tap target, so it gets space-negative-100
+ *   margins to occupy the same 40px footprint in the chip row (the hit area
+ *   is unchanged). Its circle lands within 2px of the frame — the remaining
+ *   2px is Chips rendering "Theocentrism" 2px wider than Figma's text metrics.
+ * - The back/more glyphs are 18px in the frame, inside ButtonIcon "s" whose
+ *   iconSlot is 16px (icon.200) — shipped at 18px, overhanging 1px per side,
+ *   same call MenuIcons/BottomNav make for their 24px-in-20px glyphs.
+ * - No status bar is rendered (OS chrome), so the flex body is 48px taller
+ *   than the frame's; top-anchored content sits at Figma-y − 48 and the
+ *   bottom-anchored mic zone at Figma's own y. Same on every screen.
+ */
+
+.appBar {
+  display: flex;
+  align-items: center;
+  gap: var(--size-space-600);
+  padding: var(--size-space-200) var(--size-space-100);
+}
+
+.progress {
+  flex: 1 0 0;
+  min-width: 0;
+  padding-inline: var(--size-space-200);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--size-space-700);
+  padding: var(--size-space-600);
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  color: var(--color-text-link);
+  font-family: var(--typography-overline-wide-fontFamily);
+  font-weight: var(--typography-overline-wide-fontWeight);
+  font-size: var(--typography-overline-wide-fontSize);
+  line-height: var(--typography-overline-wide-lineHeight);
+  letter-spacing: var(--typography-overline-wide-letterSpacing);
+}
+
+.headline {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-family: var(--typography-headline-m-fontFamily);
+  font-weight: var(--typography-headline-m-fontWeight);
+  font-size: var(--typography-headline-m-fontSize);
+  line-height: var(--typography-headline-m-lineHeight);
+  letter-spacing: var(--typography-headline-m-letterSpacing);
+}
+
+.chatRow {
+  display: flex;
+  align-items: center;
+  gap: var(--size-space-400);
+}
+
+.recap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-space-300);
+}
+
+.recapLabel {
+  margin: 0;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  font-family: var(--typography-overline-default-fontFamily);
+  font-weight: var(--typography-overline-default-fontWeight);
+  font-size: var(--typography-overline-default-fontSize);
+  line-height: var(--typography-overline-default-lineHeight);
+  letter-spacing: var(--typography-overline-default-letterSpacing);
+}
+
+.chipsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--size-space-200);
+}
+
+/* The add-topic ButtonIcon: 40px circle in a 48px tap target — pull the
+   extra 4px in on every side so it sits in the row like the frame's 40px box. */
+.chipsWrap > :last-child {
+  margin: var(--size-space-negative-100);
+}
+
+.triggerZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--size-space-600);
+  padding-bottom: calc(var(--size-space-800) + var(--size-space-300)); /* 44px, see file header */
+}
+
+.trigger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--size-space-400);
+}
+
+.callout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--size-space-150);
+  text-align: center;
+}
+
+.calloutTitle {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-family: var(--typography-callout-title-fontFamily);
+  font-weight: var(--typography-callout-title-fontWeight);
+  font-size: var(--typography-callout-title-fontSize);
+  line-height: var(--typography-callout-title-lineHeight);
+  letter-spacing: var(--typography-callout-title-letterSpacing);
+}
+
+.calloutHint {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-family: var(--typography-callout-hint-fontFamily);
+  font-weight: var(--typography-callout-hint-fontWeight);
+  font-size: var(--typography-callout-hint-fontSize);
+  line-height: var(--typography-callout-hint-lineHeight);
+  letter-spacing: var(--typography-callout-hint-letterSpacing);
+}
+
+.nextLink {
+  border: none;
+  background: none;
+  padding: 0;
+  text-decoration: underline;
+  color: var(--color-text-primary);
+  font-family: var(--typography-linkCondensed-fontFamily);
+  font-weight: var(--typography-linkCondensed-fontWeight);
+  font-size: var(--typography-linkCondensed-fontSize);
+  line-height: var(--typography-linkCondensed-lineHeight);
+  letter-spacing: var(--typography-linkCondensed-letterSpacing);
+  cursor: pointer;
+}

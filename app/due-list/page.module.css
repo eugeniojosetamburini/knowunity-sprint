@@ -1,0 +1,95 @@
+/*
+ * Due list (Direction C1 – Due list, delinearized, node 15734:4996). The
+ * shell and both bars come from Scaffold / TopNav / BottomNav — this file
+ * only styles the screen's own content.
+ *
+ * Body text (greeting + headline) sits at 24px from the edge in Figma while
+ * the cards sit at 16px — so the greeting block adds space-200 on top of
+ * the content's space-400.
+ *
+ * Vertical rhythm in the frame is hand-placed (absolute tops: 34, 7, 35, 34,
+ * 15px gaps), not on the spacing scale. Nearest tokens used, each within 3px:
+ * space-800 (32) for the 34/35px gaps, space-150 (6) for the 7px one,
+ * space-400 (16) for the 15px one. The 27px between the footer link and the
+ * nav is the content's space-600 bottom padding.
+ *
+ * Two values with no token, flagged rather than invented:
+ * - The headline's text box is 258px wide in Figma (left 24 → right 282),
+ *   which is what forces its line break after "what". Kept as a raw
+ *   max-width so the wrap matches; same class of gap as Card's 157×128
+ *   illustration slot.
+ * - "Choose your own topics" is Greed Condensed SemiBold 18px/20px/0.18px —
+ *   numerically identical to typography.headline.xs.bold, different family.
+ *   Reuses that token's size/weight/line-height/tracking and swaps only the
+ *   family token to --font-family-condensed; nothing new was needed.
+ */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--size-space-800);
+  padding: var(--size-space-800) var(--size-space-400) var(--size-space-600);
+}
+
+.greeting {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-space-150);
+  padding-inline: var(--size-space-200);
+}
+
+.greetingText {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-family: var(--typography-body-s-bold-fontFamily);
+  font-weight: var(--typography-body-s-bold-fontWeight);
+  font-size: var(--typography-body-s-bold-fontSize);
+  line-height: var(--typography-body-s-bold-lineHeight);
+  letter-spacing: var(--typography-body-s-bold-letterSpacing);
+}
+
+.headline {
+  margin: 0;
+  max-width: 258px; /* Figma's measured text-box width — no matching token, see file header */
+  color: var(--color-text-primary);
+  font-family: var(--typography-headline-m-fontFamily);
+  font-weight: var(--typography-headline-m-fontWeight);
+  font-size: var(--typography-headline-m-fontSize);
+  line-height: var(--typography-headline-m-lineHeight);
+  letter-spacing: var(--typography-headline-m-letterSpacing);
+}
+
+.topicList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-space-300);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cardLink {
+  display: block;
+}
+
+.closing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--size-space-400);
+}
+
+.chooseOwnLink {
+  border: none;
+  background: none;
+  padding: var(--size-space-300) var(--size-space-200);
+  text-decoration: underline;
+  font-family: var(--typography-linkCondensed-fontFamily);
+  font-weight: var(--typography-linkCondensed-fontWeight);
+  font-size: var(--typography-linkCondensed-fontSize);
+  line-height: var(--typography-linkCondensed-lineHeight);
+  letter-spacing: var(--typography-linkCondensed-letterSpacing);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}

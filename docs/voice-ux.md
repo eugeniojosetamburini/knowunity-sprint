@@ -136,10 +136,9 @@ scope" ones as known gaps** rather than pretending they don't exist.
 | Mic permission primer + OS prompt | **Must** | First-encounter screen (F5). |
 | Permission **denied** → route to text | **Must** | The dead-end you can't afford. |
 | Skip a term | **Must** | "I don't know" escape (F1). |
-| Empty / silent recording (nothing said) | **If time** | Gentle "didn't catch that — try again." |
-| Very noisy / garbled transcript | **If time** | Falls back to generous judge or re-record. |
-| Judge slow / times out past target | **If time** | Friendly "taking a moment" → retry, not a crash. |
-| No / dropped network mid-answer | **If time** | Save progress (F7 already implies this). |
+| Choose review interval (post-answer grading) | **Must** | A row of graded options (Easy/Medium/Difficult — `radio`'s three built grades, not a four-option Again/Hard/Good/Easy scale), recommended one pre-selected. Feeds the spaced-repetition schedule this whole feature is entered from. |
+| Session summary | **Must** | Three-state segmented bar (correct/partial/incorrect) plus a plain-language readout — the claim has to be earned, not asserted (per sprint-context.md). Continue as primary action, Try again as secondary. |
+| Something went wrong with the recording, please try again (covers: empty/silent recording, noisy/garbled transcript, judge slow/timeout, dropped network mid-answer) | **If time** | One generic recovery state instead of four distinct ones. Re-record without losing the turn; save progress if a network drop is involved (F7 already implies this). |
 | Mic hardware busy (on a call, etc.) | **Out of scope** | Note as known gap; rare in practice. |
 | Student switches language mid-answer | **Out of scope** | Real (multilingual product) but not a v1 sprint problem. |
 | Pause/resume into one take | **Out of scope** | Brief already defers this. |

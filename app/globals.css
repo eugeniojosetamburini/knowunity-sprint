@@ -1,35 +1,33 @@
 @import "./fonts.css";
 @import "../build/css/tokens.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 html {
   height: 100%;
+  color-scheme: dark;
+  max-width: 100vw;
+  /* The root's overflow becomes the viewport's. overflow-x: hidden lives
+     here and NOT on body: an overflow value on body would make body its own
+     scroll container, and position: sticky (Scaffold's bottom nav) would
+     then stick to body — which never scrolls — instead of the viewport.
+     overflow-y: scroll keeps a vertical scrollbar present on every route,
+     so a route that scrolls (Due list) and one that doesn't (Home) lay out
+     identically and the centered 390px frame never shifts on navigation.
+     Where scrollbars are overlays (iOS, macOS default) this costs no width. */
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
-html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
 }
 
 body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-text-primary);
+  background: var(--color-background-page);
+  font-family: var(--font-family-default);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -43,10 +41,4 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }

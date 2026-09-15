@@ -53,6 +53,13 @@ that's a gap to raise, not something to fill in here.
   `appBar`. If a bar needs more than that (the home screen's five-element bar
   is the example), it's already outside this system — don't invent a seventh
   variant to force it in.
+- **The home-level five-element bar** (hamburger / PRO / streak / fire /
+  due-count / alarm) → `topNav` (built: `stories/components/TopNav`). Its own
+  component precisely because it doesn't fit `appBar`; home-level screens
+  only, never a flow screen.
+- **The screen shell itself** → `Scaffold` (built: `stories/components/Scaffold`,
+  see "Scaffold composition" below). Every route renders inside it; a page
+  never draws its own frame.
 - **A tappable summary row for a topic or study set** → `card`.
 - **The tap target that starts and shows the state of voice capture** →
   `voiceInput`.
@@ -61,6 +68,9 @@ that's a gap to raise, not something to fill in here.
   covered). They're built to be used together, not as alternatives to each
   other.
 - **A due-count indicator anchored to a nav icon** → `badge`.
+- **A home-screen shortcut into a specific tool** (scan, flashcards, quiz,
+  summarize) → `pill`. One `variant` per instance, not a generic label —
+  don't reuse it for anything that isn't one of those four entry points.
 - **A named type style** (Display, Headline, Body, Caption tiers) →
   `semantic.typography.*` in tokens/tokens.json. Don't hand-set family, weight,
   size, and line height separately when a matching named style already
@@ -77,10 +87,19 @@ Figma, not paraphrased. As with everything else in this file, look up any
 color/size/spacing value in `tokens/tokens.json`; nothing here repeats a raw value.
 
 ### `badge`
-A single component, no variants.
+Variant axis: `variant` — `recall` / `streak` / `fire` / `pro`.
 
-**Properties:** `count` (text, default `"5+"`) · `showCount` (boolean —
-false renders dot-only).
+**Properties:** `variant` (`recall` / `streak` / `fire` / `pro`, default
+`recall`) · `count` (text, default `"5+"` — the due-count text; ignored
+while `showCount` is false, and by `variant="pro"`, which carries no count)
+· `showCount` (boolean, default `true` — false hides the count text and
+leaves just the mark; no effect on `variant="pro"`).
+
+**Behavior:** `badge` is a tap target, not a passive indicator — the
+component's own description ("without blocking access to it") already
+implies this. `variant="recall"` specifically navigates to the due list, and
+does so even with nothing due (`showCount=false`), for on-demand review
+outside the spaced-repetition schedule.
 
 **Description, as written on the component:**
 > A small count indicator anchored to a nav icon, signaling something is due
@@ -139,16 +158,34 @@ that isn't fully resolved yet — check with whoever owns that token before
 assuming its current binding is final.
 
 ### `chatBubble`
-Variant axis: `State` — `Default` / `Correct` / `Incorrect`. (Property name
-is capitalized here, unlike every other `state` property in this file — see
-Naming and structure conventions below.) `Default` is the neutral,
-no-label-row state — used for anything Knowie is asking or saying that isn't
-feedback on an answer.
+Variant axis: `State` — `Default` / `Correct` / `Incorrect` / `partial`.
+(Property name is capitalized here, unlike every other `state` property in
+this file — see Naming and structure conventions below. `partial` is itself
+lowercase, unlike its three sibling values — a second, smaller
+inconsistency introduced when it was added, not fixed here either.)
+`Default` is the neutral, no-label-row state — used for anything Knowie is
+asking or saying that isn't feedback on an answer. `partial` covers a
+correct-but-incomplete answer — a distinct gap from the "Hint" gap noted
+below, which is about the mid-ladder nudge screen (still unresolved; adding
+`partial` doesn't close it).
 
 **Properties:** each state has its own independent text property
-(`neutralText`, `correctText`, `incorrectText`) — not a single shared
-property. Sharing one across all three overwrites each state's own default
-message; keep them separate if this gets rebuilt.
+(`neutralText`, `correctText`, `incorrectText`, `partialText`) — not a
+single shared property. Sharing one across all four overwrites each state's
+own default message; keep them separate if this gets rebuilt.
+
+**Token note:** `partial`'s label, tail, and body all bind to
+`accent.coral.bold` / `accent.coral.onBold`, not a `feedback.*` token —
+tokens.json has no `feedback.warning` scale (bold/subtle/onBold/onSubtle)
+to match `feedback.error`/`feedback.success`, only a single flat
+`text.warning`. `accent.coral` is what the Figma component actually binds
+to, even though that token's own description says "not errors or
+warnings." Followed as designed; flagging the mismatch rather than
+resolving it.
+
+**Known gap:** `partial`'s label has no icon, unlike `Correct`/`Incorrect`
+(which both pair an icon with the label text) — matches the Figma
+component exactly, not an oversight in the build.
 
 **Description, as written on the component:**
 > Knowie's dialogue container, for anything Knowie says or asks.
@@ -162,8 +199,9 @@ message; keep them separate if this gets rebuilt.
 **Known gap:** no Hint state. A hint-ladder nudge currently falls back to
 `Default`, with nothing visually distinguishing "Knowie is nudging you" from
 "Knowie is asking a plain question." Adding one needs either a new token
-family (nothing complete exists between the `Correct`/`Incorrect` treatment
-and plain `Default`) or a deliberate decision to reuse existing tokens.
+family or a deliberate decision to reuse existing tokens — `accent.coral`
+is now spoken for by `partial`, so a Hint treatment reusing it would read as
+the same state; pick a different family if this gets built.
 
 ### `resultCard`
 A single component, no variants.
@@ -237,31 +275,33 @@ below (the screen shell every screen builds inside).
 > needs a row for every grade it can receive.
 
 **Known gaps:** the labeled grades are Easy/Medium/Difficult, three values —
-the standard spaced-repetition scale this is modeling needs four
-(Again/Hard/Good/Easy). A fourth row is still missing. Each row also still
-stacks two fills (a base surface color plus a color tint) rather than one
-resolved fill per state — both fills are properly bound to real tokens, so
-it isn't a hardcoded-value problem, just a fragile structure. And the
-headline labels needed a new Text Style created for them
-(`Greed Condensed/Headline`, 24px) since nothing in the existing type scale
-matched that size/family combination — the body text under each label still
-has no matching style (15px with a 22px line height; the two 15px styles
-that exist are 16px and 20px line height, neither an exact match).
+confirmed the full set this scale needs (not a subset of a four-grade
+Again/Hard/Good/Easy scale; `docs/voice-ux.md`'s states table is explicit
+about this). Each row also still stacks two fills (a base surface color plus
+a color tint) rather than one resolved fill per state — both fills are
+properly bound to real tokens, so it isn't a hardcoded-value problem, just a
+fragile structure. The headline labels needed a new Text Style
+(`semantic.typography.headlineCondensed`, Greed Condensed SemiBold 24px)
+since nothing in the existing type scale matched that size/family
+combination — added to `tokens/tokens.json`, resolved. The body text under
+each label turned out to have an exact match already: `typography.headline.xxs.regular`
+(15px, 16px line height, 0.15px tracking).
 
 ### `chips` — current state
-No color addition currently exists on this component beyond what's already
-documented above (`Primary`/`pro`). A `brand` color was built during this
-session to support recap/topic tagging, matching the treatment used
-elsewhere for Knowie's recap terms, but is not present on the component as
-of this writing — confirm whether that was an intentional revert before
-assuming it still needs to be (re)built.
+`brand` is a live color option on the component (alongside `primary`/`pro`),
+supporting recap/topic tagging — matches the treatment used elsewhere for
+Knowie's recap terms.
 
 ---
 
 ## Scaffold composition
 
 The scaffold is the screen shell. Every screen builds inside it, not around
-it — it already handles the safe areas.
+it — it already handles the safe areas. It's a real component now
+(`stories/components/Scaffold`, props `topBar` / `children` / `bottomNav`
+matching slots 2–4 below); slot 1 isn't rendered (OS chrome) and slot 5
+isn't built yet. It owns the frame's width and centering and keeps the
+bottom nav sticky to the viewport, so those can't differ between routes.
 
 1. **Status bar (fixed, not a slot).** System clock and battery. Never put
    custom content here.

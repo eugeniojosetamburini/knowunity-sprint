@@ -8,11 +8,26 @@
  * design-system.md flags this component's Figma `State` property as
  * capitalized, unlike every other component's lowercase `state`, and notes
  * it "needs a fix, not... an equally-valid alternative." Fixed here:
- * this component's prop is `state`, values 'default'/'correct'/'incorrect'.
+ * this component's prop is `state`, values
+ * 'default'/'correct'/'incorrect'/'partial'. (Figma's own `partial` variant
+ * value is lowercase, unlike its sibling 'Default'/'Correct'/'Incorrect' —
+ * matched here, not fixed, since every other value in this file mirrors
+ * Figma's casing rather than correcting it.)
+ *
+ * Partial reuses accent/coral (bold + onBold) for its tail/bubble/text,
+ * not a feedback.* token — tokens.json has no feedback.warning scale
+ * (bold/subtle/onBold/onSubtle) to match error/success, only a single flat
+ * text.warning. accent.coral is what the Figma component actually binds to,
+ * even though that token's own description says "not errors or warnings" —
+ * followed as designed, not overridden.
+ *
+ * Partial's label also has no icon, unlike Correct/Incorrect — matches
+ * Figma exactly (the source component's label frame has no icon child), not
+ * an oversight here.
  *
  * Known gap (already documented in design-system.md, not new): no Hint
  * state. A hint-ladder nudge currently has nothing between Default and
- * Correct/Incorrect — not invented here either.
+ * Correct/Incorrect/Partial — not invented here either.
  *
  * The tail is a plain CSS triangle (clip-path), not the Figma SVG asset.
  * The asset is a non-square shape; rotating it with a CSS transform left a
@@ -53,6 +68,10 @@
   background-color: var(--color-feedback-error-bold);
 }
 
+.tail.partial {
+  background-color: var(--color-accent-coral-bold);
+}
+
 .bubble {
   display: flex;
   flex: 1 0 0;
@@ -69,7 +88,8 @@
 }
 
 .bubble.correct,
-.bubble.incorrect {
+.bubble.incorrect,
+.bubble.partial {
   flex-direction: column;
   align-items: center;
   gap: var(--size-space-200);
@@ -81,6 +101,10 @@
 
 .bubble.incorrect {
   background-color: var(--color-feedback-error-bold);
+}
+
+.bubble.partial {
+  background-color: var(--color-accent-coral-bold);
 }
 
 .label {
@@ -111,6 +135,10 @@
   color: var(--color-feedback-error-onBold);
 }
 
+.labelText.partial {
+  color: var(--color-accent-coral-onBold);
+}
+
 .body {
   margin: 0;
   font-weight: var(--typography-body-m-regular-fontWeight);
@@ -133,4 +161,9 @@
 .body.incorrect {
   width: 100%;
   color: var(--color-feedback-error-onBold);
+}
+
+.body.partial {
+  width: 100%;
+  color: var(--color-accent-coral-onBold);
 }

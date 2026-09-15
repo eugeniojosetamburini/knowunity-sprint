@@ -1,62 +1,50 @@
-import Image from "next/image";
+'use client';
+
+import { useRouter } from "next/navigation";
+
+import { Scaffold } from "@/stories/components/Scaffold/Scaffold";
+import { TopNav } from "@/stories/components/TopNav/TopNav";
+import { Button } from "@/stories/components/Button/Button";
+import { MascotSlot } from "@/stories/components/MascotSlot/MascotSlot";
+import { Pill } from "@/stories/components/Pill/Pill";
+import { AiChat } from "@/stories/components/AiChat/AiChat";
+import { BottomNav } from "@/stories/components/BottomNav/BottomNav";
+import { dueCountLabel } from "./due-terms";
 import styles from "./page.module.css";
 
-// Due list — the hero entry point into the recall loop (docs/sprint-context.md).
-// Static markup only: no client state, no routing yet. Each row is a real
-// <button> because it's a genuine tap target once the recall screen exists,
-// it just doesn't do anything yet.
-
-const dueTerms = [
-  { term: "Mitochondria", topic: "Cell biology", status: "New" },
-  { term: "Supply and demand", topic: "Economics", status: "Reviewed 3 days ago" },
-  { term: "Newton's second law", topic: "Physics", status: "Reviewed 5 days ago" },
-  { term: "Photosynthesis", topic: "Cell biology", status: "Reviewed 1 week ago" },
-];
+// Home screen — the real Figma frame (home-screen-knowie, 15702:3864), built
+// 1:1 from Storybook components. Pill/AiChat taps have nowhere to go (other
+// tools, out of scope for this feature) and are left inert; the recall
+// badge in TopNav is the hero entry into the due list. The bottom nav's
+// chat tab routes back here, matching the due list's wiring.
 
 export default function Home() {
+  const router = useRouter();
   return (
-    <div className={styles.screen}>
-      <div className={styles.frame}>
-        <header className={styles.appBar}>
-          <h1 className={styles.appBarTitle}>Due for review</h1>
-        </header>
+    <Scaffold
+      topBar={<TopNav dueCount={dueCountLabel} recallHref="/due-list" />}
+      bottomNav={<BottomNav onSelectChat={() => router.push('/')} />}
+    >
+      <section className={styles.intro}>
+        <MascotSlot size="2XL" />
+        <div className={styles.introText}>
+          <h1 className={styles.headline}>Invite a friend, you both get $0.50</h1>
+          <p className={styles.subcopy}>You both get gift cards from 100+ brands.</p>
+        </div>
+        <Button variant="primary" size="m">
+          Refer
+        </Button>
+      </section>
 
-        <main className={styles.content}>
-          <section className={styles.intro}>
-            <Image
-              className={styles.mascot}
-              src="/images/mascot-standby.png"
-              alt="Knowie"
-              width={64}
-              height={64}
-            />
-            <div className={styles.introText}>
-              <h2 className={styles.headline}>
-                {dueTerms.length} terms are ready to review
-              </h2>
-              <p className={styles.subcopy}>
-                Say each term out loud — Knowie checks how well you know it.
-                No time limit, and you can always type instead.
-              </p>
-            </div>
-          </section>
-
-          <ul className={styles.dueList}>
-            {dueTerms.map(({ term, topic, status }) => (
-              <li key={term}>
-                <button className={styles.card} type="button">
-                  <span className={styles.cardTitle}>{term}</span>
-                  <span className={styles.cardMeta}>
-                    <span>{topic}</span>
-                    <span className={styles.metaDot} aria-hidden="true" />
-                    <span>{status}</span>
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </main>
+      <div className={styles.tools}>
+        <div className={styles.pillRow}>
+          <Pill variant="scan" />
+          <Pill variant="flashcards" />
+          <Pill variant="quiz" />
+          <Pill variant="summarize" />
+        </div>
+        <AiChat />
       </div>
-    </div>
+    </Scaffold>
   );
 }

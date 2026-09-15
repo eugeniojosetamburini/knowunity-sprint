@@ -2,9 +2,10 @@
  * Radio — one choice in the post-answer recall-difficulty picker. USE:
  * always shown as a full set, one row per grade, with one pre-selected.
  * DON'T: ship an incomplete set — the spaced-repetition logic downstream
- * needs a row for every grade it can receive (per design-system.md, the
- * labeled grades here are Easy/Medium/Difficult; a fourth "Again" row the
- * real spaced-repetition scale needs is a known gap, not solved here).
+ * needs a row for every grade it can receive. The three grades here
+ * (Easy/Medium/Difficult) are the confirmed full set — not a subset of a
+ * four-grade Again/Hard/Good/Easy scale (see design-system.md and
+ * docs/voice-ux.md's states table).
  *
  * Figma's row is a fixed 342px wide, which is 390px (this app's only
  * viewport) minus two 24px screen margins, not a real component value — so

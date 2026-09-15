@@ -1,0 +1,64 @@
+/*
+ * mascotSlot — Knowie the mascot, as a generic sized image slot (distinct
+ * from `Mascot`, which carries a specific emotional state). Four sizes
+ * only: XL(64) / 2XL(120) / 3XL(200) / 4XL(320). 64×64 is the floor —
+ * there's no smaller variant, so anywhere Knowie appears at ~32-40px (e.g.
+ * the chat avatar) is still the XL instance, just displayed smaller, not a
+ * separate small asset. USE: every Knowie appearance, big or small, is
+ * this one set — there's no second "small mascot" component to look for.
+ * DON'T: use Knowie's expression or animation as the listening/processing/
+ * stuck indicator on its own. It has to keep working with
+ * prefers-reduced-motion on and with color stripped out — a facial
+ * expression fails both alone. Art is decorative (alt=""), same reasoning
+ * as `Mascot`.
+ *
+ * Padding (space.300) is constant across all four sizes, matching the
+ * Figma component exactly — as designed, not a bug: only the outer frame
+ * scales.
+ */
+
+.root {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.sizeXl {
+  width: var(--size-illustration-800);
+  height: var(--size-illustration-800);
+}
+
+.size2xl {
+  width: var(--size-illustration-1500);
+  height: var(--size-illustration-1500);
+}
+
+.size3xl {
+  width: var(--size-illustration-2500);
+  height: var(--size-illustration-2500);
+}
+
+.size4xl {
+  width: var(--size-illustration-4000);
+  height: var(--size-illustration-4000);
+}
+
+.base {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: var(--size-space-300);
+}
+
+.imageWrap {
+  position: relative;
+  flex: 1 0 0;
+  min-width: 0;
+  height: 100%;
+}
+
+.image {
+  object-fit: contain;
+}

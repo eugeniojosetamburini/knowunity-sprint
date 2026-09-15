@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ChatBubble } from './ChatBubble';
 
 const DESCRIPTION =
-  "Knowie's dialogue container, for anything Knowie says or asks. USE: anything Knowie says or asks, in any tone. DON'T: repurpose `textBlock` for this — that's an editable input, this is read-only display, which is exactly the mix-up design-system.md already warns against. Known gap: no Hint state — a hint-ladder nudge currently has nothing between Default and Correct/Incorrect.";
+  "Knowie's dialogue container, for anything Knowie says or asks. USE: anything Knowie says or asks, in any tone. DON'T: repurpose `textBlock` for this — that's an editable input, this is read-only display, which is exactly the mix-up design-system.md already warns against. Known gap: no Hint state — a hint-ladder nudge currently has nothing between Default and Correct/Incorrect/Partial.";
 
 const meta = {
   title: 'Components/ChatBubble',
@@ -17,7 +17,7 @@ const meta = {
     },
   },
   argTypes: {
-    state: { control: 'select', options: ['default', 'correct', 'incorrect'] },
+    state: { control: 'select', options: ['default', 'correct', 'incorrect', 'partial'] },
   },
 } satisfies Meta<typeof ChatBubble>;
 
@@ -48,5 +48,14 @@ export const StateIncorrect: Story = {
   args: {
     state: 'incorrect',
     incorrectText: 'Not quite, humanism means this and that, but not what you said, and some detail here.',
+  },
+};
+
+export const StatePartial: Story = {
+  name: 'state=Partial',
+  parameters: { docs: { description: { story: DESCRIPTION } } },
+  args: {
+    state: 'partial',
+    partialText: 'You got this and that right, but something else is missing. Would you like me to share a hint?',
   },
 };

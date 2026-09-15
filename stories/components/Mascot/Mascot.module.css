@@ -1,0 +1,29 @@
+/*
+ * Mascot — Knowie's mascot illustration, showing the character's emotional
+ * state: standby, excited, confused, or thinking. USE: anywhere Knowie's
+ * reaction to the student needs a face, not just words — celebrating a
+ * correct answer, showing confusion at an off-base one, or thinking while
+ * processing. DON'T: rely on color or expression alone to carry meaning
+ * that isn't backed up elsewhere (in copy, in the chat bubble's own state)
+ * — this has to keep reading correctly even if someone can't perceive the
+ * illustration's subtler emotional cues. Art is decorative (alt="") since
+ * the emotion this component shows is always paired with real text
+ * elsewhere, per that same DON'T.
+ *
+ * Known gap against tokens/tokens.json — flagged, not silently invented:
+ * the component's own 70×75 frame size (Figma's intrinsic mascot artwork
+ * size, distinct from mascotSlot's XL/2XL/3XL/4XL scale) has no matching
+ * illustration or space token — same class of gap already flagged for
+ * Card's 157×128 illustration slot.
+ */
+
+.root {
+  position: relative;
+  width: 70px; /* no matching illustration/space token — see file header */
+  height: 75px; /* no matching illustration/space token — see file header */
+  flex-shrink: 0;
+}
+
+.image {
+  object-fit: contain;
+}
