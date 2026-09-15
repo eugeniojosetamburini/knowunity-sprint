@@ -1,0 +1,185 @@
+"use client";
+
+import { useState } from "react";
+import { notFound, useParams, useRouter } from "next/navigation";
+
+import { Scaffold } from "@/stories/components/Scaffold/Scaffold";
+import { AppBar } from "@/stories/components/AppBar/AppBar";
+import { ActionSheet } from "@/stories/components/ActionSheet/ActionSheet";
+import { ChatBubble, type ChatBubbleState } from "@/stories/components/ChatBubble/ChatBubble";
+import { Mascot, type MascotState } from "@/stories/components/Mascot/Mascot";
+import { Button } from "@/stories/components/Button/Button";
+import { Radio } from "@/stories/components/Radio/Radio";
+import { getTopic, progressForTerm, type TermOutcome } from "../../../../due-terms";
+import styles from "./page.module.css";
+
+// The result screen, in its three outcomes — one route, the term's scripted
+// judgement deciding which it shows:
+//   pass      15783:7408  ChatBubble correct,   Mascot excited,  Easy preselected
+//   incorrect 15783:7640  ChatBubble incorrect, Mascot confused, Difficult preselected
+//   partial   no frame    ChatBubble partial,   Mascot standby,  Medium preselected
+// Everything else — bar, eyebrow, the grade set, the Retry/Continue sheet —
+// is identical across all three, which is what the frames draw.
+//
+// Notes:
+// - **Partial has no Figma frame.** SPEC.md #11 says its composition mirrors
+//   Incorrect exactly, so it is built from that description rather than
+//   traced. Three things had to be decided rather than read: the mascot
+//   (standby, per SPEC.md #11), the pre-selected grade (Medium, sitting
+//   between Pass's Easy and Incorrect's Difficult — decided 2026-09-15),
+//   and whether Hint appears (it does, because SPEC.md gives Partial the
+//   same hint route as Incorrect).
+// - **Hint is Secondary, not the frame's Primary.** Figma draws it
+//   primary/s next to Continue primary/l — two Primaries on one screen,
+//   which CLAUDE.md forbids. Continue keeps the Primary bottom-CTA slot.
+//   Logged in SPEC.md and sprint-context.md; wants fixing at source.
+// - Hint only appears on incorrect and partial. On a pass there is nothing
+//   to hint at, and the frame has no Hint button.
+// - Grading is offered on every outcome, misses included, and the last tap
+//   wins (SPEC.md). Selection is local; nothing downstream consumes it,
+//   since the spaced-repetition engine is mocked.
+// - Retry re-records the same term, so it returns to that term's prompt
+//   screen at idle. It is *not* part of the hint loop.
+// - Continue advances to the next term's prompt. On the last term it is
+//   inert: Summary (#10) has no route yet.
+// - The bubble copy is real per-term text for every outcome, not the
+//   frames' placeholder sentences. Decided 2026-09-15; see app/due-terms.ts.
+// - The progress bar reads this term's value and does not advance here —
+//   Continue advances it by changing term (see progressForTerm).
+
+type Grade = "easy" | "medium" | "difficult";
+
+// Interval copy is the frames', verbatim.
+const GRADES: { grade: Grade; title: string; subtitle: string }[] = [
+  { grade: "easy", title: "Easy", subtitle: "Review in 1 week" },
+  { grade: "medium", title: "Medium", subtitle: "Review in 2 days" },
+  { grade: "difficult", title: "Difficult", subtitle: "Review tomorrow" },
+];
+
+const BUBBLE_STATE: Record<TermOutcome, ChatBubbleState> = {
+  pass: "correct",
+  incorrect: "incorrect",
+  partial: "partial",
+};
+
+const MASCOT_STATE: Record<TermOutcome, MascotState> = {
+  pass: "excited",
+  incorrect: "confused",
+  partial: "standby",
+};
+
+// The grade each outcome opens on — voice-ux.md's states table asks for a
+// recommended grade rather than an empty set. Pass and Incorrect are their
+// frames'; Partial's is decided (see the note above).
+const PRESELECTED: Record<TermOutcome, Grade> = {
+  pass: "easy",
+  incorrect: "difficult",
+  partial: "medium",
+};
+
+export default function Result() {
+  const { topicId, termIndex } = useParams<{ topicId: string; termIndex: string }>();
+  const router = useRouter();
+
+  const topic = getTopic(topicId);
+  const index = Number(termIndex);
+  const term = topic?.terms[index];
+
+  const [grade, setGrade] = useState<Grade | null>(null);
+
+  if (!topic || !term || !Number.isInteger(index)) {
+    notFound();
+  }
+
+  const outcome = term.outcome;
+  const selected = grade ?? PRESELECTED[outcome];
+  const isLastTerm = index === topic.terms.length - 1;
+  const showHint = outcome !== "pass";
+
+  const reply = outcome === "pass" ? term.answer : outcome === "incorrect" ? term.miss : term.partial;
+
+  return (
+    <Scaffold
+      topBar={
+        <AppBar
+          backHref={`/recap/${topicId}/prompt/${index}`}
+          backLabel="Back to the question"
+          progress={progressForTerm(index)}
+        />
+      }
+      bottomNavFlush
+      bottomNav={
+        <ActionSheet>
+          <Button
+            variant="secondary"
+            size="l"
+            onClick={() => router.push(`/recap/${topicId}/prompt/${index}`)}
+          >
+            Retry
+          </Button>
+          {/* Inert on the last term — Summary (#10) isn't routed yet. */}
+          <Button
+            variant="primary"
+            size="l"
+            onClick={isLastTerm ? undefined : () => router.push(`/recap/${topicId}/prompt/${index + 1}`)}
+          >
+            Continue
+          </Button>
+        </ActionSheet>
+      }
+    >
+      <div className={styles.body}>
+        <div className={styles.intro}>
+          <p className={styles.eyebrow}>
+            Term {index + 1} of {topic.terms.length} · {term.name}
+          </p>
+
+          <div className={styles.replyGroup}>
+            <div className={styles.mascotChatRow}>
+              <Mascot state={MASCOT_STATE[outcome]} />
+              <ChatBubble
+                state={BUBBLE_STATE[outcome]}
+                correctText={reply}
+                incorrectText={reply}
+                partialText={reply}
+              />
+            </div>
+
+            {showHint && (
+              <Button
+                variant="secondary"
+                size="s"
+                onClick={() => router.push(`/recap/${topicId}/hint/${index}`)}
+              >
+                Hint
+              </Button>
+            )}
+          </div>
+        </div>
+
+        <div className={styles.grading}>
+          {/* The frames break this line after "to" rather than letting it
+              wrap — at 342px there is room for "recall that" on line 1, so
+              the break is deliberate, and matching it is part of matching
+              the text node. Safe to hardcode on a 390px-only screen. */}
+          <h1 className={styles.gradeHeadline}>
+            Rate how easy it was to <br />
+            recall that answer
+          </h1>
+
+          <div className={styles.gradeList} role="radiogroup" aria-label="Rate how easy it was to recall that answer">
+            {GRADES.map(({ grade: value, title, subtitle }) => (
+              <Radio
+                key={value}
+                state={selected === value ? value : "default"}
+                title={title}
+                subtitle={subtitle}
+                onClick={() => setGrade(value)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </Scaffold>
+  );
+}

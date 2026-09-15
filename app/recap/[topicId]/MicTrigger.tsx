@@ -1,59 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import type { ReactNode } from "react";
 
-import { VoiceInput } from "@/stories/components/VoiceInput/VoiceInput";
-import styles from "./page.module.css";
+import { VoiceInput, type VoiceInputState } from "@/stories/components/VoiceInput/VoiceInput";
+import styles from "./MicTrigger.module.css";
 
-export type MicState = "idle" | "listening" | "denied";
+// Real mic permission, requested on tap-to-record and never on screen entry
+// (CLAUDE.md / docs/voice-ux.md). No audio is recorded or sent anywhere: a
+// granted stream is stopped immediately, since real STT/judging stays out of
+// scope. Returns false for a denial and for a browser with no mic API, so
+// callers land on the same "microphone is off" branch either way.
+export async function requestMicAccess(): Promise<boolean> {
+  if (!navigator.mediaDevices?.getUserMedia) return false;
 
-const COPY: Record<MicState, { title: string; hint: string }> = {
-  idle: { title: "Tap to start", hint: "approx. 2-3 min · speak naturally" },
-  listening: { title: "Listening…", hint: "Tap the mic to stop" },
-  denied: { title: "Microphone is off", hint: "Turn it on in Settings, or type your answers" },
-};
-
-// Real getUserMedia permission gate on first tap — presentation-only until
-// now (per docs/voice-ux.md: mic permission fires on tap, never on entry).
-// No audio is recorded or sent anywhere; a granted stream is stopped
-// immediately since real STT/judging stays out of scope (CLAUDE.md).
-export function MicTrigger({ state, onStateChange }: { state: MicState; onStateChange: (next: MicState) => void }) {
-  async function handleTap() {
-    if (state === "denied") return;
-
-    if (state === "listening") {
-      onStateChange("idle");
-      return;
-    }
-
-    if (!navigator.mediaDevices?.getUserMedia) {
-      onStateChange("denied");
-      return;
-    }
-
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      stream.getTracks().forEach((track) => track.stop());
-      onStateChange("listening");
-    } catch {
-      onStateChange("denied");
-    }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    stream.getTracks().forEach((track) => track.stop());
+    return true;
+  } catch {
+    return false;
   }
+}
 
-  const denied = state === "denied";
-  const copy = COPY[state];
-
+// The mic tap target plus whatever callout sits under it. The callout is a
+// child, not a prop, because the two screens that use this render different
+// callouts: the Entry/recap frame (15783:6710) has a bold title over a
+// secondary hint, the Idle/prompt frames (16023:6960, 15783:6833,
+// 15783:7103) have a single secondary line.
+export function MicTrigger({
+  state,
+  onTap,
+  label,
+  children,
+}: {
+  state: VoiceInputState;
+  onTap: () => void;
+  label?: string;
+  children: ReactNode;
+}) {
   return (
     <div className={styles.trigger}>
-      <VoiceInput
-        state={denied ? "disabled" : state}
-        label={denied ? "Microphone is off" : undefined}
-        onClick={handleTap}
-      />
-      <div className={styles.callout}>
-        <p className={styles.calloutTitle}>{copy.title}</p>
-        <p className={styles.calloutHint}>{copy.hint}</p>
-      </div>
+      <VoiceInput state={state} label={label} onClick={onTap} />
+      {children}
     </div>
   );
 }

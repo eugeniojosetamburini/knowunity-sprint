@@ -1,0 +1,14 @@
+/*
+ * The mic tap target and its callout — shared by the Entry/recap screen
+ * (15783:6710) and the Idle/prompt screen's three states (16023:6960,
+ * 15783:6833, 15783:7103). All four frames stack the callout 16px under the
+ * mic; the callout's own text styles belong to each screen's module, since
+ * the two screens use different ones.
+ */
+
+.trigger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--size-space-400);
+}

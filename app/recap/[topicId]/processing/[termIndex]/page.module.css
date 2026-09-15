@@ -1,0 +1,78 @@
+/*
+ * The Processing screen — "Voice Review Screen" frame 15783:7209. The shell
+ * comes from Scaffold; this styles the flow-screen bar and content. Bar
+ * geometry, body padding, eyebrow and the mascot/bubble row are identical
+ * to the prompt screen's, because the frames share that composition — only
+ * the interactive parts below them differ.
+ *
+ * Values with no matching token, flagged rather than invented:
+ * - The mascot/bubble column gap is 10px, as on every other voice frame;
+ *   the space scale jumps 8 → 12, so neither token is the frame's value.
+ * - The mascot/bubble row is a fixed 84px (node 15783:7374). Nothing on the
+ *   space or size scale is 84, and it isn't the hug height of its content
+ *   either (the mascot is 75) — it's an explicit frame height.
+ * - The trigger zone height is pinned (see below).
+ *
+ * The prompt screen's `.actionSlot` has no counterpart here: this frame has
+ * no Cancel and no Submit. Nothing takes its place — the body simply grows,
+ * and the trigger zone's fixed height keeps the mic on the frame's y.
+ */
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--size-space-700);
+  padding: var(--size-space-600);
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  color: var(--color-text-link);
+  font-family: var(--typography-overline-wide-fontFamily);
+  font-weight: var(--typography-overline-wide-fontWeight);
+  font-size: var(--typography-overline-wide-fontSize);
+  line-height: var(--typography-overline-wide-lineHeight);
+  letter-spacing: var(--typography-overline-wide-letterSpacing);
+}
+
+/* Mascot and bubble share one fixed-height row. The row is 84px in the
+   frame (node 15783:7374) and *both* children are centred in it, not just
+   the mascot: the mascot sits at y=4.5 ((84-75)/2) and the bubble at y=14
+   ((84-56)/2). Letting the row hug its tallest child instead makes it 75px
+   and lifts the bubble 14px — measured against the frame, not assumed.
+   No second row here; Skip isn't on this screen. */
+.contentRow {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  grid-template-rows: 84px; /* frame value, no matching token — see file header */
+  column-gap: 10px; /* frame value, no matching token — see file header */
+  width: 100%;
+}
+
+.mascotCell {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+}
+
+.bubbleCell {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+}
+
+/* 259px, matching the prompt screen, not this frame's own 262px. The voice
+   frames disagree with each other here (#4/#5b 259, #5 263, this one 262);
+   the build standardises on 259 so the mic doesn't move between states, and
+   the mic would otherwise hop 3px the instant Submit is tapped. Logged in
+   SPEC.md's Open list, decided with the user. */
+.triggerZone {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 259px; /* frame-family value, no matching token */
+  padding-bottom: calc(var(--size-space-800) + var(--size-space-300)); /* 44px, as on the prompt and Entry/recap screens */
+}

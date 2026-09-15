@@ -1,0 +1,117 @@
+/*
+ * The prompt screen, in its three states — "Voice Review Screen" frames
+ * 16023:6960 (idle), 15783:6833 (listening), 15783:7103 (stopped). The shell
+ * comes from Scaffold; this styles the flow-screen bar and content. Bar
+ * geometry and body padding match the Entry/recap screen exactly, since the
+ * frames share that composition.
+ *
+ * Values with no matching token, flagged rather than invented:
+ * - The mascot/bubble column gap is 10px in all three frames; the space
+ *   scale jumps 8 → 12, so neither token is the frame's value. Left as the
+ *   frame's 10px here (the same call Card and Badge document for their own
+ *   off-scale gaps).
+ * - The action slot (Cancel while listening, Submit once stopped) sits at
+ *   y=518 in the frames, which is a fixed distance above the trigger zone
+ *   rather than a step on any spacing scale; `margin-top: auto` pins it to
+ *   the bottom of the body and the padding below it is what lands it on the
+ *   frame's y. Measured, not eyeballed.
+ * - The slot is always rendered, empty in the idle state, so the bubble and
+ *   Skip never shift when a button appears or disappears.
+ */
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--size-space-700);
+  padding: var(--size-space-600);
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  color: var(--color-text-link);
+  font-family: var(--typography-overline-wide-fontFamily);
+  font-weight: var(--typography-overline-wide-fontWeight);
+  font-size: var(--typography-overline-wide-fontSize);
+  line-height: var(--typography-overline-wide-lineHeight);
+  letter-spacing: var(--typography-overline-wide-letterSpacing);
+}
+
+/* Mascot and bubble share row 1 (the mascot centred against the bubble, as
+   in every frame); Skip sits under the bubble in row 2, right-aligned. */
+.contentRow {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: 10px; /* frame value, no matching token — see file header */
+  width: 100%;
+}
+
+.mascotCell {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+}
+
+.bubbleCell {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.skipCell {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: end;
+}
+
+.actionSlot {
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+  min-height: var(--size-space-1200);
+  /* The frames' Cancel/Submit layer is absolutely positioned, so it ignores
+     voice-body's 24px bottom padding and overhangs it by 5px. Reproduced
+     here rather than nudged to the nearest token, which would move the pill
+     off the frames' y=518. */
+  margin-bottom: -5px;
+}
+
+/* Fixed 259px in the frames, with the content packed at the top and ~27px of
+   slack left over below the 44px bottom padding. Sizing this to its content
+   instead would float the whole zone ~27px low, so the height is pinned. */
+.triggerZone {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--size-space-600);
+  height: 259px; /* frame value, no matching token */
+  padding-bottom: calc(var(--size-space-800) + var(--size-space-300)); /* 44px, as on the Entry/recap screen */
+}
+
+/* One secondary line under the mic on this screen — unlike the Entry/recap
+   screen's bold title over a hint. */
+.callout {
+  margin: 0;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-family: var(--typography-callout-hint-fontFamily);
+  font-weight: var(--typography-callout-hint-fontWeight);
+  font-size: var(--typography-callout-hint-fontSize);
+  line-height: var(--typography-callout-hint-lineHeight);
+  letter-spacing: var(--typography-callout-hint-letterSpacing);
+}
+
+.nextLink {
+  border: none;
+  background: none;
+  padding: 0;
+  text-decoration: underline;
+  color: var(--color-text-primary);
+  font-family: var(--typography-linkCondensed-fontFamily);
+  font-weight: var(--typography-linkCondensed-fontWeight);
+  font-size: var(--typography-linkCondensed-fontSize);
+  line-height: var(--typography-linkCondensed-lineHeight);
+  letter-spacing: var(--typography-linkCondensed-letterSpacing);
+  cursor: pointer;
+}

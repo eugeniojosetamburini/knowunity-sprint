@@ -54,3 +54,36 @@ export const ContentOnly: Story = {
   },
   args: { children: sampleContent },
 };
+
+export const FlushBottomNav: Story = {
+  name: 'bottomNavFlush (flow-screen action sheet)',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Slot 4's second form (design-system.md): \"the primary action button(s) for a flow screen\", drawn in the voice result frames as a full-bleed sheet. bottomNavFlush drops the tab bar's side padding, bottom padding and page background so the sheet reaches both frame edges and draws its own surface, radius and padding. The slot stays sticky either way.",
+      },
+    },
+  },
+  args: {
+    bottomNavFlush: true,
+    bottomNav: (
+      <div
+        style={{
+          width: '100%',
+          padding: 'var(--size-space-800) var(--size-space-600)',
+          borderTop: 'var(--size-stroke-border) solid var(--color-border-default)',
+          borderRadius: 'var(--size-radius-800) var(--size-radius-800) 0 0',
+          background: 'var(--color-background-surface)',
+          color: 'var(--color-text-primary)',
+          textAlign: 'center',
+          fontFamily: 'var(--typography-body-m-regular-fontFamily)',
+          fontSize: 'var(--typography-body-m-regular-fontSize)',
+        }}
+      >
+        Action sheet content
+      </div>
+    ),
+    children: sampleContent,
+  },
+};

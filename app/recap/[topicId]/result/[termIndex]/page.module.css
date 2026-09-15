@@ -1,0 +1,84 @@
+/*
+ * The result screen, in its three outcomes — "Voice Review Screen" frames
+ * 15783:7408 (pass) and 15783:7640 (incorrect); partial has no frame and
+ * mirrors incorrect (SPEC.md #11). The shell comes from Scaffold, the bar
+ * from AppBar and the footer from ActionSheet; this styles the body only.
+ *
+ * Values with no matching token: none. Every value here resolves to one.
+ *
+ * Unlike the prompt and processing screens, the mascot/bubble row here is a
+ * plain flex row with a 16px gap and centre alignment (node 15783:7605),
+ * not the 10px two-column grid those frames use — the mascot is centred
+ * against a bubble that is taller than it, so no fixed row height is
+ * needed. Measured from the frames, not carried over.
+ */
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--size-space-600);
+  padding: var(--size-space-600);
+}
+
+/* Eyebrow over the reply group (node 15783:7654). */
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-space-700);
+  width: 100%;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  color: var(--color-text-link);
+  font-family: var(--typography-overline-wide-fontFamily);
+  font-weight: var(--typography-overline-wide-fontWeight);
+  font-size: var(--typography-overline-wide-fontSize);
+  line-height: var(--typography-overline-wide-lineHeight);
+  letter-spacing: var(--typography-overline-wide-letterSpacing);
+}
+
+/* Mascot/bubble row with the Hint button tucked under its right edge
+   (node 15868:1044). On a pass there is no Hint and the group holds the
+   row alone, which is exactly what the pass frame draws. */
+.replyGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--size-space-200);
+  width: 100%;
+}
+
+.mascotChatRow {
+  display: flex;
+  align-items: center;
+  gap: var(--size-space-400);
+  width: 100%;
+}
+
+/* Headline over the grade set (node 15783:7667). */
+.grading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-space-600);
+  width: 100%;
+}
+
+.gradeHeadline {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-family: var(--typography-headline-s-fontFamily);
+  font-weight: var(--typography-headline-s-fontWeight);
+  font-size: var(--typography-headline-s-fontSize);
+  line-height: var(--typography-headline-s-lineHeight);
+  letter-spacing: var(--typography-headline-s-letterSpacing);
+}
+
+.gradeList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-space-400);
+  width: 100%;
+}

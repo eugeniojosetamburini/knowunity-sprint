@@ -70,6 +70,7 @@ And for the prototype itself:
 This is what the team asked for at the kickoff, before anything was built. It's here so you know their thinking, not because you have to match it.
 
 - **The loop.** Knowie shows a prompt. The student speaks. The answer comes back as pass, partial, or fail. On a miss: a hint that nudges without giving it away, a re-attempt, a second hint, another re-attempt, then reveal. Skip available throughout.
+    - *Departed from, 2026-09-15:* the built loop stops after one hint. A miss offers a hint alongside the grade rows; taking it opens the hint screen, from which the student re-records or replays the question. There is no second hint and no reveal. See `sprint-context.md`.
 - **Say it back.** After a hinted pass or a reveal, an optional chance to repeat the full answer unaided.
 - **Session length.** Three to five terms, drawn from the section just revised.
 - **Placement.** A step inside the exam plan section sequence, after the quizzes.
@@ -77,6 +78,7 @@ This is what the team asked for at the kickoff, before anything was built. It's 
 - **Leaving.** Progress saves, returning resumes.
 - **XP.** Counts up during the session, collected at the end.
 - **Summary.** How many terms the student explained unaided, with a per-term breakdown of unaided, hinted, revealed, and skipped. Continue as the primary action, Try again as secondary.
+    - *Departed from, 2026-09-15:* grading isn't held to the end. The Easy/Medium/Difficult rows appear on **every** result screen, including a first miss, and the **last tap wins** — a term can be graded on the miss, re-graded after a hint, and re-graded again on an eventual pass. Only the final tap is recorded. "Revealed" also drops out of the breakdown, since there is no reveal.
 - **Feedback rhythm.** One beat of acknowledgment, then the next prompt. Explanations held back until the end.
 - **If the student can't speak right now**, a way to type instead.
 

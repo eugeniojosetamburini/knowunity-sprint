@@ -14,7 +14,13 @@
  *      screen taller than the viewport it stays put while content scrolls;
  *      on a short screen it sits at the frame's bottom edge. Same place
  *      either way, which is what makes the nav feel fixed across routes.
- *   5. Bottom sheet + scrim — not built yet (no sheet exists in Storybook).
+ *      Takes either of the two forms design-system.md gives the slot: the
+ *      home-level tab bar (default), or a flow screen's action sheet
+ *      (`bottomNavFlush`, which drops the padding and page background so
+ *      the sheet can run edge to edge and draw its own surface).
+ *   5. Bottom sheet + scrim — still not built. Note this is *not* slot 4's
+ *      flush form: slot 5 is the modal, scrimmed sheet the exit-session
+ *      confirm needs (SPEC.md #15), not a persistent footer.
  *
  * The frame is min-height: 100dvh (not height) so a tall screen scrolls
  * the page rather than clipping; the horizontal-shift a classic scrollbar
@@ -58,4 +64,19 @@
   padding-inline: var(--size-space-400);
   padding-bottom: var(--size-space-600);
   background: var(--color-background-page);
+}
+
+/* Slot 4's second form — a flow screen's full-bleed action sheet, which
+   draws its own surface, radius and padding and must reach both frame
+   edges. The slot keeps its stickiness and only drops the tab bar's
+   padding and page background. */
+.flush {
+  padding-inline: 0;
+  padding-bottom: 0;
+  background: none;
+}
+
+.flush > * {
+  flex: 1 0 0;
+  min-width: 0;
 }

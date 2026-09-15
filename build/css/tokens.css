@@ -12,6 +12,7 @@
   --motion-easing-in: cubic-bezier(0.4, 0, 1, 1); /** Standard accelerate — for anything leaving. Used less often than easing.out; most exits in this app are instant navigations, not animated departures. */
   --motion-easing-inOut: cubic-bezier(0.4, 0, 0.2, 1); /** Smooth start and stop — for a value that changes while staying on screen (VoiceInput's idle glow breathing, a progress bar filling). */
   --color-alpha-dark-10: rgba(10, 10, 10, 0.10196078568696976);
+  --color-alpha-dark-15: rgba(10, 10, 10, 0.15); /** Near-black at 15% alpha. Sits between dark-10 and dark-50 on the ramp; the fill behind the buttons' bottom emboss. */
   --color-alpha-dark-50: rgba(10, 10, 10, 0.501960813999176);
   --color-alpha-glass-60: rgba(61, 61, 61, 0.6000000238418579);
   --color-alpha-light-10: rgba(255, 255, 255, 0.10196078568696976);
@@ -229,6 +230,9 @@
   --color-voice-onListening: #2c0a20; /** Waveform mark drawn on top of voice.listening. */
   --color-voice-processing: rgba(255, 255, 255, 0.18039216101169586); /** Mic fill during the STT + judge wait (the brief's <4s window). Not tappable during this state. Aliased to color/alpha/light-18, the same primitive as interactive.pressed and interactive.secondaryHover, one step up from voice.idle's light-10 so the two no longer read as identical. */
   --effect-voice-idleGlow: 0px 0px 32px 0px rgb(90.98% 47.451% 75.294% / 0.15); /** Ambient glow behind voiceInput's Idle state — color/magenta/400 (same hue as voice.listening) at 15% alpha. Component-specific to voiceInput's Idle affordance, not a general-purpose elevation scale. */
+  --effect-elevation-sheet: 0px -8px 12px 0px rgb(3.9216% 3.9216% 3.9216% / 0.50196); /** Upward lift cast onto the content behind a sheet pinned to the bottom of the frame — color/alpha/dark-50. A box-shadow (it carries a spread value, so it can't be passed to filter: drop-shadow), which follows the sheet's rounded top corners. */
+  --effect-emboss-s: inset 0px -2px 0px 0px rgb(3.9216% 3.9216% 3.9216% / 0.15); /** Bottom emboss drawn inside a filled control, 2px deep — button/pill have none at this depth; buttonIcon uses it at xs, s and m. Color aliases color/alpha/dark-15. */
+  --effect-emboss-m: inset 0px -4px 0px 0px rgb(3.9216% 3.9216% 3.9216% / 0.15); /** Bottom emboss drawn inside a filled control, 4px deep — button (all sizes), pill, and buttonIcon at l. Color aliases color/alpha/dark-15. */
   --opacity-disabled: 0.5; /** Dimming applied on top of a control's own fill when it's non-interactive, e.g. voiceInput's Disabled state layers this over color.voice.processing. */
   --typography-display-l-fontFamily: 'Greed Standard-TRIAL', Arial, Helvetica, sans-serif; /** Largest display size, for hero numbers and level-up moments. */
   --typography-display-l-fontWeight: 900; /** Largest display size, for hero numbers and level-up moments. */

@@ -28,7 +28,9 @@ export function Chips({
   return (
     <button
       type={type}
-      className={[styles.root, styles[size], styles[color], isActivePrimary ? styles.active : ''].filter(Boolean).join(' ')}
+      className={[styles.root, styles[size], styles[color], isActivePrimary ? styles.active : '', className]
+        .filter(Boolean)
+        .join(' ')}
       aria-pressed={color === 'primary' ? active : undefined}
       {...rest}
     >

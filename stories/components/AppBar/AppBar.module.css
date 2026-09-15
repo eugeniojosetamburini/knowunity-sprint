@@ -1,0 +1,25 @@
+/*
+ * AppBar — the flow-screen top bar (back / progress / ⋯), from the Voice
+ * Review Screen frames' "app-navigation-bar" (e.g. 15783:7212). Sits in
+ * Scaffold's topBar slot and owns its own padding, as that slot expects.
+ *
+ * Geometry is the frames': a 64px-tall bar (8px block padding around a 48px
+ * tap target), 4px inline padding, and a 24px gap between the icons and the
+ * progress bar, which itself carries 8px of inline padding so the bar's
+ * fill lands on the frames' x. Every value resolves to a token.
+ */
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--size-space-600);
+  padding: var(--size-space-200) var(--size-space-100);
+}
+
+/* Always rendered, even with no progress passed, so the two icons keep the
+   positions they have on every other screen in the flow. */
+.progress {
+  flex: 1 0 0;
+  min-width: 0;
+  padding-inline: var(--size-space-200);
+}

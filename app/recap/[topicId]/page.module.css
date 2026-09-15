@@ -31,19 +31,6 @@
  *   bottom-anchored mic zone at Figma's own y. Same on every screen.
  */
 
-.appBar {
-  display: flex;
-  align-items: center;
-  gap: var(--size-space-600);
-  padding: var(--size-space-200) var(--size-space-100);
-}
-
-.progress {
-  flex: 1 0 0;
-  min-width: 0;
-  padding-inline: var(--size-space-200);
-}
-
 .body {
   display: flex;
   flex: 1;
@@ -117,13 +104,9 @@
   padding-bottom: calc(var(--size-space-800) + var(--size-space-300)); /* 44px, see file header */
 }
 
-.trigger {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--size-space-400);
-}
-
+/* This screen's callout is two lines — a bold title over a secondary hint
+   (frame 15783:6710). The Idle/prompt screen's is a single secondary line,
+   so it styles its own. */
 .callout {
   display: flex;
   flex-direction: column;

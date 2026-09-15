@@ -10,8 +10,9 @@
  * not a color restyle of a generic chip.
  *
  * Known gap against tokens/tokens.json — flagged, not silently invented:
- * the 40px height and the inset emboss shadow have no matching tokens —
- * same two gaps already flagged in Button.tsx and ButtonIcon.module.css.
+ * the 40px height has no matching token — the same gap already flagged in
+ * Button.tsx and ButtonIcon.module.css. (The inset emboss used to be listed
+ * here too; it is now effect.emboss.m.)
  * Width is intentionally not hardcoded per variant (each pill hugs its own
  * icon+label content instead of a fixed pixel width), since Figma's
  * per-variant widths (98.893px / 148px / 87px / 147px) are just the
@@ -28,7 +29,7 @@
   border: none;
   border-radius: var(--size-radius-full);
   background-color: var(--color-background-surface);
-  box-shadow: inset 0 -4px 0 0 rgba(0, 0, 0, 0.15); /* no fill/alpha token for box-shadow color — see file header */
+  box-shadow: var(--effect-emboss-m);
   cursor: pointer;
 }
 

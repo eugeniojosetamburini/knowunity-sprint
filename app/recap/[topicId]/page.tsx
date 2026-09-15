@@ -1,71 +1,70 @@
 "use client";
 
 import { useState } from "react";
-import { notFound, useParams, useSearchParams } from "next/navigation";
+import { notFound, useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { Scaffold } from "@/stories/components/Scaffold/Scaffold";
+import { AppBar } from "@/stories/components/AppBar/AppBar";
+import { ButtonIcon } from "@/stories/components/ButtonIcon/ButtonIcon";
 import { ChatBubble } from "@/stories/components/ChatBubble/ChatBubble";
 import { Chips } from "@/stories/components/Chips/Chips";
-import { ProgressIndicator } from "@/stories/components/ProgressIndicator/ProgressIndicator";
 import { Mascot } from "@/stories/components/Mascot/Mascot";
-import { ButtonIcon } from "@/stories/components/ButtonIcon/ButtonIcon";
 import { PlusIcon } from "@/stories/components/ButtonIcon/PlusIcon";
 import { getTopic } from "../../due-terms";
-import { BackButton } from "./BackButton";
-import { MicTrigger, type MicState } from "./MicTrigger";
-import { MoreHorizontalIcon } from "./icons";
+import { MicTrigger, requestMicAccess } from "./MicTrigger";
 import styles from "./page.module.css";
 
-// Entry / recap screen (SPEC.md #3). Granted state matches the Figma frame
-// "Voice Review Screen" 15783:6710 1:1; the permission-denied state has no
-// frame (SPEC.md #12: decided, not designed). ?mic=denied forces that look
-// on load for presenting it without an actual OS-level denial; a real
-// denial from the live getUserMedia permission gate (MicTrigger) takes over
-// the same way once the student actually taps the mic.
+// Entry / recap screen (SPEC.md #3), matching the Figma frame
+// "Voice Review Screen" 15783:6710 1:1.
+//
+// Tapping the mic asks for real mic permission (never on entry — CLAUDE.md)
+// and then opens term 1's prompt screen, which is where recording actually
+// happens. There is no Listening state on this screen: the frame has none,
+// and the flow goes Entry → prompt (16023:6960) → recording (15783:6833).
+//
+// The permission-denied state has no frame of its own (SPEC.md #12: decided,
+// not designed) — its copy is the decided behavior, not traced pixels.
+// ?mic=denied forces that look on load for presenting it without an actual
+// OS-level denial; a real denial on tap lands in the same place.
 //
 // Content notes against the frame:
 // - The "+" beside the chips is buttonIcon variant=Brand size=XS (the
 //   add-topic control, per its own Figma description), not the Tertiary/S
 //   SPEC.md lists — that pair is the bar's back/more buttons.
 // - The progress bar reads 25% with no count label in the frame; matched.
-// - The eyebrows are typed uppercase in Figma; the copy here is sentence
-//   case (design-system.md rule) and CSS text-transform renders it the same.
-// - "Or tap next →" and the "+" have no destination yet (Idle screen #4 and
-//   the add-topic flow aren't built); both are real tap targets left inert.
+// - The eyebrow is typed uppercase in Figma; the copy here is sentence case
+//   (design-system.md rule) and CSS text-transform renders it identically.
+// - The "+" add-topic control has no destination (that flow isn't built) and
+//   stays a real, inert tap target.
 
 const DENIED_BUBBLE =
   "I can't hear you yet — the microphone is off for Knowunity. You can still do this by typing your answers.";
 
 export default function Recap() {
   const { topicId } = useParams<{ topicId: string }>();
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const forcedDenied = searchParams.get("mic") === "denied";
 
   const topic = getTopic(topicId);
-  const [micState, setMicState] = useState<MicState>(forcedDenied ? "denied" : "idle");
+  const [denied, setDenied] = useState(searchParams.get("mic") === "denied");
 
   if (!topic) {
     notFound();
   }
 
-  const denied = micState === "denied";
+  async function handleMicTap() {
+    if (denied) return;
+
+    if (await requestMicAccess()) {
+      router.push(`/recap/${topicId}/prompt/0`);
+    } else {
+      setDenied(true);
+    }
+  }
 
   return (
     <Scaffold
-      topBar={
-        <div className={styles.appBar}>
-          <BackButton />
-          <div className={styles.progress}>
-            <ProgressIndicator
-              variant="primary"
-              thickness="24"
-              progress="25"
-              aria-label="Review session progress"
-            />
-          </div>
-          <ButtonIcon variant="tertiary" size="s" icon={<MoreHorizontalIcon />} aria-label="More options" />
-        </div>
-      }
+      topBar={<AppBar progress="25" />}
     >
       <div className={styles.body}>
         <p className={styles.eyebrow}>✓ {topic.title}</p>
@@ -80,7 +79,7 @@ export default function Recap() {
           <p className={styles.recapLabel}>You&rsquo;ll recap</p>
           <div className={styles.chipsWrap}>
             {topic.terms.map((term) => (
-              <Chips key={term} size="M" color="brand" Text={term} />
+              <Chips key={term.name} size="M" color="brand" Text={term.name} />
             ))}
             <ButtonIcon variant="brand" size="xs" icon={<PlusIcon />} aria-label="Add a topic" />
           </div>
@@ -88,10 +87,25 @@ export default function Recap() {
       </div>
 
       <div className={styles.triggerZone}>
-        <MicTrigger state={micState} onStateChange={setMicState} />
-        {/* Destination screens (#4 Idle prompt, #14 Text fallback) aren't
-            built yet — real tap targets, nowhere to go. */}
-        <button type="button" className={styles.nextLink}>
+        <MicTrigger
+          state={denied ? "disabled" : "idle"}
+          label={denied ? "Microphone is off" : undefined}
+          onTap={handleMicTap}
+        >
+          <div className={styles.callout}>
+            <p className={styles.calloutTitle}>{denied ? "Microphone is off" : "Tap to start"}</p>
+            <p className={styles.calloutHint}>
+              {denied ? "Turn it on in Settings, or type your answers" : "approx. 2-3 min · speak naturally"}
+            </p>
+          </div>
+        </MicTrigger>
+        {/* #14 Text fallback isn't built, so "Type instead" is a real but
+            inert target; "Or tap next →" skips the mic and opens term 1. */}
+        <button
+          type="button"
+          className={styles.nextLink}
+          onClick={denied ? undefined : () => router.push(`/recap/${topicId}/prompt/0`)}
+        >
           {denied ? "Type instead" : "Or tap next →"}
         </button>
       </div>

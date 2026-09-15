@@ -1,0 +1,55 @@
+/*
+ * ActionSheet — the flow screens' bottom sheet (Figma "Bottom Sheet",
+ * 15783:7467 / 15783:7697). 390×120 with 32px block padding, 24px inline
+ * padding, a 32px top radius and a 32×4 handle 6px from the top edge.
+ *
+ * Every value resolves to a token, including the upward lift
+ * (effect.elevation.sheet) and the top edge.
+ */
+
+.root {
+  position: relative;
+  width: 100%;
+  padding: var(--size-space-800) var(--size-space-600);
+  border-radius: var(--size-radius-800) var(--size-radius-800) 0 0;
+  background: var(--color-background-surface);
+  /* Two shadows, in one declaration:
+     1. The frame's top edge is an *inside* stroke, so it must not add to
+        the sheet's 120px height the way border-top would (which pushes the
+        sheet 1px taller and its top edge 1px high). An inset shadow
+        reproduces an inside stroke exactly and stays out of layout.
+     2. The frame's upward lift onto the content behind the sheet. */
+  box-shadow:
+    inset 0 var(--size-stroke-border) 0 0 var(--color-border-default),
+    var(--effect-elevation-sheet);
+}
+
+.handle {
+  position: absolute;
+  top: var(--size-space-150);
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--size-space-800);
+  height: var(--size-space-100);
+  border-radius: var(--size-stroke-heavy-border);
+  background: var(--color-background-stacking);
+}
+
+.actions {
+  display: flex;
+  gap: var(--size-space-300);
+  width: 100%;
+}
+
+/* Each button takes an equal share of the row (165px each for a pair in
+   the frames). Button's root is inline-flex and its pill hugs its label,
+   so both have to be told to fill — the frames' own instances do the same
+   (the pill carries flex: 1 0 0 there). */
+.actions > * {
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+.actions > * > * {
+  width: 100%;
+}

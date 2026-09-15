@@ -59,6 +59,15 @@
   border: none;
 }
 
+/* The Listening mark is a 182×184 SVG whose disc is the inner 112×114 and
+   whose remaining area is glow, drawn deliberately larger than this 112px
+   tap target and allowed to overflow it. As a flex item it would otherwise
+   shrink to the 112px line, scaling the disc down to ~68px — which is what
+   it did until this was measured against frame 15783:6833. */
+.listening > svg {
+  flex-shrink: 0;
+}
+
 .innerCircle {
   display: flex;
   align-items: center;

@@ -4,9 +4,8 @@
 // --color-text-primary exactly, so both use currentColor and inherit
 // ButtonIcon tertiary's color — same convention as MenuIcons' glyphs.
 //
-// Screen-local for now: design-system.md's `appBar` (back / progress / more)
-// isn't in Storybook yet — see component-gaps.md. When a second Voice Review
-// Screen needs this bar, these move with it into stories/components/AppBar.
+// These belong to `AppBar` and are not exported outside it: both glyphs are
+// parts of that bar, not general-purpose icons.
 
 export function ArrowLeftIcon({ size = 18 }: { size?: number }) {
   return (

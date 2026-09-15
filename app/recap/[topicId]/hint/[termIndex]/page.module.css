@@ -1,0 +1,88 @@
+/*
+ * The Hint nudge — "Voice Review Screen" frame 15868:631. The shell comes
+ * from Scaffold and the bar from AppBar; this styles the body and the
+ * trigger zone.
+ *
+ * Values with no matching token, flagged rather than invented:
+ * - The trigger zone height is pinned at 259px (see below).
+ *
+ * The body is the result screens' reply group (mascot/bubble row with a
+ * button tucked under its right edge) over the prompt screen's trigger
+ * zone — this frame is the one place those two halves meet.
+ */
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--size-space-700);
+  padding: var(--size-space-600);
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  color: var(--color-text-link);
+  font-family: var(--typography-overline-wide-fontFamily);
+  font-weight: var(--typography-overline-wide-fontWeight);
+  font-size: var(--typography-overline-wide-fontSize);
+  line-height: var(--typography-overline-wide-lineHeight);
+  letter-spacing: var(--typography-overline-wide-letterSpacing);
+}
+
+/* Mascot/bubble row with "Repeat question" under its right edge
+   (node 15868:809), the same group the result screens use for Hint. */
+.replyGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--size-space-200);
+  width: 100%;
+}
+
+.mascotChatRow {
+  display: flex;
+  align-items: center;
+  gap: var(--size-space-400);
+  width: 100%;
+}
+
+/* 259px, matching every other screen in the flow rather than this frame's
+   own 232px, so the mic stays put between screens. The voice frames
+   disagree with each other here (259 / 262 / 263 / 232); the build
+   standardises on 259. Logged in SPEC.md's Open list. */
+.triggerZone {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--size-space-600);
+  height: 259px; /* frame-family value, no matching token */
+  padding-bottom: calc(var(--size-space-800) + var(--size-space-300)); /* 44px, as on every other voice screen */
+}
+
+/* One secondary line under the mic, as on the prompt screen. */
+.callout {
+  margin: 0;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-family: var(--typography-callout-hint-fontFamily);
+  font-weight: var(--typography-callout-hint-fontWeight);
+  font-size: var(--typography-callout-hint-fontSize);
+  line-height: var(--typography-callout-hint-lineHeight);
+  letter-spacing: var(--typography-callout-hint-letterSpacing);
+}
+
+.nextLink {
+  border: none;
+  background: none;
+  padding: 0;
+  text-decoration: underline;
+  color: var(--color-text-primary);
+  font-family: var(--typography-linkCondensed-fontFamily);
+  font-weight: var(--typography-linkCondensed-fontWeight);
+  font-size: var(--typography-linkCondensed-fontSize);
+  line-height: var(--typography-linkCondensed-lineHeight);
+  letter-spacing: var(--typography-linkCondensed-letterSpacing);
+  cursor: pointer;
+}
