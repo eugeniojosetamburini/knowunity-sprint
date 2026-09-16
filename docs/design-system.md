@@ -20,9 +20,12 @@ that's a gap to raise, not something to fill in here.
   icon library before assuming it does. XS is for tight, low-emphasis
   triggers inside cards and rows (a card's menu button, an add-topic
   control) — don't substitute it for the standard S size in a top bar.
-- **Exactly two stacked or side-by-side choices** → `buttonGroup`. Never for
-  three or more — confirmed the MCQ and hint-ladder screens use plain stacked
-  `button` instances instead, not this component.
+- **Exactly two stacked or side-by-side choices** → `buttonGroup` (built:
+  `stories/components/ButtonGroup`). Never for three or more — confirmed the
+  MCQ and hint-ladder screens use plain stacked `button` instances instead,
+  not this component. Figma's own description names its confirmed use: "this
+  is what fills a bottom sheet's action slot". Note the two variants are not
+  the same pair rotated — see its entry below.
 - **A removable tag, filter pill, multi-select option, or small label** →
   `chips`. See its full entry below for current color options.
 - **A small, non-interactive label with an optional leading/trailing icon**
@@ -45,12 +48,20 @@ that's a gap to raise, not something to fill in here.
 - **A transient, dismissible system message** → `snackbar`. Only for things
   the student doesn't have to act on and that can disappear without losing
   information.
-- **Free-text entry outside the main chat box** → `textBlock`. This is an
-  editable input, not a text-display container — don't use it to render
-  read-only copy. Knowie's own dialogue now has a real component —
-  `chatBubble` — so this is no longer an open gap; see below.
+- **Free-text entry outside the main chat box** → `textField` (built:
+  `stories/components/TextField`). A real typeable field. **This line used
+  to name `textBlock`, and that was wrong** — see the correction under
+  `textBlock` below.
+- **A title with a caption under it** → `textBlock` (built:
+  `stories/components/TextBlock`). A read-only display pair in four sizes,
+  which is what the Figma component actually draws.
+- **A modal sheet that interrupts the student and must be answered** →
+  `bottomSheet` (built: `stories/components/BottomSheet`), scaffold slot 5.
+  Not `actionSheet`, which is the persistent footer in slot 4.
 - **A top bar with one left icon and up to two elements on the right** →
-  `appBar` (built: `stories/components/AppBar`). If a bar needs more than
+  `appBar` (built: `stories/components/AppBar`). It also carries the **⋯
+  menu** (`menuItems`) — see its entry below; a screen with nothing to put
+  in it leaves ⋯ inert. If a bar needs more than
   that (the home screen's five-element bar is the example), it's already
   outside this system — don't invent a seventh variant to force it in.
   Note the built bar is a left icon, a *centre* progress bar and a right
@@ -335,6 +346,164 @@ an inset shadow so it stays out of layout.
 
 ---
 
+### `textBlock` — **corrected 2026-09-15**
+Variant axis: `variant` — `XL` / `L` / `M` / `S`. Built:
+`stories/components/TextBlock`.
+
+**A read-only title-and-caption pair.** Not an input.
+
+**This file said the opposite until 2026-09-15**, in two places (the
+selection rule and the Never list), both of which have been corrected. The
+error came from trusting the Figma component's *description* over the Figma
+component. The description reads "Generic text **input** field… This is an
+editable input, not a display block" — but all four drawn variants are a
+bold title over a muted caption, with no field, border, placeholder, or any
+other typing affordance. The artwork was always a display block.
+
+Settled with the user: build what is drawn, and build the input the
+description was describing as a separate, honestly-named component
+(`textField`). The Figma component's name and description still want fixing
+at source — it is the one place in this system where the label on the tin
+contradicts the tin.
+
+**Properties:** `variant` (default `XL`) · `title` (text, default
+`"Header"`) · `caption` (text, default `"Caption"`) · `showCaption`
+(boolean, default `true`).
+
+**Type pairs per size**, taken from the variants rather than assembled:
+XL `display.m` + `headline.xs.regular` · L `headline.xl` +
+`headline.xs.regular` · M `body.m.bold` + `caption.m.regular` · S
+`body.s.bold` + `caption.s.regular`. The gap is 4px at XL/L, 2px at M/S.
+
+**DON'T:** use it where the student types (`textField`), or for Knowie's
+dialogue (`chatBubble`).
+
+### `textField` — **no Figma component**
+No variant axis. Built: `stories/components/TextField`.
+
+The typeable field this file used to call `textBlock`. Nothing in Figma
+draws it, so unlike every other entry here its appearance is composed from
+tokens rather than measured — each choice justified by the token's own
+description: `border.default` ("…resting input borders"), `text.disabled`
+("…empty-field placeholders"), `background.surface`, `border.focus`, and
+`radius.400` to match the surfaces around it. **It wants checking against a
+real frame if one is ever drawn.**
+
+**Properties:** `value` · `onValueChange` · `placeholder` · `multiline`
+(boolean, default `false` — renders a textarea) · `rows` (multiline only) ·
+`disabled` · `aria-label` (required in practice; the field has no visible
+label of its own).
+
+**USE:** free-text entry outside the main chat box — the text fallback
+(SPEC.md #14), a short "tell us more" field. **DON'T:** anything read-only.
+
+### `buttonGroup`
+Variant axes: `variant` — `vertical` / `horizontal`; `size` — `m` / `l`.
+Built: `stories/components/ButtonGroup`.
+
+**Description, as written on the component:**
+> Exactly two buttons, Vertical or Horizontal, M or L. Confirmed use: this
+> is what fills a bottom sheet's action slot, holding two buttons and
+> nothing else.
+>
+> **USE:** two-choice moments only — e.g. the summary screen's Continue
+> (primary) / Try again (secondary).
+>
+> **DON'T:** reach for this the moment you need a third option. The MCQ and
+> any hint-ladder screen use plain stacked `button` instances instead — if
+> you're stretching this past two items, switch components rather than
+> trying to make it hold three.
+
+**The two variants are not the same pair rotated**, which the name implies
+and the description doesn't mention: `vertical` is two full-width buttons
+stacked (primary above secondary), `horizontal` is an **icon button plus one
+primary**. Worth saying out loud, because "exactly two buttons" reads as if
+they're interchangeable.
+
+**Composed from the real `button` and `buttonIcon`**, exactly as the Figma
+set is — nothing about a pill is restated in it. Roles are props rather than
+children (unlike `actionSheet`), so a caller can't put three things into a
+component defined as "exactly two".
+
+**`tone`** (`default` / `destructive`, default `default`) — added
+2026-09-15 for the exit-session confirm. The Figma set has no destructive
+variant, but this file is explicit that abandon/cancel/delete actions use
+Destructive and that it is never paired with a Primary. `tone="destructive"`
+renders the leading action Destructive; the other stays Secondary, so the
+pairing rule holds in both tones, and a sheet using it carries no Primary at
+all — which that rule allows. **The Figma set wants the variant adding at
+source.**
+
+**Gaps:** the gap between the two pills is 0 at `vertical`+M, so they
+genuinely touch — built as drawn. And at size M the Figma set draws its
+secondary with `interactive.secondary` / `interactive.onSecondary`, where
+the standalone `button` component uses `background.surface` / `text.primary`;
+at L the two agree. The built group uses the real `button`, since forking it
+for one size would put two different secondaries in the system — **the two
+Figma components disagree with each other at M, at source.**
+
+### `appBar`'s ⋯ menu — **no Figma component**
+`menuItems` (optional) turns the ⋯ into a real menu, anchored under the
+button; omit it and ⋯ stays the inert tap target it is on screens with
+nothing to put in it. Each item is `{ label, onSelect, tone? }`, with
+`tone: 'destructive'` tinting the dangerous one.
+
+Built into `appBar` rather than as its own component or as per-screen
+markup: four screens carry it, and four copies of a popover would drift the
+way the bar itself once did. Escape and a tap outside both dismiss it — a
+menu you can't close without choosing is a trap.
+
+Its surface is `background.floating`, whose own token description names
+this use ("dropdowns, tooltips, and popovers floating above content"); it
+sits at z-index 5, below `bottomSheet`'s modal layer, which is what its
+exit item opens into.
+
+**Known gap:** there is **no destructive *text* token**. The destructive
+item is coloured with `interactive.destructive`, which is defined as a
+fill; the two text-ish alternatives exclude themselves in their own
+descriptions (`feedback.error.bold` — "not destructive buttons";
+`text.error` — "not destructive button labels"). Worth adding at source.
+
+### `bottomSheet` — **no Figma component**
+No variant axis. Built: `stories/components/BottomSheet`. This is scaffold
+**slot 5**.
+
+The modal sheet and its scrim: it interrupts the student, dims the screen
+behind it, and is dismissed — by the scrim, by Escape, or by an action
+inside it. Its first consumer is the exit-session confirm (SPEC.md #15).
+
+**Not `actionSheet`.** Slot 4 is a persistent footer that never dims and is
+never dismissed; its handle is decorative. Now that both exist, using the
+wrong one is a choice rather than a gap.
+
+**Properties:** `open` (boolean — closed renders nothing at all) ·
+`onDismiss` (scrim tap and Escape; omit only for a sheet that must be
+answered by its own actions) · `children` (usually a `textBlock` and a
+`buttonGroup`) · `aria-label` (announced when the sheet opens).
+
+**Composed, not traced** — read off this file's own slot-5 description. The
+surface deliberately reuses `actionSheet`'s measured geometry (32px top
+radius, 32/24 padding, the handle, `effect.elevation.sheet`) so the two
+sheets read as one system. The scrim is `background.scrim`, a token that
+existed with no consumer until this was built.
+
+**Behavior decided at build time**, flagged under Scaffold composition
+below: it renders nothing while closed rather than "collapsed to a sliver",
+and it positions itself fixed to the viewport rather than being a fifth
+`Scaffold` prop.
+
+**First real consumer (2026-09-15):** the exit-session confirm (SPEC.md
+#15), composed as `textBlock` (M) over `buttonGroup` (vertical / L /
+`tone="destructive"`).
+
+**Known gap, shared with `actionSheet`:** `button`'s Secondary fill is
+`background.surface`, which is also both sheets' fill — so a Secondary
+inside either reads as a bare label rather than a pill ("Keep going" on the
+exit confirm, "Retry" on the result screens). Systemic rather than either
+sheet's fault; fixing it means changing `button` or giving the sheets a
+different surface.
+
+
 ## Scaffold composition
 
 The scaffold is the screen shell. Every screen builds inside it, not around
@@ -357,11 +526,24 @@ bottom nav sticky to the viewport, so those can't differ between routes.
    which needs the slot's flush treatment (`bottomNavFlush`) so it can run
    edge to edge and draw its own surface instead of taking the tab bar's
    padding and page background.
-5. **Slot – Bottom-sheet, plus its scrim.** Collapsed to a sliver by default.
-   The dimming background is already wired to appear once a sheet's content
-   is placed in the slot — don't hand-build a separate overlay for it. This
-   is the *modal* sheet, and it is not `actionSheet`: the two are different
-   components with different jobs, and slot 5 is still unbuilt.
+5. **Slot – Bottom-sheet, plus its scrim.** **Built** as `bottomSheet`
+   (`stories/components/BottomSheet`). The dimming background belongs to
+   that component — don't hand-build a separate overlay for it. This is the
+   *modal* sheet, and it is not `actionSheet`: the two are different
+   components with different jobs.
+
+   Two things in this slot's original description had to be interpreted
+   when it was built, and are flagged rather than settled:
+   - *"Collapsed to a sliver by default"* is read as the Figma slot's
+     resting look on a canvas, not a runtime state. A confirm dialog
+     peeking permanently above every screen would be wrong, and nothing in
+     the flow calls for a draggable sliver, so the built component renders
+     nothing while closed and takes an `open` prop.
+   - The component is **not** wired into `Scaffold` as a fifth prop. It
+     positions itself fixed to the viewport, because a modal has to cover
+     both bars, and slots 2–4 are all *inside* the frame. If a sheet ever
+     needs to be frame-relative, that's a `Scaffold` change, not a
+     `BottomSheet` one.
 
 ---
 
@@ -475,9 +657,16 @@ bottom nav sticky to the viewport, so those can't differ between routes.
   no collapsed state by design. A sheet that needs to interrupt the student
   and be dismissed is slot 5's, which isn't built — flag that instead of
   bending this one into it.
-- **Never use `textBlock` to render read-only copy.** `chatBubble` now
-  exists specifically to close this gap — reach for that instead of
-  repurposing `textBlock` or inventing a one-off text container.
+- **Never use `textBlock` for a field the student types into.** This rule
+  used to say the opposite ("never use `textBlock` to render read-only
+  copy"), which was written from the Figma component's description rather
+  than the component. `textBlock` *is* read-only display; the input is
+  `textField`. See the correction below.
+- **Never use `chatBubble`'s job for either of them.** Knowie's dialogue is
+  `chatBubble` — not a `textBlock` pair, and not a disabled `textField`.
+- **Never use `actionSheet` where a `bottomSheet` belongs.** Slot 4 is a
+  persistent footer; slot 5 interrupts and dims. Now that both are built,
+  reaching for the wrong one is a choice rather than a gap.
 - **Never reuse `chips`' `brand` color as a general-emphasis color** if it
   gets rebuilt. It's scoped to recap/topic tagging specifically — a
   deliberate, narrow exception to the file's two-color rule for `chips`, not

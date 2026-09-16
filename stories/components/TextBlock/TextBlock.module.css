@@ -1,0 +1,122 @@
+/*
+ * TextBlock — Figma component set `textBlock` (node 9003:9039), four
+ * variants. A title over an optional caption; see TextBlock.tsx's header
+ * for why this is a display block despite the name.
+ *
+ * Every size pairs two named type styles, taken from the variants directly
+ * rather than assembled from primitives:
+ *
+ *   XL  title display.m        (76/76 bold)   caption headline.xs.regular (18/20)
+ *   L   title headline.xl      (44/44 bold)   caption headline.xs.regular (18/20)
+ *   M   title body.m.bold      (18/24 600)    caption caption.m.regular   (12/16)
+ *   S   title body.s.bold      (15/20 600)    caption caption.s.regular   (9/12)
+ *
+ * The gap differs by size in the frames: 4px (space-100) on XL and L, 2px
+ * (space-050) on M and S. Every value resolves to a token — no gaps to
+ * flag on this one.
+ */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.title,
+.caption {
+  margin: 0;
+  width: 100%;
+}
+
+.title {
+  color: var(--color-text-primary);
+}
+
+.caption {
+  color: var(--color-text-secondary);
+}
+
+/* ---- XL ---- */
+.sizeXL {
+  gap: var(--size-space-100);
+}
+
+.sizeXL .title {
+  font-family: var(--typography-display-m-fontFamily);
+  font-weight: var(--typography-display-m-fontWeight);
+  font-size: var(--typography-display-m-fontSize);
+  line-height: var(--typography-display-m-lineHeight);
+  letter-spacing: var(--typography-display-m-letterSpacing);
+}
+
+.sizeXL .caption {
+  font-family: var(--typography-headline-xs-regular-fontFamily);
+  font-weight: var(--typography-headline-xs-regular-fontWeight);
+  font-size: var(--typography-headline-xs-regular-fontSize);
+  line-height: var(--typography-headline-xs-regular-lineHeight);
+  letter-spacing: var(--typography-headline-xs-regular-letterSpacing);
+}
+
+/* ---- L ---- */
+.sizeL {
+  gap: var(--size-space-100);
+}
+
+.sizeL .title {
+  font-family: var(--typography-headline-xl-fontFamily);
+  font-weight: var(--typography-headline-xl-fontWeight);
+  font-size: var(--typography-headline-xl-fontSize);
+  line-height: var(--typography-headline-xl-lineHeight);
+  letter-spacing: var(--typography-headline-xl-letterSpacing);
+}
+
+.sizeL .caption {
+  font-family: var(--typography-headline-xs-regular-fontFamily);
+  font-weight: var(--typography-headline-xs-regular-fontWeight);
+  font-size: var(--typography-headline-xs-regular-fontSize);
+  line-height: var(--typography-headline-xs-regular-lineHeight);
+  letter-spacing: var(--typography-headline-xs-regular-letterSpacing);
+}
+
+/* ---- M ---- */
+.sizeM {
+  gap: var(--size-space-050);
+}
+
+.sizeM .title {
+  font-family: var(--typography-body-m-bold-fontFamily);
+  font-weight: var(--typography-body-m-bold-fontWeight);
+  font-size: var(--typography-body-m-bold-fontSize);
+  line-height: var(--typography-body-m-bold-lineHeight);
+  letter-spacing: var(--typography-body-m-bold-letterSpacing);
+}
+
+.sizeM .caption {
+  font-family: var(--typography-caption-m-regular-fontFamily);
+  font-weight: var(--typography-caption-m-regular-fontWeight);
+  font-size: var(--typography-caption-m-regular-fontSize);
+  line-height: var(--typography-caption-m-regular-lineHeight);
+  letter-spacing: var(--typography-caption-m-regular-letterSpacing);
+}
+
+/* ---- S ---- */
+.sizeS {
+  gap: var(--size-space-050);
+}
+
+.sizeS .title {
+  font-family: var(--typography-body-s-bold-fontFamily);
+  font-weight: var(--typography-body-s-bold-fontWeight);
+  font-size: var(--typography-body-s-bold-fontSize);
+  line-height: var(--typography-body-s-bold-lineHeight);
+  letter-spacing: var(--typography-body-s-bold-letterSpacing);
+}
+
+.sizeS .caption {
+  font-family: var(--typography-caption-s-regular-fontFamily);
+  font-weight: var(--typography-caption-s-regular-fontWeight);
+  font-size: var(--typography-caption-s-regular-fontSize);
+  line-height: var(--typography-caption-s-regular-lineHeight);
+  letter-spacing: var(--typography-caption-s-regular-letterSpacing);
+}

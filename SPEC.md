@@ -11,7 +11,7 @@ Ordered by how much is already real in Figma/Storybook vs. still needs building.
 1. **Home screen** — built (`home-screen-knowie`)
 2. **Due list** — built (`Direction C1 – Due list, delinearized`)
     - **2a. Due list, all caught up** — built in code (`/due-list?caughtUp=1`), **no frame**. Where the last Summary's Continue lands.
-3. **Entry / recap screen** — built (Voice Review Screen, node 15783:6710); granted and denied both live in code
+3. **Entry / recap screen** — built (Voice Review Screen, node **16031:7075**, which supersedes 15783:6710 — the mic was replaced by a primary "Ready" button, 2026-09-15)
 4. **Prompt screen — idle, prompt shown, with Skip** — built (Voice Review Screen, node **16023:6960**)
 5. **Recording / Listening** — built (Voice Review Screen, node 15783:6833)
     - **5b. Recorded — stopped, Submit shown** — built (Voice Review Screen, node 15783:7103). Lettered so #6–#15 keep the numbers other sections already cite.
@@ -21,11 +21,11 @@ Ordered by how much is already real in Figma/Storybook vs. still needs building.
 9. **Hint nudge** — built in code (Voice Review Screen, node 15868:631)
 10. **Summary** — built in code (`knowledge-check-results`, node 15731:3960). Still missing the "Try again" secondary button and XP, neither of which the frame draws.
 11. **Result: Partial + review interval** — built in code, **no Figma frame**. Composed from #8's layout as this doc specifies, not traced pixels.
-12. **Entry / recap screen, permission-denied variant** — built in code, no Figma frame. Composed from the decided behavior (see below), not traced pixels.
+12. **Entry / recap screen, permission-denied variant** — **dropped 2026-09-15.** The denied state now lives only where permission is actually requested: the prompt screen (#4/#5) and the hint screen.
 13. **Reveal (second miss, terminal)** — **not in the flow.** Dropped: the hint loop (#9) replaces it. See the detail below.
-14. **Text fallback (typing) screen** — not built. The "Type instead" link exists on 16023:6960, 15783:6833, 15783:7103 and 15868:631 (and on the entry screen's denied state) but points nowhere.
-15. **Exit-session confirm dialog** — not built, reached from the ⋯ menu. No modal/dialog component exists in the library at all; the Scaffold's bottom-sheet slot (`docs/design-system.md`, "Scaffold composition") is its intended home.
-16. **⋯ menu** — not built, no frame. The only route to the exit confirm, so #15 is unreachable without it.
+14. **Text fallback (typing)** — **built in code 2026-09-15, no Figma frame.** Swaps in place on the prompt screen and the hint screen; sticky for the session, with "Use voice instead" to switch back.
+15. **Exit-session confirm** — **built in code 2026-09-15, no Figma frame.** Reached from the ⋯ menu on the four mid-session screens; confirming exits to Home.
+16. **⋯ menu** — **built in code 2026-09-15, no Figma frame.** One item, "End session", carried by `AppBar`.
 
 **#4, #5 and #5b are one screen in three states**, not three screens: one route (`/recap/[topicId]/prompt/[termIndex]`), the mic tap moving between them — idle → listening → stopped → listening… They are listed separately because the rest of this doc, and `docs/voice-ux.md`'s states table, reference them that way.
 
@@ -53,17 +53,23 @@ Ordered by how much is already real in Figma/Storybook vs. still needs building.
 - Headline "You're all caught up", replacing "Let's review what you've learned so far".
 - Body copy: "Nothing is due right now. Come back tomorrow, or pick a topic to review early."
 - The recall badge shows "0" rather than being hidden — `TopNav` takes a `dueCount` string and has no prop to drop the badge, and clearing the count says the same thing without editing a shared component.
-- The query-param entry (`?caughtUp=1`), following the entry screen's own `?mic=denied`, so the state can be presented without walking two whole sessions first.
+- The query-param entry (`?caughtUp=1`), so the state can be presented without walking two whole sessions first. (This pattern was borrowed from the entry screen's old `?mic=denied`, which has since been removed with that screen's denied state — `?caughtUp=1` is now the only query-param state in the prototype.)
 - The way forward is the existing (inert) "Choose your own topics" link plus the bottom nav — the student isn't trapped, but the only *live* exit is the nav.
 
 **Structural note:** `/due-list` is statically prerendered, so `useSearchParams` in it fails the build. The flag is read from the Page's own `searchParams` prop (Next's documented alternative) and passed down; the screen itself moved to `app/due-list/DueListScreen.tsx`. The entry screen keeps `useSearchParams` because its route is dynamic.
 
 ### 3. Entry / recap screen
-**States:** granted (frame 15783:6710) / denied (no frame — decided behavior only, see Open).
-**Components:** `ChatBubble` (state=default), `Chips` (size=M, color=brand, one per topic), `VoiceInput` (state=Idle), `ButtonIcon` (variant=Tertiary, size=S for the bar; variant=Brand, size=XS for the "+"), `ProgressIndicator` (variant=Primary, thickness=24), `Mascot` (standby).
-**Student can:** tap `VoiceInput` → asks for real mic permission (`getUserMedia`, on tap only, never on entry) and on grant opens term 1's prompt screen (#4), which is where recording actually happens. There is no Listening state on this screen — its frame has none. Tap "Or tap next →" to reach #4 without the mic. First-run explanation copy lives here (no separate primer screen, per `sprint-context.md`).
-**Denied:** `VoiceInput` disabled, "Microphone is off" callout, chat bubble swaps to the can't-hear-you copy, and the bottom link becomes "Type instead". Reachable live (deny the browser prompt) or with `?mic=denied` for presenting it without an OS-level denial. Copy is the decided behavior, not traced pixels.
-**Gap:** in the granted state this screen's bottom link is "Or tap next →", not "Type instead" — so a student who never gets past it, and who *hasn't* been denied, still has no visible route to text fallback. That is the frame's own composition, not an implementation shortcut.
+**Frame:** **16031:7075** (supersedes 15783:6710). **States:** one.
+**Components:** `ChatBubble` (state=default), `Chips` (size=M, color=brand, one per topic), `ButtonIcon` (variant=Tertiary, size=S for the bar; variant=Brand, size=XS for the "+"), `ProgressIndicator` (variant=Primary, thickness=24), `Mascot` (standby), `Button` (variant=primary, size=l, "Ready").
+**Student can:** tap "Ready" → term 1's prompt screen (#4), which is where recording actually happens. First-run explanation copy lives here (no separate primer screen, per `sprint-context.md`).
+
+> **Revised 2026-09-15 — the mic left this screen.** The old frame ended in a `VoiceInput`, a two-line callout under it ("Tap to start" / "approx. 2-3 min · speak naturally") and an "Or tap next →" link. The new frame replaces all three with a single primary "Ready" button (node 16031:7175, a fixed 138×56). Everything above the trigger zone is identical in both frames and was left untouched.
+
+**Mic permission moved with it.** This screen used to call `getUserMedia` on its mic tap; nothing here asks now. The first permission prompt is the **prompt screen's** own mic tap (#4/#5), which already requested it and already handled a denial. This is a closer reading of the "on tap-to-record, never on screen entry" rule, not a looser one — nothing was ever recorded on this screen, so asking here was always early.
+
+**Two consequences, flagged not resolved:**
+- **#12's denied state was dropped from this screen** (decided 2026-09-15). Three of its four elements (disabled `VoiceInput`, "Microphone is off" callout, "Type instead" link) lived in the zone this frame replaces, and with nothing here requesting permission a real denial can't land here either — what was left was a bubble saying "I can't hear you" above a button saying "Ready". The `?mic=denied` param and the can't-hear-you copy are gone from the code. See #12.
+- **The old "no visible route to text fallback" gap is gone from this screen.** It used to be that a student who wasn't denied saw "Or tap next →" rather than "Type instead". Now there is no link at all — but "Ready" always leads to #4, which carries its own "Type instead", so the student is never stuck.
 
 ### 4. Prompt screen — idle, prompt shown, with Skip
 **Frame:** 16023:6960. **State 1 of 3** (recurs per term).
@@ -143,17 +149,57 @@ Composition mirrors #8 exactly, as this entry specified: `ChatBubble` (state=par
 
 **Three things were decided rather than read, since no frame exists** (2026-09-15): the mascot is standby (per this entry), the pre-selected grade is **Medium** (sitting between Pass's Easy and Incorrect's Difficult), and Hint appears here as it does on #8. Everything else is #8's measured layout.
 
-### 12. Entry / recap screen, denied variant — built, no frame
-Sticky denial: screen #3 reflects it with a disabled `VoiceInput`, "Microphone is off" copy, the can't-hear-you bubble, and a "Type instead" link that routes into text mode (#14). No Figma frame — composed from the decided behavior.
+### 12. Entry / recap screen, denied variant — **dropped 2026-09-15**
+This described screen #3 reflecting a denial with a disabled `VoiceInput`, "Microphone is off" copy, the can't-hear-you bubble, and a "Type instead" link. Three of those four lived in the mic zone that frame 16031:7075 replaced with a "Ready" button, and with nothing on #3 requesting permission, a real denial could no longer land there. What remained was a bubble saying "I can't hear you" above a button saying "Ready" — a half-state with no affordance attached.
+
+**Decided: dropped.** The `?mic=denied` param, the can't-hear-you copy and the `denied` branch are all removed from `app/recap/[topicId]/page.tsx`. Screen #3 now has exactly one state.
+
+**The flow still covers denial**, which `docs/voice-ux.md`'s states table marks a **Must** ("Permission denied → route to text"). It lives where permission is actually asked for:
+- **Prompt screen (#4/#5)** — requests `getUserMedia` on the mic tap, disables the mic and shows "Microphone is off" on a refusal, with "Type instead" beneath it.
+- **Hint screen (#9)** — the same handling, for a re-record from there.
+
+That is a better place for it than #3 ever was: the state now appears at the moment the student is actually refused, rather than one screen early.
+
+**Closed since:** "Type instead" was inert when this was written, so a denied student was dead-ended at the prompt screen. #14 was built 2026-09-15 and that route now works.
 
 ### 13. Reveal — **not in the flow**
 Previously logged as a decided, terminal second-miss screen. It isn't being built and isn't part of the loop: #9's hint → re-record → "Repeat question" cycle replaces it. A student is never shown the answer outright. Removed from scope rather than left as a gap.
 
-### 14. Text fallback (typing) — not built
-**Swaps in place.** "Type instead" replaces the mic and its callout with a text field and a Submit on the same screen; eyebrow, mascot, chat bubble and Skip all stay put. Sticky for the rest of the session once chosen (not per-term), and the route a permission-denied student takes. Blocked on `textBlock`, which `docs/design-system.md` names as the right component for a student's own free-text entry but which isn't in Storybook yet. Until it exists, a denied student is dead-ended — the one live breach of the brief's "never trap the student".
+### 14. Text fallback (typing) — **built in code 2026-09-15, no Figma frame**
+**Not a screen of its own — it swaps in place.** "Type instead" replaces the mic and its callout with a `TextField` (multiline) and a Submit, on the **prompt screen** (#4/#5/#5b) and the **hint screen** (#9). The bar, eyebrow, mascot, chat bubble and Skip all stay exactly where they are, and the zone keeps the flow's standard 259px — verified by measurement: every element above the zone sits at an identical position in both modes, on both screens.
 
-### 15. Exit-session confirm — not built
-Reached from the **⋯ menu**, not the back arrow: "End session now? X terms left". Confirming exits all the way to **Home**; the abandoned topic reappears in the due list untouched, as though never started. Needs two things that don't exist: the ⋯ menu itself, and a bottom sheet in Scaffold's unbuilt sheet slot (the same slot #14 doesn't need, since text swaps in place).
+**Components:** `TextField` (multiline, rows=3, placeholder "Type your answer"), `Button` (variant=primary, size=s, "Submit"), and a "Use voice instead" text link in the `linkCondensed` style — the same link slot "Type instead" occupies in voice mode. Shared by both screens as `app/recap/[topicId]/TypeTrigger.tsx`, the sibling of `MicTrigger`.
+
+**Student can:** type an answer and Submit → Processing (#6) → that term's scripted result, exactly as the voice path does. Tap Skip, which stays put. Tap "Use voice instead" to go back to the mic.
+
+**Five things were decided rather than read** — no frame covers any of this (settled with the user, 2026-09-15):
+
+1. **Sticky, but not a one-way door.** `SPEC.md` said text mode is "sticky for the rest of the session once chosen", while `docs/sprint-context.md` said a denied student gets "a way to re-enable, so no student is trapped by a 'no'". Both hold if stickiness is a *default* rather than a trap: the mode persists across terms, and "Use voice instead" sits exactly where "Type instead" did.
+2. **It persists in `sessionStorage`** (`app/recap/[topicId]/textMode.ts`), not a threaded query param or React context. A param can be silently dropped by any link in the flow that forgets to pass it, which would hand a microphone back to someone who can't use one; context doesn't survive a hard reload, which matters when the reason you are typing is that the mic was refused. It clears with the tab, so a new session starts at voice. This is a deliberate exception to "session state doesn't persist" below — that line is about review progress, and this is an accessibility setting.
+3. **The typed answer is echoed on the result screen**, above Knowie's reply, under a "You typed" label. `docs/voice-ux.md` calls showing the answer back a transparency pattern, and in text mode the words are real rather than mocked STT. **This departs from the result screens' measured frames**, which have no slot for it — it renders only on a typed term, so a spoken walkthrough is unchanged. No component covers a student's own utterance (`ChatBubble` is Knowie's dialogue only), so the block is built inline and logged in `component-gaps.md`.
+4. **Submit is disabled while the field is empty.** Nothing to judge, and a scripted result arriving from an empty answer reads as a bug in a walkthrough. Skip and "Use voice instead" are both still available, so this never traps anyone.
+5. **On the hint screen, "Repeat question" drops to Secondary while typing.** In text mode that screen would otherwise carry two Primaries — "Repeat question" (primary/s per frame 15868:631) and the field's Submit — which `CLAUDE.md` forbids. Submit takes the Primary, being the forward action; in voice mode "Repeat question" is Primary again, exactly as the frame draws it.
+
+**Also decided:** switching to text from the prompt screen's *stopped* state discards the take first. Nothing was recorded anyway, and leaving the screen stopped behind a text field would strand a Submit the student can no longer reach.
+
+**This closes the "never trap the student" breach.** A student refused the mic on the prompt or hint screen now has a working route forward.
+
+### 15. Exit-session confirm, and 16. the ⋯ menu — **built in code 2026-09-15, no Figma frame**
+Reached from the **⋯ menu**, not the back arrow. ⋯ opens a one-item menu ("End session"), which opens a modal sheet: "End session now? / X terms left. They stay due, so you can pick this up again later." Confirming exits all the way to **Home**; the abandoned topic reappears in the due list untouched, as though never started — which costs nothing to honour, since no progress is stored anywhere.
+
+**Components:** `BottomSheet` (design-system.md's slot 5 — the modal, scrimmed sheet, *not* `ActionSheet`), holding a `TextBlock` (variant=M) over a `ButtonGroup` (variant=vertical, size=l, **tone=destructive**). The menu itself is part of `AppBar` (`menuItems`). Wired through one shared screen-local module, `app/recap/[topicId]/ExitSession.tsx`, so the four screens can't drift.
+
+**Where it appears:** the four **mid-session** screens — prompt (#4/#5/#5b), processing (#6), result (#7/#8/#11) and hint (#9). Deliberately **not** on the entry/recap screen (nothing has started; the back arrow already leaves) or the Summary (the session is already over; Continue is the way on). ⋯ stays inert on those two, as it was everywhere before.
+
+**Five things were decided rather than read** — no frame covers any of this (settled with the user, 2026-09-15):
+
+1. **The menu is real, with one item.** SPEC said "the ⋯ menu carries the exit", and the exit is the only item any doc has ever named. Built as an actual menu rather than wiring ⋯ straight to the sheet, so there is somewhere obvious for a second item to go.
+2. **"End session" is Destructive, not Primary.** Abandoning a session is an abandon action, and design-system.md says those are Destructive and never paired with a Primary. `ButtonGroup` had no destructive option, so **`tone="destructive"` was added to it** — additive, nothing else used it, and the Figma set wants the variant adding at source. The sheet therefore carries no Primary at all, which that rule explicitly allows.
+3. **"X terms left" counts the current term.** On term 2 of 3 it reads "2 terms left": leaving mid-term abandons the one being answered too, so counting it out would understate what the student walks away from. Singular is handled ("1 term left").
+4. **The menu lives in `AppBar`, not on each screen.** Four screens carry it; four copies would drift, which is the same reasoning that made `AppBar` a component in the first place. A screen with no items gets the inert ⋯ it always had.
+5. **Both the menu and the sheet are dismissible without choosing.** Escape or a tap outside closes the menu; Escape, the scrim, or "Keep going" closes the sheet. A confirm you can't back out of is a trap, and "never trap the student" applies to leaving as much as to answering.
+
+**Flagged, not fixed:** `Button`'s Secondary fill is `background.surface`, which is also the sheet's fill — so "Keep going" reads as a label rather than a pill against it. This is **pre-existing and systemic**, not introduced here: the result screens' "Retry" sits on `ActionSheet` with the same two colours and looks the same. Fixing it means changing a shared component, which `CLAUDE.md` says to flag first — so it is flagged.
 
 ---
 
@@ -182,14 +228,14 @@ If-time, not guaranteed (`docs/voice-ux.md`): a single consolidated "something w
 - **Back steps, ⋯ ends.** The back arrow walks back one screen with no confirmation. The ⋯ menu carries the exit → "End session now? X terms left" → confirming goes to **Home**, and the abandoned topic returns to the due list untouched.
 - **Summary → Continue chains** into the next due topic's recap screen; after the last, into the due list's all-caught-up state (#2a). Both built and walked 2026-09-15.
 - **The Summary reports the recommended grade, not the tapped one.** Nothing stores a grade, so the Summary reads each term's scripted outcome back through `GRADE_FOR_OUTCOME` — the same value its result screen opened on. Honest for a clickthrough, wrong the moment grading becomes real.
-- **Mic permission is real**, requested with `getUserMedia` on the entry screen's mic tap and never on screen entry. Nothing is recorded: a granted stream is stopped immediately, since real STT/judging stays out of scope. A denial lands on the entry screen's denied state.
+- **Mic permission is real**, requested with `getUserMedia` on the **prompt screen's** mic tap (and the hint screen's) — never on screen entry, and no longer on the entry screen at all, which has had no mic since frame 16031:7075. Nothing is recorded: a granted stream is stopped immediately, since real STT/judging stays out of scope. A denial disables that screen's mic and surfaces "Type instead".
 - **Cancel is always free** — never counts as an attempt against the hint ladder.
 - **Processing is a fixed 1.8s delay**, not variable.
 - **Grading happens at every result, including misses**, and the last grade tapped for a term is what's recorded — a term can be graded on the first miss, re-graded after a hint, and re-graded again on an eventual pass; only the final tap sticks. This is a deliberate departure from the brief's own spec (grade once, at the end, after the hint ladder finishes) — flagged, not silently followed.
 - **Skip is ungraded** — the term stays due at its existing interval, unchanged.
 - **The miss recovery is a loop, not a ladder.** Incorrect (or Partial) → Hint → **navigates to #9**, where the student re-records or taps "Repeat question" to return to that term's original prompt screen. Repeatable indefinitely; Continue at any result moves on. **No second hint, no Reveal.** (An earlier version of this line said Hint removed the Retry/Continue container in place — it doesn't; the student leaves the screen. Corrected 2026-09-15.)
 - **Retry is not part of that loop** — it sits on all three result screens for a student who wants to say the answer again before the next review interval. Requesting a hint doesn't remove it; the student simply leaves the result screen for #9, and Retry is there again if they come back.
-- **Text fallback, once chosen, is sticky for the rest of the session**, and swaps in place on the same screen rather than opening one of its own.
+- **Text fallback, once chosen, is sticky for the rest of the session**, and swaps in place on the same screen rather than opening one of its own. Built 2026-09-15: the mode lives in `sessionStorage` (`app/recap/[topicId]/textMode.ts`), persists across terms, and is reversible via "Use voice instead". The typed answer is kept per term and echoed on that term's result screen.
 - **Session state doesn't persist** — backgrounding mid-recording/processing resumes at Idle for that term; exiting early is a fresh start next time, not a true resume, even though `docs/design-brief.md`'s kickoff spec says "leaving, progress saves, returning resumes."
 - **XP is summary-only**, not a live counter during the loop — and still not present on the built Summary, since the frame draws no XP element and nothing defines how it's earned.
 - **The summary's language is meant to react** to the unaided/hinted/revealed ratio (the brief's "was it earned?" problem) — not yet implemented copy, just a decision.
@@ -207,7 +253,9 @@ If-time, not guaranteed (`docs/voice-ux.md`): a single consolidated "something w
 - **`ChatBubble` is 6px narrower than the frames.** All the voice frames run the bubble to x=366, the 24px page gutter; the shared component caps at `max-width: 256px`, so it stops at 360 and sits ~4px left of the frame's edge. Fixing it means editing a Storybook component that the entry screen uses too, which `CLAUDE.md` says to flag before doing — so it's flagged, not done.
 - **The frames disagree with each other about the trigger zone, five ways.** #4 and #5b pin it at 259px (mic top y=585); #5 uses 263px (y=581); #6 uses 262px; #9 uses 232px and insets the zone by the body's 24px padding. Matching each exactly would make the mic hop between screens, so the build uses **259 everywhere** — mic at y=585, 147px above the frame's bottom edge, verified identical on every voice screen. Worth fixing at source.
 - ~~**Flow-screen `appBar` is inlined.**~~ **Done.** Built as `AppBar` (`stories/components/AppBar`) after a fourth screen copied it; `BackButton.tsx` and the screen-local `icons.tsx` were absorbed into it. The result screens' footer was promoted the same way, as `ActionSheet`; both are now named in `docs/design-system.md`.
-- **The ⋯ menu does nothing on any screen.** `AppBar` takes an `onMore` handler and no screen passes one, so it's a real but inert tap target. #16 has no frame and #15 (the exit confirm) is unreachable without it, which leaves "back steps, ⋯ ends" only half true in the build. The back arrow works everywhere.
+- ~~**The ⋯ menu does nothing on any screen.**~~ **Done.** Built 2026-09-15 as `AppBar`'s `menuItems`, carrying the session exit (#15/#16) on the four mid-session screens. "Back steps, ⋯ ends" is now true in the build. ⋯ remains deliberately inert on the entry and Summary screens, where there is nothing to put in it.
+- **Secondary buttons disappear on a sheet.** `Button`'s Secondary fill is `background.surface`, the same colour as both `ActionSheet` and `BottomSheet`, so "Retry" on a result screen and "Keep going" on the exit confirm read as bare labels rather than pills. Pre-existing and systemic; fixing it means editing the shared `Button` (or giving the sheets a different surface), which `CLAUDE.md` says to flag before doing.
+- **No destructive *text* token exists.** The ⋯ menu's destructive item is tinted with `interactive.destructive`, which is defined as a *fill*; the two text-ish alternatives rule themselves out in their own descriptions (`feedback.error.bold` says "not destructive buttons", `text.error` says "not destructive button labels"). Worth adding at source.
 - **Hint's Figma layer is still primary/s, and #9's button is still "Repeat Question".** Both are built against the rules instead (secondary, and sentence case); the frames want fixing at source.
 - **Nothing consumes a grade.** The `Radio` selection is local to each result screen and resets on navigation — there is no session state, so a term re-graded after a hint doesn't "remember" the earlier tap. "Last tap wins" is true within one visit to one screen only. Fine for a clickthrough, wrong if this ever becomes real.
 
@@ -216,7 +264,7 @@ If-time, not guaranteed (`docs/voice-ux.md`): a single consolidated "something w
 1. **State coverage.** Every row in `docs/voice-ux.md`'s states table maps to either a built screen above, a listed gap, or an explicit out-of-scope/if-time entry. None should be unaccounted for.
 2. **Happy path click-through.** Home → tap `recall` Badge → Due list → tap a Card → Entry/recap → tap mic (grants permission) → prompt idle (#4) → tap mic → Recording (#5) → tap mic → stopped, Submit shown (#5b) → Submit → Processing (#6) → Result (#7/#8/#11 by scripted outcome) → pick a grade → Continue → repeats for each due term → Summary (#10) → Continue → the next topic's recap, and after the last topic the due list's all-caught-up state (#2a). **Walkable end to end**, verified 2026-09-15: result/2 → summary → /recap/the-reformation, and the-reformation's summary → /due-list?caughtUp=1 with the recall badge cleared.
 3. **Miss loop click-through.** Term 2 → Result: Incorrect (#8) → Hint → Hint nudge (#9) → either the mic (re-records, opening #4 already Listening) or "Repeat question" (back to #4 idle) → round again as many times as wanted, or Continue at the result to move on. Walkable end to end; term 3 reaches Partial (#11) the same way.
-4. **Failure paths, each walked explicitly:** permission denied at the entry screen's mic tap, Cancel during Recording, Skip at #4 or #5b, Incorrect → Hint → re-attempt (there is no second hint and no Reveal — see #13), Partial, "Type instead" fallback, exit mid-session via the confirm dialog. The last two are not built: "Type instead" is inert everywhere, and the exit confirm needs #15 and #16, neither of which exists.
+4. **Failure paths, each walked explicitly:** permission denied at the prompt screen's mic tap (the entry screen no longer asks), Cancel during Recording, Skip at #4 or #5b, Incorrect → Hint → re-attempt (there is no second hint and no Reveal — see #13), Partial, "Type instead" fallback, exit mid-session via the confirm dialog. **"Type instead" is built and walked** (2026-09-15: prompt → type → Submit → Processing → result with the answer echoed → Continue → next term still in text mode → hint screen in text mode → "Use voice instead" back to the mic). **The exit confirm is built and walked too** (⋯ → End session → sheet reading the right count on each screen → "Keep going" returns, "End session" goes to Home; ⋯ inert on entry and Summary). Every failure path in this list is now walkable.
 5. **No invented components or props.** Every instance used should match a real story in Storybook — check with `docs-show` per component (`mcp__storybook__docs-list` / `docs-show`) rather than trusting memory of what a component "should" have.
 6. **No invented token values.** Every color/size/type value traces to a path in `tokens/tokens.json`; no `var(--x, #fallback)`, nothing hand-set that has a token.
 7. **Design-system hard rules spot-check:** one Primary button max per screen, Destructive never paired with Primary on the same screen, sentence case on every label.

@@ -82,3 +82,50 @@
   gap: var(--size-space-400);
   width: 100%;
 }
+
+/*
+ * The student's own typed answer, echoed above Knowie's reply — shown only
+ * when the term was answered by typing (SPEC.md #14). A deliberate
+ * departure from the measured frames, which have no slot for it; on a
+ * spoken term it isn't rendered and the screen is unchanged.
+ *
+ * Built inline because no component covers a student's own utterance:
+ * ChatBubble is Knowie's dialogue only (design-system.md is explicit), and
+ * TextBlock is a title/caption pair. Logged in component-gaps.md.
+ *
+ * Deliberately quieter than the bubble below it — surface fill, no tail,
+ * secondary text — because Knowie's reply is what the screen is for. Every
+ * value resolves to a token.
+ */
+.typedAnswer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-space-100);
+  width: 100%;
+  padding: var(--size-space-400);
+  border: var(--size-stroke-border) solid var(--color-border-default);
+  border-radius: var(--size-radius-400);
+  background-color: var(--color-background-surface);
+}
+
+.typedAnswerLabel {
+  margin: 0;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  font-family: var(--typography-overline-default-fontFamily);
+  font-weight: var(--typography-overline-default-fontWeight);
+  font-size: var(--typography-overline-default-fontSize);
+  line-height: var(--typography-overline-default-lineHeight);
+  letter-spacing: var(--typography-overline-default-letterSpacing);
+}
+
+.typedAnswerText {
+  margin: 0;
+  overflow-wrap: break-word;
+  color: var(--color-text-secondary);
+  font-family: var(--typography-body-s-regular-fontFamily);
+  font-weight: var(--typography-body-s-regular-fontWeight);
+  font-size: var(--typography-body-s-regular-fontSize);
+  line-height: var(--typography-body-s-regular-lineHeight);
+  letter-spacing: var(--typography-body-s-regular-letterSpacing);
+}

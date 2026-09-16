@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { notFound, useParams, useRouter, useSearchParams } from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation";
 
 import { Scaffold } from "@/stories/components/Scaffold/Scaffold";
 import { AppBar } from "@/stories/components/AppBar/AppBar";
@@ -9,23 +8,43 @@ import { ButtonIcon } from "@/stories/components/ButtonIcon/ButtonIcon";
 import { ChatBubble } from "@/stories/components/ChatBubble/ChatBubble";
 import { Chips } from "@/stories/components/Chips/Chips";
 import { Mascot } from "@/stories/components/Mascot/Mascot";
+import { Button } from "@/stories/components/Button/Button";
 import { PlusIcon } from "@/stories/components/ButtonIcon/PlusIcon";
 import { getTopic } from "../../due-terms";
-import { MicTrigger, requestMicAccess } from "./MicTrigger";
 import styles from "./page.module.css";
 
 // Entry / recap screen (SPEC.md #3), matching the Figma frame
-// "Voice Review Screen" 15783:6710 1:1.
+// "Voice Review Screen" **16031:7075** 1:1.
 //
-// Tapping the mic asks for real mic permission (never on entry — CLAUDE.md)
-// and then opens term 1's prompt screen, which is where recording actually
-// happens. There is no Listening state on this screen: the frame has none,
-// and the flow goes Entry → prompt (16023:6960) → recording (15783:6833).
+// **Revised 2026-09-15 to that new frame.** The screen used to end in a
+// mic: a `VoiceInput`, a two-line callout under it ("Tap to start" /
+// "approx. 2-3 min · speak naturally"), and an "Or tap next →" link. The
+// new frame replaces all three with a single primary "Ready" button. Above
+// the trigger zone nothing changed — eyebrow, headline, mascot + bubble and
+// the "You'll recap" chips are identical in both frames.
 //
-// The permission-denied state has no frame of its own (SPEC.md #12: decided,
-// not designed) — its copy is the decided behavior, not traced pixels.
-// ?mic=denied forces that look on load for presenting it without an actual
-// OS-level denial; a real denial on tap lands in the same place.
+// **What moved with it: mic permission.** This screen used to ask for
+// getUserMedia on its mic tap. With no mic here, nothing on this screen
+// asks, and the first permission prompt is now the prompt screen's own mic
+// tap — which already requests it and already handles a denial. That is a
+// closer reading of CLAUDE.md's "mic permission fires on tap-to-record,
+// never on screen entry", not a looser one: this screen never recorded
+// anything, so asking here was always early.
+//
+// **The denied state was dropped from this screen** (decided 2026-09-15).
+// Three of its four elements — the disabled mic, the "Microphone is off"
+// callout and the "Type instead" link — lived in the zone this frame
+// replaces, and with nothing here requesting permission a real denial can
+// no longer land here either. What was left was a bubble saying "I can't
+// hear you" above a button saying "Ready", which is a half-state. So the
+// `?mic=denied` param, the can't-hear-you copy and the `denied` branch are
+// all gone from this file.
+//
+// **This does not drop the denied state from the flow**, which
+// docs/voice-ux.md marks a **Must** ("permission denied → route to text").
+// It lives where permission is actually asked for: the prompt screen
+// (#4/#5) and the hint screen, both of which request `getUserMedia` on
+// their mic tap, disable the mic on a refusal, and show "Type instead".
 //
 // Content notes against the frame:
 // - The "+" beside the chips is buttonIcon variant=Brand size=XS (the
@@ -37,29 +56,14 @@ import styles from "./page.module.css";
 // - The "+" add-topic control has no destination (that flow isn't built) and
 //   stays a real, inert tap target.
 
-const DENIED_BUBBLE =
-  "I can't hear you yet — the microphone is off for Knowunity. You can still do this by typing your answers.";
-
 export default function Recap() {
   const { topicId } = useParams<{ topicId: string }>();
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const topic = getTopic(topicId);
-  const [denied, setDenied] = useState(searchParams.get("mic") === "denied");
 
   if (!topic) {
     notFound();
-  }
-
-  async function handleMicTap() {
-    if (denied) return;
-
-    if (await requestMicAccess()) {
-      router.push(`/recap/${topicId}/prompt/0`);
-    } else {
-      setDenied(true);
-    }
   }
 
   return (
@@ -72,7 +76,7 @@ export default function Recap() {
 
         <section className={styles.chatRow}>
           <Mascot state="standby" />
-          <ChatBubble state="default" neutralText={denied ? DENIED_BUBBLE : undefined} />
+          <ChatBubble state="default" />
         </section>
 
         <section className={styles.recap}>
@@ -86,28 +90,13 @@ export default function Recap() {
         </section>
       </div>
 
+      {/* The new frame's whole trigger zone: one primary button, centred,
+          138×56 (node 16031:7175). The only action on the screen, so it is
+          the screen's one Primary. */}
       <div className={styles.triggerZone}>
-        <MicTrigger
-          state={denied ? "disabled" : "idle"}
-          label={denied ? "Microphone is off" : undefined}
-          onTap={handleMicTap}
-        >
-          <div className={styles.callout}>
-            <p className={styles.calloutTitle}>{denied ? "Microphone is off" : "Tap to start"}</p>
-            <p className={styles.calloutHint}>
-              {denied ? "Turn it on in Settings, or type your answers" : "approx. 2-3 min · speak naturally"}
-            </p>
-          </div>
-        </MicTrigger>
-        {/* #14 Text fallback isn't built, so "Type instead" is a real but
-            inert target; "Or tap next →" skips the mic and opens term 1. */}
-        <button
-          type="button"
-          className={styles.nextLink}
-          onClick={denied ? undefined : () => router.push(`/recap/${topicId}/prompt/0`)}
-        >
-          {denied ? "Type instead" : "Or tap next →"}
-        </button>
+        <Button variant="primary" size="l" onClick={() => router.push(`/recap/${topicId}/prompt/0`)}>
+          Ready
+        </Button>
       </div>
     </Scaffold>
   );

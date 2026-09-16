@@ -1,6 +1,6 @@
 'use client';
 
-import type { HTMLAttributes } from 'react';
+import { useEffect, useId, useRef, useState, type HTMLAttributes } from 'react';
 import { useRouter } from 'next/navigation';
 
 import styles from './AppBar.module.css';
@@ -28,6 +28,13 @@ import { ArrowLeftIcon, MoreHorizontalIcon } from './icons';
 // Goes in Scaffold's topBar slot, which already provides the <header>, so
 // this renders a plain <div> and owns only its own padding.
 
+export type AppBarMenuItem = {
+  label: string;
+  onSelect: () => void;
+  /** Destructive items are tinted and announced as the dangerous choice. */
+  tone?: 'default' | 'destructive';
+};
+
 export type AppBarProps = {
   /** Where the back arrow goes. */
   backHref?: string;
@@ -54,9 +61,17 @@ export type AppBarProps = {
    */
   title?: string;
   /**
-   * The ⋯ menu (SPEC.md #16) isn't built, so this is unset everywhere and
-   * the button is a real but inert tap target. Wiring the menu means
-   * passing a handler here, not adding a button to each screen.
+   * The ⋯ menu's items (SPEC.md #16, built 2026-09-15). Pass them and ⋯
+   * opens a menu anchored under it; leave them off and ⋯ stays the inert
+   * tap target it is on screens with nothing to put in it (the entry and
+   * Summary screens). The menu lives here rather than on each screen for
+   * the same reason the rest of the bar does: four screens carry it, and
+   * four copies would drift.
+   */
+  menuItems?: AppBarMenuItem[];
+  /**
+   * A bare ⋯ handler, for a screen that wants the tap without a menu.
+   * Ignored when `menuItems` is passed.
    */
   onMore?: () => void;
 } & Omit<HTMLAttributes<HTMLDivElement>, 'children'>;
@@ -66,11 +81,35 @@ export function AppBar({
   backLabel = 'Back to due list',
   progress,
   title,
+  menuItems,
   onMore,
   className,
   ...rest
 }: AppBarProps) {
   const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuId = useId();
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // A menu that can't be dismissed without choosing something is a trap, so
+  // both the usual escapes work: Escape, and a tap anywhere outside it.
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) setMenuOpen(false);
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, [menuOpen]);
 
   return (
     <div className={[styles.root, className].filter(Boolean).join(' ')} {...rest}>
@@ -92,13 +131,39 @@ export function AppBar({
         )}
         {!progress && title && <p className={styles.title}>{title}</p>}
       </div>
-      <ButtonIcon
-        variant="tertiary"
-        size="s"
-        icon={<MoreHorizontalIcon />}
-        aria-label="More options"
-        onClick={onMore}
-      />
+      <div className={styles.more} ref={menuRef}>
+        <ButtonIcon
+          variant="tertiary"
+          size="s"
+          icon={<MoreHorizontalIcon />}
+          aria-label="More options"
+          aria-haspopup={menuItems ? 'menu' : undefined}
+          aria-expanded={menuItems ? menuOpen : undefined}
+          aria-controls={menuItems && menuOpen ? menuId : undefined}
+          onClick={menuItems ? () => setMenuOpen((open) => !open) : onMore}
+        />
+
+        {menuItems && menuOpen && (
+          <div className={styles.menu} id={menuId} role="menu">
+            {menuItems.map((item) => (
+              <button
+                key={item.label}
+                type="button"
+                role="menuitem"
+                className={[styles.menuItem, item.tone === 'destructive' && styles.destructive]
+                  .filter(Boolean)
+                  .join(' ')}
+                onClick={() => {
+                  setMenuOpen(false);
+                  item.onSelect();
+                }}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

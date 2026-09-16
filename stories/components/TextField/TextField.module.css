@@ -1,0 +1,69 @@
+/*
+ * TextField — the field a student types into. **No Figma frame or
+ * component exists for this**, so unlike every other component here these
+ * values are composed from tokens rather than measured off artwork. Each
+ * choice and the token whose own description justifies it:
+ *
+ *   surface      background.surface  "elevated fill for cards, sheets,
+ *                                     modals … chat bubbles"
+ *   resting edge border.default      "…and resting input borders" — the
+ *                                     token is literally specified for this
+ *   focus ring   border.focus        "keyboard focus indicator; pair with
+ *                                     the heavy 2px stroke and never remove
+ *                                     without a replacement"
+ *   placeholder  text.disabled       "…and empty-field placeholders"
+ *   text         body.m.regular      the paragraph style, matching what
+ *                                     ChatBubble sets Knowie's replies in,
+ *                                     since the student's answer is the
+ *                                     same kind of content
+ *   radius       radius.400 (16px)   what Card and ResultCard use, so the
+ *                                     field sits in the same family as the
+ *                                     surfaces around it
+ *
+ * Nothing here is invented, but nothing is traced either — it wants
+ * checking against a real frame if one is ever drawn.
+ */
+
+.field {
+  display: block;
+  width: 100%;
+  padding: var(--size-space-400);
+  border: var(--size-stroke-border) solid var(--color-border-default);
+  border-radius: var(--size-radius-400);
+  background-color: var(--color-background-surface);
+  color: var(--color-text-primary);
+  font-family: var(--typography-body-m-regular-fontFamily);
+  font-weight: var(--typography-body-m-regular-fontWeight);
+  font-size: var(--typography-body-m-regular-fontSize);
+  line-height: var(--typography-body-m-regular-lineHeight);
+  letter-spacing: var(--typography-body-m-regular-letterSpacing);
+}
+
+.field::placeholder {
+  color: var(--color-text-disabled);
+  /* Safari clamps placeholder opacity on its own; pin it so the token's
+     alpha is what shows. */
+  opacity: 1;
+}
+
+.field:focus-visible {
+  outline: var(--size-stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--size-space-100);
+}
+
+.field:disabled {
+  background-color: var(--color-interactive-disabled);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+.singleLine {
+  height: var(--size-space-1600);
+}
+
+.multiline {
+  /* Vertical padding plus line-height decide the height, so no fixed one
+     is set — `rows` does that job, and the student can grow it. */
+  min-height: var(--size-space-1600);
+  resize: vertical;
+}

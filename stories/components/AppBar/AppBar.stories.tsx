@@ -71,3 +71,19 @@ export const WithTitle: Story = {
   },
   args: { title: 'Summary', backHref: '/due-list', backLabel: 'Back to due list' },
 };
+
+export const WithMenu: Story = {
+  name: 'menuItems (the ⋯ menu)',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "SPEC.md #16, built 2026-09-15. Pass `menuItems` and ⋯ opens a menu anchored under it; leave them off and ⋯ stays the inert tap target it is on screens with nothing to put in it. The menu lives in AppBar rather than on each screen for the same reason the rest of the bar does — four screens carry it, and four copies would drift. Its only item is the session exit (SPEC.md #15), which is the only item any doc has ever named; a destructive item is tinted so it reads as dangerous before it is tapped. Escape and a tap outside both dismiss it. No Figma frame covers the menu, so its geometry is composed from tokens — background.floating, whose own description names dropdowns and popovers as its use.",
+      },
+    },
+  },
+  args: {
+    progress: '25',
+    menuItems: [{ label: 'End session', tone: 'destructive', onSelect: () => {} }],
+  },
+};

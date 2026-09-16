@@ -18,6 +18,8 @@ import {
   type Grade,
   type TermOutcome,
 } from "../../../../due-terms";
+import { useTypedAnswer } from "../../textMode";
+import { ExitSessionSheet, useExitSession } from "../../ExitSession";
 import styles from "./page.module.css";
 
 // The result screen, in its three outcomes — one route, the term's scripted
@@ -53,6 +55,16 @@ import styles from "./page.module.css";
 //   frames' placeholder sentences. Decided 2026-09-15; see app/due-terms.ts.
 // - The progress bar reads this term's value and does not advance here —
 //   Continue advances it by changing term (see progressForTerm).
+// - **If the term was answered by typing (#14), the student's own words are
+//   echoed above Knowie's reply** (decided 2026-09-15 with the user).
+//   docs/voice-ux.md calls showing the answer back a transparency pattern;
+//   in text mode it costs nothing, because the words are real rather than
+//   mocked STT. **This is a deliberate departure from the measured frames**,
+//   which have no slot for it — it appears only on a typed term, so a spoken
+//   walkthrough looks exactly as it did. There is no component for a
+//   student's own utterance (ChatBubble is Knowie's dialogue only, per
+//   design-system.md), so the block is built inline here and logged in
+//   component-gaps.md.
 
 // Interval copy is the frames', verbatim. It lives in app/due-terms.ts
 // because the Summary (#10) shows the same three strings on its own due
@@ -91,6 +103,11 @@ export default function Result() {
   const term = topic?.terms[index];
 
   const [grade, setGrade] = useState<Grade | null>(null);
+  const typedAnswer = useTypedAnswer(topicId, index);
+
+  // ⋯ → End session → confirm → Home (SPEC.md #15/#16). Terms left
+  // counts the current term too, since leaving abandons it as well.
+  const exit = useExitSession((topic?.terms.length ?? 0) - index);
 
   if (!topic || !term || !Number.isInteger(index)) {
     notFound();
@@ -106,7 +123,7 @@ export default function Result() {
   return (
     <Scaffold
       topBar={
-        <AppBar
+        <AppBar menuItems={exit.menuItems}
           backHref={`/recap/${topicId}/prompt/${index}`}
           backLabel="Back to the question"
           progress={progressForTerm(index)}
@@ -145,6 +162,13 @@ export default function Result() {
           <p className={styles.eyebrow}>
             Term {index + 1} of {topic.terms.length} · {term.name}
           </p>
+
+          {typedAnswer && (
+            <div className={styles.typedAnswer}>
+              <p className={styles.typedAnswerLabel}>You typed</p>
+              <p className={styles.typedAnswerText}>{typedAnswer}</p>
+            </div>
+          )}
 
           <div className={styles.replyGroup}>
             <div className={styles.mascotChatRow}>
@@ -192,6 +216,8 @@ export default function Result() {
           </div>
         </div>
       </div>
+
+      <ExitSessionSheet {...exit.sheetProps} />
     </Scaffold>
   );
 }

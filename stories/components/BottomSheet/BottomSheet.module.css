@@ -1,0 +1,72 @@
+/*
+ * BottomSheet — design-system.md's slot 5: the modal sheet plus its scrim.
+ * See BottomSheet.tsx for why the composition is interpreted from that
+ * doc rather than traced (no frame or Figma component exists).
+ *
+ * The scrim is `color.background.scrim`, whose own token description is
+ * "semi-transparent overlay behind modals, dialogs, and bottom sheets,
+ * always paired with a foreground surface on top" — exactly this. It was
+ * already in tokens/tokens.json and had no consumer until now.
+ *
+ * The surface reuses ActionSheet's measured geometry (32px top radius,
+ * 32/24 padding, 32×4 handle 6px down, effect.elevation.sheet) so the two
+ * sheets read as the same object in the same system. Those numbers came
+ * off real frames on the result screens; nothing new is invented here.
+ *
+ * Positioning is fixed to the viewport, not to Scaffold's frame: a modal
+ * has to cover the whole screen including both bars, and the 390px frame
+ * is centred, so the sheet is centred with it and capped at the same
+ * width. Every value resolves to a token.
+ */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 10; /* above the sticky bottom nav, which is the tallest thing in the shell */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--color-background-scrim);
+}
+
+.surface {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-space-600);
+  width: 100%;
+  max-width: 390px; /* the frame's width — Scaffold's own cap, so the sheet lines up with it */
+  padding: var(--size-space-800) var(--size-space-600);
+  border-radius: var(--size-radius-800) var(--size-radius-800) 0 0;
+  background: var(--color-background-surface);
+  /* Same two shadows as ActionSheet, for the same reasons: an inset top
+     edge that stays out of layout, and the upward lift onto the dimmed
+     content behind. */
+  box-shadow:
+    inset 0 var(--size-stroke-border) 0 0 var(--color-border-default),
+    var(--effect-elevation-sheet);
+}
+
+/* The sheet takes focus when it opens; it shouldn't then draw a focus ring
+   around the whole panel, which reads as an error rather than as "you are
+   here". Controls inside it keep their own rings. */
+.surface:focus {
+  outline: none;
+}
+
+.handle {
+  position: absolute;
+  top: var(--size-space-150);
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--size-space-800);
+  height: var(--size-space-100);
+  border-radius: var(--size-stroke-heavy-border);
+  background: var(--color-background-stacking);
+}

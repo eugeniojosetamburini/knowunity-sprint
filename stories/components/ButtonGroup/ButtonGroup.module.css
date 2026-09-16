@@ -1,0 +1,77 @@
+/*
+ * ButtonGroup — Figma component set `buttonGroup` (node 9003:8455), four
+ * variants (Vertical/Horizontal × M/L).
+ *
+ * This file is layout only. Every pill comes from the real `Button` /
+ * `ButtonIcon` components, exactly as the Figma set composes itself, so
+ * nothing about height, fill, radius or emboss is restated here — that
+ * would be two sources of truth for one pill.
+ *
+ * The gaps are the set's own, and differ per variant *and* size:
+ *
+ *   vertical   + L   space-200 (8px)
+ *   vertical   + M   space-0   (0px)   — the two pills genuinely touch
+ *   horizontal + L   space-200 (8px)
+ *   horizontal + M   space-100 (4px)
+ *
+ * Every value resolves to a token — no gaps to flag on this one.
+ */
+
+.root {
+  display: flex;
+  width: 100%;
+}
+
+.vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.horizontal {
+  flex-direction: row;
+  align-items: center;
+}
+
+/* Gaps, per the matrix in the file header. */
+.vertical.size-l {
+  gap: var(--size-space-200);
+}
+
+.vertical.size-m {
+  gap: var(--size-space-0);
+}
+
+.horizontal.size-l {
+  gap: var(--size-space-200);
+}
+
+.horizontal.size-m {
+  gap: var(--size-space-100);
+}
+
+/* Button's root is inline-flex and its pill hugs the label, so both have
+   to be told to fill — the same two-level override ActionSheet needs, for
+   the same reason. In `vertical` every button spans the full width; in
+   `horizontal` only the primary grows and the icon keeps its size. */
+.vertical > * {
+  width: 100%;
+}
+
+.vertical > * > * {
+  width: 100%;
+}
+
+.horizontal > :not(.iconSlot) {
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+.horizontal > :not(.iconSlot) > * {
+  width: 100%;
+}
+
+.iconSlot {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}

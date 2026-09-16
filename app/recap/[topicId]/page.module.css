@@ -1,21 +1,34 @@
 /*
- * Entry / recap screen ("Voice Review Screen", Figma node 15783:6710). The
- * shell comes from Scaffold; this styles the flow-screen bar and content.
+ * Entry / recap screen ("Voice Review Screen", Figma node **16031:7075**,
+ * which supersedes 15783:6710). The shell comes from Scaffold; this styles
+ * the flow-screen bar and content.
+ *
+ * Revised 2026-09-15: the trigger zone's mic, its two-line callout and the
+ * "Or tap next →" link were replaced by a single primary "Ready" button
+ * (node 16031:7175, 138×56). Everything above the zone is unchanged — both
+ * frames draw it identically. The .callout / .calloutTitle / .calloutHint /
+ * .nextLink rules went with the elements they styled; their typography
+ * tokens (callout.title, callout.hint) are still used by the prompt and
+ * hint screens, so nothing was orphaned in tokens.json.
  *
  * Geometry from the frame: bar = 48px buttons + 2×space-200 = 64px, padded
  * space-100 at the sides with space-600 between items; body padded
- * space-600 with space-700 (28px) between blocks; the trigger zone stacks
- * with space-600 and space-400 gaps and a space-150 callout gap.
+ * space-600 with space-700 (28px) between blocks; the trigger zone centres
+ * a single 138×56 button with 44px beneath it.
  *
  * Text styles: every hand-set text node on this frame (no Figma text style
- * applied) now has a semantic typography token with the frame's exact values
- * — overline.wide / overline.default (the eyebrows), callout.title / callout.hint
- * (under the mic), linkCondensed (the footer link). See their $descriptions
- * in tokens/tokens.json.
+ * applied) has a semantic typography token with the frame's exact values —
+ * overline.wide / overline.default (the eyebrows). The button's label comes
+ * from Button itself (headline.s at size l). See their $descriptions in
+ * tokens/tokens.json.
  *
  * Composed / flagged values:
  * - The trigger zone's 44px bottom padding has no single token; it's
- *   space-800 + space-300 (32 + 12), not a raw number.
+ *   space-800 + space-300 (32 + 12), not a raw number. The new frame keeps
+ *   the same 44px below the button.
+ * - The Ready button is a fixed 138px in the frame, not a hugging pill
+ *   (which measures 106px for that label). No token matches 138; it is set
+ *   as a min-width and flagged, the same call Button makes for its heights.
  * - The progress bar is 222px wide in the frame, centered in the space
  *   between the two buttons — i.e. inset space-200 on each side of the slot.
  * - The "+" add-topic control is a 40px box in the frame; ButtonIcon wraps
@@ -28,7 +41,7 @@
  *   same call MenuIcons/BottomNav make for their 24px-in-20px glyphs.
  * - No status bar is rendered (OS chrome), so the flex body is 48px taller
  *   than the frame's; top-anchored content sits at Figma-y − 48 and the
- *   bottom-anchored mic zone at Figma's own y. Same on every screen.
+ *   bottom-anchored trigger zone at Figma's own y. Same on every screen.
  */
 
 .body {
@@ -96,55 +109,21 @@
   margin: var(--size-space-negative-100);
 }
 
+/* One centred button now, where the mic stack used to be. No gap rule: the
+   zone has a single child. */
 .triggerZone {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--size-space-600);
   padding-bottom: calc(var(--size-space-800) + var(--size-space-300)); /* 44px, see file header */
 }
 
-/* This screen's callout is two lines — a bold title over a secondary hint
-   (frame 15783:6710). The Idle/prompt screen's is a single secondary line,
-   so it styles its own. */
-.callout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--size-space-150);
-  text-align: center;
+/* The frame sets this instance to a fixed 138px (node 16031:7175) and sizes
+   the trigger zone to match, rather than letting the pill hug "Ready" —
+   which would come out at 106px. Applied as a min-width so a longer label
+   could still grow. 138 has no matching token, same class of gap Button
+   already flags for its own 40/56px heights. */
+.triggerZone > button > span {
+  min-width: 138px; /* no matching space token — see file header */
 }
 
-.calloutTitle {
-  margin: 0;
-  color: var(--color-text-primary);
-  font-family: var(--typography-callout-title-fontFamily);
-  font-weight: var(--typography-callout-title-fontWeight);
-  font-size: var(--typography-callout-title-fontSize);
-  line-height: var(--typography-callout-title-lineHeight);
-  letter-spacing: var(--typography-callout-title-letterSpacing);
-}
-
-.calloutHint {
-  margin: 0;
-  color: var(--color-text-secondary);
-  font-family: var(--typography-callout-hint-fontFamily);
-  font-weight: var(--typography-callout-hint-fontWeight);
-  font-size: var(--typography-callout-hint-fontSize);
-  line-height: var(--typography-callout-hint-lineHeight);
-  letter-spacing: var(--typography-callout-hint-letterSpacing);
-}
-
-.nextLink {
-  border: none;
-  background: none;
-  padding: 0;
-  text-decoration: underline;
-  color: var(--color-text-primary);
-  font-family: var(--typography-linkCondensed-fontFamily);
-  font-weight: var(--typography-linkCondensed-fontWeight);
-  font-size: var(--typography-linkCondensed-fontSize);
-  line-height: var(--typography-linkCondensed-lineHeight);
-  letter-spacing: var(--typography-linkCondensed-letterSpacing);
-  cursor: pointer;
-}

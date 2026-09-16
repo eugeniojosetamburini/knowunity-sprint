@@ -9,6 +9,7 @@ import { ChatBubble } from "@/stories/components/ChatBubble/ChatBubble";
 import { Mascot } from "@/stories/components/Mascot/Mascot";
 import { VoiceInput } from "@/stories/components/VoiceInput/VoiceInput";
 import { getTopic, progressForTerm } from "../../../../due-terms";
+import { ExitSessionSheet, useExitSession } from "../../ExitSession";
 import styles from "./page.module.css";
 
 // The Processing screen — "Voice Review Screen" frame 15783:7209 (SPEC.md
@@ -68,13 +69,17 @@ export default function Processing() {
     return () => clearTimeout(timer);
   }, [router, topicId, termIndex]);
 
+  // ⋯ → End session → confirm → Home (SPEC.md #15/#16). Terms left
+  // counts the current term too, since leaving abandons it as well.
+  const exit = useExitSession((topic?.terms.length ?? 0) - index);
+
   if (!topic || !term || !Number.isInteger(index)) {
     notFound();
   }
 
   return (
     <Scaffold
-      topBar={<AppBar backHref={`/recap/${topicId}/prompt/${index}`} backLabel="Back to the question" progress={progressForTerm(index)} />}
+      topBar={<AppBar menuItems={exit.menuItems} backHref={`/recap/${topicId}/prompt/${index}`} backLabel="Back to the question" progress={progressForTerm(index)} />}
     >
       <div className={styles.body}>
         <p className={styles.eyebrow}>
@@ -99,6 +104,8 @@ export default function Processing() {
             thinking", which is what the wait means here. */}
         <VoiceInput state="disabled" />
       </div>
+
+      <ExitSessionSheet {...exit.sheetProps} />
     </Scaffold>
   );
 }

@@ -1,0 +1,53 @@
+/*
+ * TypeTrigger — the text fallback's zone (SPEC.md #14). No Figma frame
+ * exists for this screen, so the geometry is not traced; it is pinned to
+ * the voice zone it replaces so that switching modes moves nothing above it.
+ *
+ * Height is the flow's standard 259px trigger zone — the same value
+ * MicTrigger's zone uses on the prompt and hint screens (the frames
+ * themselves disagree: 259 / 262 / 263 / 232, and the build standardises on
+ * 259; logged in SPEC.md's Open list). Keeping it identical is the whole
+ * point here: the eyebrow, mascot, bubble and Skip must not shift when the
+ * mic becomes a field.
+ *
+ * Content measures 204px inside the zone's 215px of usable height (field
+ * 104 + 24 + Submit 32 + 24 + link 20), so it fits without changing the
+ * zone. Side padding is the body's own space-600, so the field's edges line
+ * up with the eyebrow and bubble above it rather than with the mic's
+ * centred 112px circle.
+ *
+ * Every value resolves to a token except the 259px height, which is the
+ * frame-family value MicTrigger already flags the same way.
+ */
+
+.zone {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--size-space-600);
+  height: 259px; /* frame-family value, no matching token — see file header */
+  padding-inline: var(--size-space-600);
+  padding-bottom: calc(var(--size-space-800) + var(--size-space-300)); /* 44px, as on every other voice screen */
+}
+
+/* The field spans the body's width; everything under it stays centred. */
+.zone > :first-child {
+  width: 100%;
+}
+
+/* Same underlined condensed link as "Type instead", which it replaces —
+   the toggle looks the same in both directions. */
+.voiceLink {
+  border: none;
+  background: none;
+  padding: 0;
+  text-decoration: underline;
+  color: var(--color-text-primary);
+  font-family: var(--typography-linkCondensed-fontFamily);
+  font-weight: var(--typography-linkCondensed-fontWeight);
+  font-size: var(--typography-linkCondensed-fontSize);
+  line-height: var(--typography-linkCondensed-lineHeight);
+  letter-spacing: var(--typography-linkCondensed-letterSpacing);
+  cursor: pointer;
+}

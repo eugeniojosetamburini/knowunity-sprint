@@ -14,6 +14,13 @@
  * place on every route in the flow, and five screens are already measured
  * against 64. The 8px difference is Figma's, flagged not resolved.
  *
+ * The ⋯ menu (SPEC.md #16) is anchored to the ⋯ button rather than drawn
+ * in the page flow, so opening it moves nothing. Its surface is
+ * `background.floating`, whose own token description names this exact use:
+ * "translucent frosted-glass fill for dropdowns, tooltips, and popovers
+ * floating above content." **No Figma frame or component covers the menu**,
+ * so its geometry is composed from tokens, not traced.
+ *
  * One value with no token, flagged rather than invented: the title is
  * Greed Standard **Medium** (500) in Figma and tokens/tokens.json has no
  * 500 weight at all (regular / 600 / bold only), so it renders at
@@ -48,4 +55,70 @@
   font-size: var(--typography-body-s-bold-fontSize);
   line-height: var(--typography-body-s-bold-lineHeight);
   letter-spacing: var(--typography-body-s-bold-letterSpacing);
+}
+
+/* Anchor for the ⋯ menu. Static size, so the bar's layout is identical
+   whether or not a screen passes menu items. */
+.more {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+}
+
+/* Hangs below the ⋯ and right-aligned to it, so it never crosses the
+   frame's edge on a 390px screen. z-index sits above the page but below
+   BottomSheet's modal layer (10), which is what the exit confirm opens
+   into once an item is chosen. */
+.menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  min-width: var(--size-space-4000);
+  padding: var(--size-space-100);
+  border: var(--size-stroke-border) solid var(--color-border-default);
+  border-radius: var(--size-radius-400);
+  background: var(--color-background-floating);
+  backdrop-filter: blur(var(--size-radius-400));
+  box-shadow: var(--effect-elevation-sheet);
+}
+
+.menuItem {
+  border: none;
+  background: none;
+  padding: var(--size-space-300) var(--size-space-400);
+  border-radius: var(--size-radius-200);
+  text-align: left;
+  white-space: nowrap;
+  color: var(--color-text-primary);
+  font-family: var(--typography-body-s-bold-fontFamily);
+  font-weight: var(--typography-body-s-bold-fontWeight);
+  font-size: var(--typography-body-s-bold-fontSize);
+  line-height: var(--typography-body-s-bold-lineHeight);
+  letter-spacing: var(--typography-body-s-bold-letterSpacing);
+  cursor: pointer;
+}
+
+.menuItem:hover {
+  background: var(--color-interactive-secondaryHover);
+}
+
+.menuItem:focus-visible {
+  outline: var(--size-stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: calc(var(--size-space-100) * -1);
+}
+
+/* An abandon action, per design-system.md — tinted rather than neutral so
+   the dangerous item reads as dangerous before it is tapped.
+   `interactive.destructive` is the destructive *interactive* colour, which
+   is what a destructive control is; the two nearby alternatives both rule
+   themselves out in their own descriptions — `feedback.error.bold` says
+   "not destructive buttons (use interactive.destructive)" and `text.error`
+   says "not destructive button labels". **Flagged:** the system has no
+   destructive *text* token, only fills, so this uses the fill colour as a
+   label colour. Worth adding at source. */
+.destructive {
+  color: var(--color-interactive-destructive);
 }

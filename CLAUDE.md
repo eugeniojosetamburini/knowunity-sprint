@@ -27,7 +27,9 @@
 - Never hardcode a value that has a token.
 - Never use a CSS fallback like `var(--token, #333)`.
 - Never read a primitive token directly from a component — go through the semantic layer.
-- Never use `chips` for non-tappable labels, `textBlock` for read-only text, or `buttonGroup` for 3+ options (`docs/design-system.md`).
+- Never use `chips` for non-tappable labels, or `buttonGroup` for 3+ options (`docs/design-system.md`).
+- Never use `textBlock` for a field the student types into — it is a read-only title/caption pair. The input is `textField`. (This rule said the exact opposite until 2026-09-15; it was written from the Figma component's description, which contradicts the drawn component. See `docs/design-system.md`'s `textBlock` entry.)
+- Never use `actionSheet` for a modal — slot 4 is a persistent footer, slot 5 (`bottomSheet`) interrupts and dims. Both are built.
 - Never add auto-endpointing, multi-turn tutoring, real STT, real judging, or real audio/model calls (`docs/design-brief.md`, `docs/sprint-context.md`).
 - Never give Knowie a voice/audio output.
 - Never trap the student with no way forward (skip/text fallback always available).
@@ -38,6 +40,27 @@ When working on UI, use the storybook tools to read the component library
 before answering or writing anything. Never assume a component prop exists.
 Query the documentation, and use only props that are documented or shown in
 a story. If a prop isn't there, stop and ask me.
+
+**Start Storybook before starting Claude Code.** `.mcp.json` declares the
+server as `type: "http"` at `http://localhost:6006/mcp`, so it cannot be
+auto-started — it has to already be listening when the session begins. If
+it isn't, the connection is refused *for the whole session* and the client
+never retries, so the `mcp__storybook__*` tools stay unavailable even after
+Storybook comes up later. Run `npm run storybook` (port 6006) first, and
+leave that terminal open — the server dies with its parent shell.
+
+If you find yourself in a session where the tools are already missing:
+don't conclude the capability doesn't exist, and don't fall back to reading
+component source — that is exactly what the rule above forbids. Tell me, so
+I can restart. The endpoint can be checked with a POST (it's SSE, so a
+plain GET will hang and look like a dead server):
+
+```
+curl -s --max-time 6 -X POST http://localhost:6006/mcp \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json, text/event-stream' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"probe","version":"1"}}}'
+```
 
 # File map
 

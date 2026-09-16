@@ -24,8 +24,10 @@ import styles from "./page.module.css";
 // Composed from the brief, not traced: the bars, the greeting and the
 // footer link stay exactly where the list puts them, the cards are replaced
 // by a short reassurance line, and the recall badge clears to "0". The
-// query-param entry follows the entry screen's own `?mic=denied`, so the
-// state can be presented without having to walk a whole session first.
+// query-param entry lets the state be presented without having to walk a
+// whole session first. (The pattern came from the entry screen's old
+// `?mic=denied`, dropped 2026-09-15 with that screen's denied state, so
+// this is now the only query-param state in the prototype.)
 // Everything decided here is listed in the build notes — nothing about this
 // state is drawn anywhere.
 //
