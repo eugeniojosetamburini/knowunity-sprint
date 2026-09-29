@@ -79,16 +79,6 @@
 /* The same underlined condensed drill-down link the due list uses for
    "Choose your own topics", centred here as the frame draws it. */
 .drillDownLink {
+  /* Position only — everything the link looks like is TextLink's. */
   align-self: center;
-  border: none;
-  background: none;
-  padding: var(--size-space-300) var(--size-space-200);
-  text-decoration: underline;
-  font-family: var(--typography-linkCondensed-fontFamily);
-  font-weight: var(--typography-linkCondensed-fontWeight);
-  font-size: var(--typography-linkCondensed-fontSize);
-  line-height: var(--typography-linkCondensed-lineHeight);
-  letter-spacing: var(--typography-linkCondensed-letterSpacing);
-  color: var(--color-text-primary);
-  cursor: pointer;
 }

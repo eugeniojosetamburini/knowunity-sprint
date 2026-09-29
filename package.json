@@ -10,7 +10,8 @@
     "tokens": "style-dictionary build --config style-dictionary.config.mjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=chpt_ab0997fc282e5e1"
+    "chromatic": "npx chromatic --project-token=chpt_ab0997fc282e5e1",
+    "check:tokens": "! grep -rnE '#[0-9a-fA-F]{3,8}\\b' --include='*.ts' --include='*.tsx' --include='*.css' app stories | grep -vE ':[0-9]+:[[:space:]]*(//|/\\*|\\*)'"
   },
   "dependencies": {
     "motion": "^13.3.0",

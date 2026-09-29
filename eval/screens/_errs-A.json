@@ -1,0 +1,8 @@
+[
+  "warning: Image with src \"/_next/static/media/card-image.2zm2_wyzysmya.png\" was detected as the Largest Contentful Paint (LCP). Please add the `loading=\"eager\"` property if this image is above the fold.\nRead mo",
+  "warning: Image with src \"/_next/static/media/mascot-thinking.0xrlm6b0of-zf.png\" was detected as the Largest Contentful Paint (LCP). Please add the `loading=\"eager\"` property if this image is above the fold.\nRe",
+  "warning: Image with src \"/_next/static/media/mascot-thinking.0xrlm6b0of-zf.png\" was detected as the Largest Contentful Paint (LCP). Please add the `loading=\"eager\"` property if this image is above the fold.\nRe",
+  "warning: Image with src \"/_next/static/media/mascot-thinking.0xrlm6b0of-zf.png\" was detected as the Largest Contentful Paint (LCP). Please add the `loading=\"eager\"` property if this image is above the fold.\nRe",
+  "HTTP 404 http://localhost:3000/recap/nope",
+  "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+]

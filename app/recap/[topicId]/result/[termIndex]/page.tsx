@@ -14,11 +14,12 @@ import {
   GRADE_FOR_OUTCOME,
   INTERVAL_FOR_GRADE,
   getTopic,
+  outcomeAfterHint,
   progressForTerm,
   type Grade,
   type TermOutcome,
 } from "../../../../due-terms";
-import { useTypedAnswer } from "../../textMode";
+import { saveGrade, useGrades, useHints, useTypedAnswer } from "../../sessionState";
 import { ExitSessionSheet, useExitSession } from "../../ExitSession";
 import styles from "./page.module.css";
 
@@ -42,11 +43,19 @@ import styles from "./page.module.css";
 //   primary/s next to Continue primary/l — two Primaries on one screen,
 //   which CLAUDE.md forbids. Continue keeps the Primary bottom-CTA slot.
 //   Logged in SPEC.md and sprint-context.md; wants fixing at source.
-// - Hint only appears on incorrect and partial. On a pass there is nothing
-//   to hint at, and the frame has no Hint button.
+// - Hint only appears on incorrect and partial, and only once per term. On a
+//   pass there is nothing to hint at, and the frame has no Hint button; after
+//   the hint has been taken it is gone (no second hint). The second attempt
+//   after a hint reads one step kinder — a miss becomes partial, a partial
+//   becomes a pass — using that term's existing copy for the new outcome
+//   (`outcomeAfterHint`, decided 2026-09-21).
 // - Grading is offered on every outcome, misses included, and the last tap
-//   wins (SPEC.md). Selection is local; nothing downstream consumes it,
-//   since the spaced-repetition engine is mocked.
+//   wins (SPEC.md). The tap is saved to the session store (../../textMode)
+//   and read back by the Summary, so "last tap wins" now holds across
+//   navigations rather than only within one visit to this screen. Nothing
+//   reschedules anything — the spaced-repetition engine is still mocked —
+//   but the interval the Summary prints is at least the one the student
+//   picked.
 // - Retry re-records the same term, so it returns to that term's prompt
 //   screen at idle. It is *not* part of the hint loop.
 // - Continue advances to the next term's prompt. On the last term it goes
@@ -81,6 +90,13 @@ const BUBBLE_STATE: Record<TermOutcome, ChatBubbleState> = {
   partial: "partial",
 };
 
+// Which of ChatBubble's independent text props belongs to each outcome.
+const TEXT_PROP: Record<TermOutcome, "correctText" | "incorrectText" | "partialText"> = {
+  pass: "correctText",
+  incorrect: "incorrectText",
+  partial: "partialText",
+};
+
 const MASCOT_STATE: Record<TermOutcome, MascotState> = {
   pass: "excited",
   incorrect: "confused",
@@ -104,6 +120,12 @@ export default function Result() {
 
   const [grade, setGrade] = useState<Grade | null>(null);
   const typedAnswer = useTypedAnswer(topicId, index);
+  // What was tapped on an earlier visit to this term's result, if any —
+  // so coming back through Hint or the back arrow shows the student their
+  // own last answer rather than silently resetting to the recommendation.
+  const savedGrade = useGrades(topicId)[index];
+  // Whether this term's hint was taken, and answered again after it.
+  const hintState = useHints(topicId)[index];
 
   // ⋯ → End session → confirm → Home (SPEC.md #15/#16). Terms left
   // counts the current term too, since leaving abandons it as well.
@@ -113,10 +135,14 @@ export default function Result() {
     notFound();
   }
 
-  const outcome = term.outcome;
-  const selected = grade ?? PRESELECTED[outcome];
+  // A hinted second attempt resolves one step kinder than the first
+  // (`outcomeAfterHint`): the miss loop closes on a result that moved.
+  const outcome = hintState === "retried" ? outcomeAfterHint(term.outcome) : term.outcome;
+  const selected = grade ?? savedGrade ?? PRESELECTED[outcome];
   const isLastTerm = index === topic.terms.length - 1;
-  const showHint = outcome !== "pass";
+  // No second hint (sprint-context.md): once it has been taken it is gone,
+  // whether or not the student has answered again yet.
+  const showHint = outcome !== "pass" && !hintState;
 
   const reply = outcome === "pass" ? term.answer : outcome === "incorrect" ? term.miss : term.partial;
 
@@ -173,12 +199,12 @@ export default function Result() {
           <div className={styles.replyGroup}>
             <div className={styles.mascotChatRow}>
               <Mascot state={MASCOT_STATE[outcome]} />
-              <ChatBubble
-                state={BUBBLE_STATE[outcome]}
-                correctText={reply}
-                incorrectText={reply}
-                partialText={reply}
-              />
+              {/* Only the prop for the state actually being shown.
+                  ChatBubble keeps correctText / incorrectText / partialText
+                  independent on purpose (docs/design-system.md), so filling
+                  all three with the same string threw that away — and any
+                  future state swap would have silently kept the old text. */}
+              <ChatBubble state={BUBBLE_STATE[outcome]} {...{ [TEXT_PROP[outcome]]: reply }} />
             </div>
 
             {showHint && (
@@ -210,7 +236,13 @@ export default function Result() {
                 state={selected === value ? value : "default"}
                 title={title}
                 subtitle={subtitle}
-                onClick={() => setGrade(value)}
+                onClick={() => {
+                  setGrade(value);
+                  // Persisted so the Summary can report the grade the
+                  // student chose instead of the one this screen
+                  // recommended. Last tap wins, across navigations now.
+                  saveGrade(topicId, index, value);
+                }}
               />
             ))}
           </div>

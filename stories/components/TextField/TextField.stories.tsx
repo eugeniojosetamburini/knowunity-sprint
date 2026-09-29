@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { TextField } from './TextField';
 
 const DESCRIPTION =
-  "A field the student types into. NO FIGMA COMPONENT BACKS THIS ONE — it is the thing docs/design-system.md and CLAUDE.md were describing when they called `textBlock` \"an editable input\", but Figma's actual textBlock (node 9003:9039) is a title/caption display pair with no field anywhere in it. Settled 2026-09-15: the two are separate and honestly named, and the docs were corrected. USE: free-text entry outside the main chat box — the text fallback where a student types an answer instead of speaking it (SPEC.md #14), or a short \"tell us more\" field. DON'T: use it for anything read-only; that's TextBlock for a title/caption pair, or ChatBubble for Knowie's dialogue. Every value is composed from tokens whose own descriptions specify this use (border.default is \"resting input borders\", text.disabled is \"empty-field placeholders\") — nothing invented, but nothing measured either, since there is no frame to measure.";
+  "A field the student types into. NO FIGMA COMPONENT BACKS THIS ONE — it is the thing docs/design-system.md and CLAUDE.md were describing when they called `textBlock` \"an editable input\", but Figma's actual textBlock (node 9003:9039) is a title/caption display pair with no field anywhere in it. Settled 2026-09-15: the two are separate and honestly named, and the docs were corrected. USE: free-text entry outside the main chat box — the text fallback where a student types an answer instead of speaking it (SPEC.md #14), or a short \"tell us more\" field. DON'T: use it for anything read-only; that's TextBlock for a title/caption pair, or ChatBubble for Knowie's dialogue. Every value is composed from tokens whose own descriptions specify this use (border.default is \"resting input borders\", text.placeholder is \"the prompt text inside an empty input\") — nothing invented, but nothing measured either, since there is no frame to measure.";
 
 const meta = {
   title: 'Components/TextField',
@@ -21,7 +21,7 @@ export const Empty: Story = {
     docs: {
       description: {
         story:
-          'The resting state. The placeholder uses text.disabled, the token specified for empty-field placeholders, and the edge uses border.default, specified for resting input borders.',
+          'The resting state. The placeholder uses text.placeholder — the token added for this use after text.disabled, which used to name it, measured 3.69:1 on the field, under WCAG AA. The edge uses border.default, specified for resting input borders.',
       },
     },
   },

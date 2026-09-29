@@ -2,6 +2,7 @@ import type { ButtonHTMLAttributes } from 'react';
 import Image from 'next/image';
 
 import styles from './Badge.module.css';
+import hit from '../hitArea.module.css';
 import { CheckCircleIcon } from './CheckCircleIcon';
 import { StreakIcon } from './StreakIcon';
 import { FireIcon } from './FireIcon';
@@ -47,7 +48,7 @@ export function Badge({
     return (
       <button
         type={type}
-        className={[styles.root, styles.pro, className].filter(Boolean).join(' ')}
+        className={[styles.root, hit.hitArea, styles.pro, className].filter(Boolean).join(' ')}
         aria-label={ariaLabel ?? DEFAULT_LABEL.pro}
         {...rest}
       >
@@ -61,7 +62,7 @@ export function Badge({
   return (
     <button
       type={type}
-      className={[styles.root, styles[variant], className].filter(Boolean).join(' ')}
+      className={[styles.root, hit.hitArea, styles[variant], className].filter(Boolean).join(' ')}
       aria-label={ariaLabel ?? (showCount ? undefined : DEFAULT_LABEL[variant])}
       {...rest}
     >

@@ -1,6 +1,7 @@
 import type { ButtonHTMLAttributes } from 'react';
 
 import styles from './Chips.module.css';
+import hit from '../hitArea.module.css';
 
 export type ChipsSize = 'XXS' | 'XS' | 'S' | 'M';
 export type ChipsColor = 'primary' | 'pro' | 'brand';
@@ -28,7 +29,7 @@ export function Chips({
   return (
     <button
       type={type}
-      className={[styles.root, styles[size], styles[color], isActivePrimary ? styles.active : '', className]
+      className={[styles.root, hit.hitArea, styles[size], styles[color], isActivePrimary ? styles.active : '', className]
         .filter(Boolean)
         .join(' ')}
       aria-pressed={color === 'primary' ? active : undefined}

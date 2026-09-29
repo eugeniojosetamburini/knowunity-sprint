@@ -11,7 +11,14 @@
  *   focus ring   border.focus        "keyboard focus indicator; pair with
  *                                     the heavy 2px stroke and never remove
  *                                     without a replacement"
- *   placeholder  text.disabled       "…and empty-field placeholders"
+ *   placeholder  text.placeholder    "the prompt text inside an empty
+ *                                     input" — the token added for this
+ *                                     use (4.86:1 here). It was
+ *                                     text.disabled, which named
+ *                                     placeholders but measures 3.69:1,
+ *                                     under the 4.5:1 gate; the two uses
+ *                                     were split at the token layer rather
+ *                                     than worked around here
  *   text         body.m.regular      the paragraph style, matching what
  *                                     ChatBubble sets Knowie's replies in,
  *                                     since the student's answer is the
@@ -40,7 +47,7 @@
 }
 
 .field::placeholder {
-  color: var(--color-text-disabled);
+  color: var(--color-text-placeholder);
   /* Safari clamps placeholder opacity on its own; pin it so the token's
      alpha is what shows. */
   opacity: 1;
@@ -65,5 +72,8 @@
   /* Vertical padding plus line-height decide the height, so no fixed one
      is set — `rows` does that job, and the student can grow it. */
   min-height: var(--size-space-1600);
-  resize: vertical;
+  /* No resize grabber: this is an iOS-only 390px prototype, and the corner
+     grip is a desktop affordance that renders on the drawn field. `rows`
+     sizes it. */
+  resize: none;
 }

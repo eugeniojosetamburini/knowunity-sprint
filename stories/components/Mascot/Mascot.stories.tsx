@@ -48,6 +48,13 @@ export const StateConfused: Story = {
   },
 };
 
+export const StatePeeking: Story = {
+  name: 'state=Peeking',
+  args: {
+    state: 'peeking',
+  },
+};
+
 export const StateThinking: Story = {
   name: 'state=thinking',
   parameters: { docs: { description: { story: DESCRIPTION } } },

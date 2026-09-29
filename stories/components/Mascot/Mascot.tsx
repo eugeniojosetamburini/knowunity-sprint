@@ -6,8 +6,9 @@ import standby from '../../../public/images/mascot-standby.png';
 import excited from '../../../public/images/mascot-excited.png';
 import confused from '../../../public/images/mascot-confused.png';
 import thinking from '../../../public/images/mascot-thinking.png';
+import peeking from '../../../public/images/mascot-peeking.png';
 
-export type MascotState = 'standby' | 'excited' | 'confused' | 'thinking';
+export type MascotState = 'standby' | 'excited' | 'confused' | 'thinking' | 'peeking';
 
 export type MascotProps = {
   state?: MascotState;
@@ -18,6 +19,7 @@ const IMAGE: Record<MascotState, StaticImageData> = {
   excited,
   confused,
   thinking,
+  peeking,
 };
 
 export function Mascot({ state = 'standby', className, ...rest }: MascotProps) {

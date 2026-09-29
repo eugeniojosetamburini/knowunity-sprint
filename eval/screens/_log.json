@@ -1,0 +1,359 @@
+[
+  {
+    "name": "01-home",
+    "hash": "07d4f37076de8b03c44cc44c2d5fc44a",
+    "url": "/",
+    "sw": 390,
+    "cw": 390,
+    "h1": "Invite a friend, you both get $0.50"
+  },
+  {
+    "name": "02-due-list",
+    "hash": "98ff159f875978a124080bf3b3b38941",
+    "url": "/due-list",
+    "sw": 390,
+    "cw": 390,
+    "h1": "Let’s review what you’ve learned so far"
+  },
+  {
+    "name": "03-due-list-caught-up",
+    "hash": "6d4b1058dbde4d3fbc33caffe753ce60",
+    "url": "/due-list?caughtUp=1",
+    "sw": 390,
+    "cw": 390,
+    "h1": "You’re all caught up"
+  },
+  {
+    "name": "04-recap",
+    "hash": "ac5c7a0ae101bcc2b521919b22e43f9d",
+    "url": "/recap/renaissance-philosophy",
+    "sw": 390,
+    "cw": 390,
+    "h1": "Check what you remember"
+  },
+  {
+    "name": "04b-recap-topic2",
+    "hash": "eac1dc35635ee3f70709663f45476eb2",
+    "url": "/recap/the-reformation",
+    "sw": 390,
+    "cw": 390,
+    "h1": "Check what you remember"
+  },
+  {
+    "name": "05-prompt-t1-idle",
+    "hash": "778c061b22052f632713c0253e7180cd",
+    "url": "/recap/renaissance-philosophy/prompt/0",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "05x-prompt-t1-menu-open",
+    "hash": "1300c3b0a3c0d0d24049200ecf985621",
+    "url": "/recap/renaissance-philosophy/prompt/0",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "05y-prompt-t1-exit-sheet",
+    "hash": "45924dc75e49498617dc76b97596dc6b",
+    "url": "/recap/renaissance-philosophy/prompt/0",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "debug-buttons-t1",
+    "buttons": [
+      "Back to recap",
+      "More options",
+      "Skip",
+      "Start speaking",
+      "Type instead",
+      "Open Next.js Dev Tools"
+    ]
+  },
+  {
+    "name": "06-prompt-t1-listening",
+    "hash": "3b03ed8db8eb18df31e9154dca18a44d",
+    "url": "/recap/renaissance-philosophy/prompt/0",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "07-prompt-t1-stopped",
+    "hash": "fd53205ddc685f56df74806cf37e704a",
+    "url": "/recap/renaissance-philosophy/prompt/0",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "05-prompt-t2-idle",
+    "hash": "c333844ef06a2b2fa580b60bf32f7898",
+    "url": "/recap/renaissance-philosophy/prompt/1",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "debug-buttons-t2",
+    "buttons": [
+      "Back to recap",
+      "More options",
+      "Skip",
+      "Start speaking",
+      "Type instead",
+      "Open Next.js Dev Tools"
+    ]
+  },
+  {
+    "name": "06-prompt-t2-listening",
+    "hash": "750984d99d67c94a1737e2ef9dd60578",
+    "url": "/recap/renaissance-philosophy/prompt/1",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "07-prompt-t2-stopped",
+    "hash": "dea427330b2f6c884c88c7139853be68",
+    "url": "/recap/renaissance-philosophy/prompt/1",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "05-prompt-t3-idle",
+    "hash": "8568486e3501fbee4fc9bb90aa54ba50",
+    "url": "/recap/renaissance-philosophy/prompt/2",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "debug-buttons-t3",
+    "buttons": [
+      "Back to recap",
+      "More options",
+      "Skip",
+      "Start speaking",
+      "Type instead",
+      "Open Next.js Dev Tools"
+    ]
+  },
+  {
+    "name": "06-prompt-t3-listening",
+    "hash": "3ca3e34a166c8100cb7bf2ad12ff714a",
+    "url": "/recap/renaissance-philosophy/prompt/2",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "07-prompt-t3-stopped",
+    "hash": "c9a274dad269011374fe11a2570ce7c5",
+    "url": "/recap/renaissance-philosophy/prompt/2",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "08-processing-t1",
+    "hash": "6e4c12e979845dbc7a67d044190c7862",
+    "url": "/recap/renaissance-philosophy/processing/0",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "09-result-t1",
+    "hash": "30784e2937a0ce154bf3260615891b13",
+    "url": "/recap/renaissance-philosophy/result/0",
+    "sw": 390,
+    "cw": 390,
+    "h1": "Rate how easy it was to\nrecall that answer"
+  },
+  {
+    "name": "08-processing-t2",
+    "hash": "5806f2463dd88a19ee88bd049fac1305",
+    "url": "/recap/renaissance-philosophy/processing/1",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "09-result-t2",
+    "hash": "79d16336f4521a4692600ff36a9a4443",
+    "url": "/recap/renaissance-philosophy/result/1",
+    "sw": 390,
+    "cw": 390,
+    "h1": "Rate how easy it was to\nrecall that answer"
+  },
+  {
+    "name": "09b-result-t2-graded-easy",
+    "hash": "79d16336f4521a4692600ff36a9a4443",
+    "url": "/recap/renaissance-philosophy/result/1",
+    "sw": 390,
+    "cw": 390,
+    "h1": "Rate how easy it was to\nrecall that answer"
+  },
+  {
+    "name": "09c-result-t2-exit-sheet",
+    "hash": "1f8ce694bd324bfd4f90326df1a8ef8b",
+    "url": "/recap/renaissance-philosophy/result/1",
+    "sw": 390,
+    "cw": 390,
+    "h1": "Rate how easy it was to\nrecall that answer"
+  },
+  {
+    "name": "10-hint-t2",
+    "hash": "38e0e8f3a57d00f2764a511bf38a078a",
+    "url": "/recap/renaissance-philosophy/hint/1",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "08-processing-t3",
+    "hash": "53dc6b988480cacac2465ac0efae3f38",
+    "url": "/recap/renaissance-philosophy/processing/2",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "09-result-t3",
+    "hash": "c701664610fa27d9ed573d842a670ef7",
+    "url": "/recap/renaissance-philosophy/result/2",
+    "sw": 390,
+    "cw": 390,
+    "h1": "Rate how easy it was to\nrecall that answer"
+  },
+  {
+    "name": "10-hint-t3",
+    "hash": "1acf972d3dec549a458d7db1c9bf82a2",
+    "url": "/recap/renaissance-philosophy/hint/2",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "11-summary",
+    "hash": "1c9dce5752018e99f9484e73cc0fcb11",
+    "url": "/recap/renaissance-philosophy/summary",
+    "sw": 390,
+    "cw": 390,
+    "h1": "Renaissance Philosophy"
+  },
+  {
+    "name": "11b-summary-topic2",
+    "hash": "5d9591027a6dcc8b22594be552602b40",
+    "url": "/recap/the-reformation/summary",
+    "sw": 390,
+    "cw": 390,
+    "h1": "The Reformation"
+  },
+  {
+    "name": "12-404-topic",
+    "hash": "cb1a20d23631f06bf5023d2e7ed8ca6b",
+    "url": "/recap/nope",
+    "sw": 390,
+    "cw": 390,
+    "h1": "404"
+  },
+  {
+    "name": "12b-404-term",
+    "hash": "cb1a20d23631f06bf5023d2e7ed8ca6b",
+    "url": "/recap/renaissance-philosophy/prompt/9",
+    "sw": 390,
+    "cw": 390,
+    "h1": "404"
+  },
+  {
+    "name": "13-hint-to-prompt-record1",
+    "hash": "750984d99d67c94a1737e2ef9dd60578",
+    "url": "/recap/renaissance-philosophy/prompt/1?record=1",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "debug-B-before-mic-tap-permission-calls",
+    "note": "checked below"
+  },
+  {
+    "name": "20-prompt-t1-denied",
+    "hash": "152aa66410009c74bd3260486d0be0d5",
+    "url": "/recap/renaissance-philosophy/prompt/0",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "21-hint-t2-denied",
+    "hash": "cfbb51107cab13f6f6f6e9512009330c",
+    "url": "/recap/renaissance-philosophy/hint/1",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "22-prompt-t1-text-empty",
+    "hash": "c20ffee534f47d8585af855da5b6c884",
+    "url": "/recap/renaissance-philosophy/prompt/0",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "23-prompt-t1-text-filled",
+    "hash": "01fb8389f82c429706e94181eefefecf",
+    "url": "/recap/renaissance-philosophy/prompt/0",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "24-processing-typed",
+    "hash": "6e4c12e979845dbc7a67d044190c7862",
+    "url": "/recap/renaissance-philosophy/processing/0",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "25-result-t1-typed-echo",
+    "hash": "1527a80dee3ab328787721f08f2a8ebe",
+    "url": "/recap/renaissance-philosophy/result/0",
+    "sw": 390,
+    "cw": 390,
+    "h1": "Rate how easy it was to\nrecall that answer"
+  },
+  {
+    "name": "26-hint-t2-text-mode",
+    "hash": "8afbeba9b30429d2ce2f77008d4ecb17",
+    "url": "/recap/renaissance-philosophy/hint/1",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "26b-hint-t2-text-filled",
+    "hash": "1b38d2a89832da0d736a5f663b16e153",
+    "url": "/recap/renaissance-philosophy/hint/1",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  },
+  {
+    "name": "27-hint-t2-back-to-voice",
+    "hash": "38e0e8f3a57d00f2764a511bf38a078a",
+    "url": "/recap/renaissance-philosophy/hint/1",
+    "sw": 390,
+    "cw": 390,
+    "h1": null
+  }
+]

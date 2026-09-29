@@ -10,7 +10,8 @@ import { Chips } from "@/stories/components/Chips/Chips";
 import { Mascot } from "@/stories/components/Mascot/Mascot";
 import { Button } from "@/stories/components/Button/Button";
 import { PlusIcon } from "@/stories/components/ButtonIcon/PlusIcon";
-import { getTopic } from "../../due-terms";
+import { getTopic, progressForTerm } from "../../due-terms";
+import { resetTopicSession } from "./sessionState";
 import styles from "./page.module.css";
 
 // Entry / recap screen (SPEC.md #3), matching the Figma frame
@@ -44,7 +45,7 @@ import styles from "./page.module.css";
 // docs/voice-ux.md marks a **Must** ("permission denied → route to text").
 // It lives where permission is actually asked for: the prompt screen
 // (#4/#5) and the hint screen, both of which request `getUserMedia` on
-// their mic tap, disable the mic on a refusal, and show "Type instead".
+// their mic tap and, on a refusal, switch to the text field and say why.
 //
 // Content notes against the frame:
 // - The "+" beside the chips is buttonIcon variant=Brand size=XS (the
@@ -66,9 +67,12 @@ export default function Recap() {
     notFound();
   }
 
+  // The bar reads 25%, which is what the frame draws — but from the same
+  // per-term source every other screen uses rather than a literal here, so
+  // it can never disagree with term 1's own prompt screen.
   return (
     <Scaffold
-      topBar={<AppBar progress="25" />}
+      topBar={<AppBar progress={progressForTerm(0)} />}
     >
       <div className={styles.body}>
         <p className={styles.eyebrow}>✓ {topic.title}</p>
@@ -76,7 +80,7 @@ export default function Recap() {
 
         <section className={styles.chatRow}>
           <Mascot state="standby" />
-          <ChatBubble state="default" />
+          <ChatBubble state="default" neutralText={topic.recapIntro} />
         </section>
 
         <section className={styles.recap}>
@@ -94,7 +98,17 @@ export default function Recap() {
           138×56 (node 16031:7175). The only action on the screen, so it is
           the screen's one Primary. */}
       <div className={styles.triggerZone}>
-        <Button variant="primary" size="l" onClick={() => router.push(`/recap/${topicId}/prompt/0`)}>
+        <Button
+          variant="primary"
+          size="l"
+          onClick={() => {
+            // A fresh run of the topic: an abandoned one (⋯ → End session)
+            // "comes back untouched, as though never started", so it must
+            // not open on the last run's grades, typed answers or hint state.
+            resetTopicSession(topicId);
+            router.push(`/recap/${topicId}/prompt/0`);
+          }}
+        >
           Ready
         </Button>
       </div>

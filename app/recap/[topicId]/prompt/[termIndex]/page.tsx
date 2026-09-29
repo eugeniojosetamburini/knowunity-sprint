@@ -7,11 +7,12 @@ import { Scaffold } from "@/stories/components/Scaffold/Scaffold";
 import { AppBar } from "@/stories/components/AppBar/AppBar";
 import { ChatBubble } from "@/stories/components/ChatBubble/ChatBubble";
 import { Button } from "@/stories/components/Button/Button";
+import { TextLink } from "@/stories/components/TextLink/TextLink";
 import { Mascot } from "@/stories/components/Mascot/Mascot";
 import { getTopic, progressForTerm } from "../../../../due-terms";
 import { MicTrigger, requestMicAccess } from "../../MicTrigger";
 import { TypeTrigger } from "../../TypeTrigger";
-import { saveTypedAnswer, useTextMode } from "../../textMode";
+import { saveTypedAnswer, setMicDenied, useMicDenied, useTextMode } from "../../sessionState";
 import { ExitSessionSheet, useExitSession } from "../../ExitSession";
 import styles from "./page.module.css";
 
@@ -20,6 +21,9 @@ import styles from "./page.module.css";
 //   idle      16023:6960  Skip, no action button,   "Tap to start"
 //   listening 15783:6833  no Skip, Cancel,          "Listening. Speak now (tap to pause)"
 //   stopped   15783:7103  Skip, Submit,             "Recording paused.  Tap again to resume."
+// The mic itself is Idle / Listening / **Paused** across those three. The
+// stopped frame reuses Idle for it; this build doesn't (see the MicTrigger
+// note below and docs/design-system.md's voiceInput entry).
 // Everything else — bar, eyebrow, mascot, bubble, "Type instead" — is
 // identical across all three, and the Cancel and Submit pills occupy the
 // same slot (both sit at y=518 in their frames).
@@ -50,13 +54,19 @@ import styles from "./page.module.css";
 //   and its callout for a field and a Submit *in place*: the bar, eyebrow,
 //   mascot, bubble and Skip all stay exactly where they are, and the zone
 //   keeps its 259px so nothing above it moves. The choice is sticky for the
-//   session (sessionStorage — see ../../textMode.ts), and "Use voice
+//   session (sessionStorage — see ../../sessionState.ts), and "Use voice
 //   instead" sits in the same spot to switch back. No Figma frame covers
 //   any of this; it is composed, and the decisions are listed in SPEC.md.
 // - The denied branch has no frame either. Since the entry screen lost its
 //   mic (frame 16031:7075), **this screen is where permission is actually
-//   requested**, so the denied state is reached here on a first refusal —
-//   not only when access is revoked mid-session, as this note used to say.
+//   requested**, so a refusal lands here on the first tap. **A refusal
+//   switches to the text field** (changed 2026-09-21) and says why, in the
+//   slot above it — it used to leave a disabled mic and "Microphone is
+//   off", a control that could never work and no way forward but a link
+//   the student had to find (voice-ux.md §3: "don't dead-end them";
+//   sprint-context.md: "permission denied routes to text-first mode").
+//   "Use voice instead" is still there, so a student who allows the mic in
+//   Settings can come back; a second refusal just lands here again.
 
 type RecordState = "idle" | "listening" | "stopped";
 
@@ -90,8 +100,8 @@ function Prompt() {
   // there, so this opens straight into Listening rather than making them
   // tap a second time.
   const [state, setState] = useState<RecordState>(searchParams.get("record") === "1" ? "listening" : "idle");
-  const [denied, setDenied] = useState(false);
   const [textMode, setTextMode] = useTextMode();
+  const micDenied = useMicDenied();
   const [typed, setTyped] = useState("");
 
   // ⋯ → End session → confirm → Home (SPEC.md #15/#16). Terms left
@@ -103,8 +113,6 @@ function Prompt() {
   }
 
   async function handleMicTap() {
-    if (denied) return;
-
     // Listening → stopped, and stopped → listening again, which is what the
     // frame's own "tap again to resume" copy describes.
     if (state === "listening") {
@@ -113,9 +121,12 @@ function Prompt() {
     }
 
     if (await requestMicAccess()) {
+      setMicDenied(false);
       setState("listening");
     } else {
-      setDenied(true);
+      // Refused: nothing is listening, so the field takes over.
+      setMicDenied(true);
+      setTextMode(true);
     }
   }
 
@@ -136,9 +147,15 @@ function Prompt() {
       topBar={<AppBar menuItems={exit.menuItems} backHref={`/recap/${topicId}`} backLabel="Back to recap" progress={progressForTerm(index)} />}
     >
       <div className={styles.body}>
-        <p className={styles.eyebrow}>
+        {/* The screen's heading. An <h1> rather than a <p>: prompt,
+            processing and hint rendered no heading at all, so the flow's
+            three main screens were headingless to a screen reader while
+            every other screen had one. The term is what this screen is
+            about, and .eyebrow carries all of the styling, so nothing
+            moves. Added 2026-09-21. */}
+        <h1 className={styles.eyebrow}>
           Term {index + 1} of {topic.terms.length} · {term.name}
-        </p>
+        </h1>
 
         <div className={styles.contentRow}>
           <div className={styles.mascotCell}>
@@ -150,11 +167,26 @@ function Prompt() {
           {showSkip && (
             <div className={styles.skipCell}>
               {/* Ungraded — the term stays due at its existing interval
-                  (SPEC.md #4). Inert on the last term: Summary isn't routed. */}
+                  (SPEC.md #4). On the last term it ends the session at the
+                  Summary, the same place Continue goes from the last
+                  result: it used to be inert here, from back when Summary
+                  wasn't routed, which left a student who couldn't answer
+                  the last term with no way out but ⋯ → End session —
+                  throwing away the two terms they had just done. A Skip
+                  that renders and does nothing is worse than no Skip.
+                  (The Summary still reports this term's scripted outcome
+                  rather than counting it as skipped; that's the separate
+                  "summary asserts its numbers" finding, not fixed here.) */}
               <Button
                 variant="tertiary"
                 size="m"
-                onClick={isLastTerm ? undefined : () => router.push(`/recap/${topicId}/prompt/${index + 1}`)}
+                onClick={() =>
+                  router.push(
+                    isLastTerm
+                      ? `/recap/${topicId}/summary`
+                      : `/recap/${topicId}/prompt/${index + 1}`,
+                  )
+                }
               >
                 Skip
               </Button>
@@ -165,6 +197,13 @@ function Prompt() {
         {/* Empty in text mode: Cancel and Submit both belong to recording,
             and the text Submit sits under the field instead. */}
         <div className={styles.actionSlot}>
+          {textMode && micDenied && (
+            // Only while the mic is refused. role="status" so a screen
+            // reader hears why the field appeared.
+            <p className={styles.callout} role="status">
+              Microphone is off. Type your answer, or allow it again in Settings.
+            </p>
+          )}
           {!textMode && state === "listening" && (
             // Discards instantly, back to idle, never counts as an attempt
             // (SPEC.md #5).
@@ -194,28 +233,36 @@ function Prompt() {
         />
       ) : (
         <div className={styles.triggerZone}>
+          {/* stopped → the mic's own Paused state, added 2026-09-21. The
+              frame draws Idle here, so a student who had just recorded saw
+              the same circle as one who had not; the pixels differed only
+              in the Submit pill and one line of caption. Logged as a
+              departure in SPEC.md #5b and docs/design-system.md. */}
           <MicTrigger
-            state={denied ? "disabled" : state === "listening" ? "listening" : "idle"}
-            label={denied ? "Microphone is off" : undefined}
+            state={state === "listening" ? "listening" : state === "stopped" ? "paused" : "idle"}
             onTap={handleMicTap}
           >
-            <p className={styles.callout}>
-              {denied ? "Microphone is off" : CALLOUT[state]}
+            {/* role="status" so idle → listening → paused is announced.
+                It is the one thing on this screen that changes without a
+                navigation, and docs/voice-ux.md §1 makes showing the
+                current state the first principle — which has to hold for
+                a student who can't see the mic change colour. */}
+            <p className={styles.callout} role="status">
+              {CALLOUT[state]}
             </p>
           </MicTrigger>
           {/* Switching discards any in-progress take — nothing was recorded
               anyway, and leaving the screen in "stopped" behind a text field
               would strand a Submit the student can no longer reach. */}
-          <button
-            type="button"
-            className={styles.nextLink}
+          <TextLink
+            flush
             onClick={() => {
               setState("idle");
               setTextMode(true);
             }}
           >
             Type instead
-          </button>
+          </TextLink>
         </div>
       )}
 

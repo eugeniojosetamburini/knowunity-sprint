@@ -10,6 +10,16 @@
  * the emotion this component shows is always paired with real text
  * elsewhere, per that same DON'T.
  *
+ * `peeking` is a pose rather than an emotion, unlike the other four. It
+ * exists because public/images/mascot-peeking.png was uploaded for the
+ * Summary's mascot — the one that sits behind the results card with its
+ * lower half clipped — and was being rendered as `excited` instead, which
+ * CLAUDE.md's "use the uploaded file, never a component's default image"
+ * rule forbids. Its art is square (164×164) where the others are 140×151,
+ * so inside this component's 70×75 contain box it renders about 5px
+ * shorter than its siblings. Wired up 2026-09-21; no Figma frame was
+ * available to confirm which art the Summary is drawn with.
+ *
  * Known gap against tokens/tokens.json — flagged, not silently invented:
  * the component's own 70×75 frame size (Figma's intrinsic mascot artwork
  * size, distinct from mascotSlot's XL/2XL/3XL/4XL scale) has no matching

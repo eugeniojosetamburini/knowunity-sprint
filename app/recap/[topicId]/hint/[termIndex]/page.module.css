@@ -73,16 +73,9 @@
   letter-spacing: var(--typography-callout-hint-letterSpacing);
 }
 
-.nextLink {
-  border: none;
-  background: none;
-  padding: 0;
-  text-decoration: underline;
-  color: var(--color-text-primary);
-  font-family: var(--typography-linkCondensed-fontFamily);
-  font-weight: var(--typography-linkCondensed-fontWeight);
-  font-size: var(--typography-linkCondensed-fontSize);
-  line-height: var(--typography-linkCondensed-lineHeight);
-  letter-spacing: var(--typography-linkCondensed-letterSpacing);
-  cursor: pointer;
+/* Why the field is showing, when the mic was refused. Pinned to the bottom
+   of the body so it sits just above the zone, where the prompt screen's
+   action slot puts the same line. */
+.notice {
+  margin-top: auto;
 }

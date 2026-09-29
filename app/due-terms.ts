@@ -29,10 +29,12 @@ export type DueTerm = {
   name: string;
   prompt: string;
   /**
-   * The scripted judgement for this term (SPEC.md, "judging is scripted per
-   * term"): stopping the recording always reaches this outcome, whatever
-   * was said. Term 1 passes, term 2 misses, term 3 is partial, so one
-   * session walks all three result screens — decided 2026-09-15.
+   * The scripted judgement for this term's first attempt (SPEC.md, "judging
+   * is scripted per term"): stopping the recording always reaches this
+   * outcome, whatever was said. Term 1 passes, term 2 misses, term 3 is
+   * partial, so one session walks all three result screens — decided
+   * 2026-09-15. An answer given after taking the hint resolves one step
+   * kinder (`outcomeAfterHint`).
    */
   outcome: TermOutcome;
   /**
@@ -48,6 +50,13 @@ export type DueTerm = {
    * height it's drawn at.
    */
   answer: string;
+  /**
+   * Written **not to give the answer away** (2026-09-21). The hint comes
+   * after this line, and there is no reveal anywhere in the loop
+   * (sprint-context.md), so a miss that stated the answer left the hint
+   * with nothing to nudge. It says the answer was off and points at the
+   * hint; the substance comes back on the answer the student gives next.
+   */
   miss: string;
   partial: string;
   /**
@@ -63,6 +72,16 @@ export type DueTerm = {
 export type DueTopic = {
   id: string;
   title: string;
+  /**
+   * Knowie's line on the Entry/recap screen. Lives here, with every other
+   * word the flow says, rather than being left to `ChatBubble`'s own
+   * default prop — which is what the screen used to render (found
+   * 2026-09-21). A component's placeholder copy standing in for screen
+   * content puts the words in the library instead of in the data, and
+   * meant both topics were introduced by a string nobody on this screen
+   * had chosen. The text is unchanged; only where it lives has.
+   */
+  recapIntro: string;
   terms: DueTerm[];
   durationText: string;
   illustration: "default" | "variation";
@@ -72,13 +91,14 @@ export const dueTopics: DueTopic[] = [
   {
     id: "renaissance-philosophy",
     title: "Renaissance Philosophy",
+    recapIntro: "Tell me what you remember in your own words — I'll nudge you if you get stuck.",
     terms: [
       {
         name: "Humanism",
         prompt: "Let’s start with the basics. In your own words - what is humanism in the renaissance?",
         outcome: "pass",
         answer: "Right — humanism put human reason, dignity and the classics at the centre.",
-        miss: "Not quite. Humanism centred human reason and the classics, not the divine.",
+        miss: "Not yet — that’s not quite what humanism was about. A hint can point you back to it.",
         partial: "Good start — you had the human focus, but the classical revival is missing.",
         hint: "Think about whose potential this era centred.",
       },
@@ -87,7 +107,7 @@ export const dueTopics: DueTopic[] = [
         prompt: "How does anthropocentrism show up in Renaissance thinking?",
         outcome: "incorrect",
         answer: "Right — anthropocentrism makes human concerns the measure of things.",
-        miss: "Not quite. Anthropocentrism puts human concerns, not God's order, at the centre.",
+        miss: "That isn’t it — you’ve pointed anthropocentrism the wrong way. A hint can help you re-aim.",
         partial: "Half there — you named the human focus, but not what it displaced.",
         hint: "Think about what sits at the centre, and why.",
       },
@@ -96,7 +116,7 @@ export const dueTopics: DueTopic[] = [
         prompt: "What did theocentrism mean before the Renaissance, and how does it differ from humanism?",
         outcome: "partial",
         answer: "Yes — theocentrism placed God, not people, at the centre of life.",
-        miss: "Not quite. Theocentrism is the God-centred view humanism moved away from.",
+        miss: "Not this one — that description belongs to a different idea. A hint can bring you back.",
         partial: "Close — God at the centre is right, but the contrast with humanism is missing.",
         hint: "Think about what humanism replaced.",
       },
@@ -107,13 +127,14 @@ export const dueTopics: DueTopic[] = [
   {
     id: "the-reformation",
     title: "The Reformation",
+    recapIntro: "Tell me what you remember in your own words — I'll nudge you if you get stuck.",
     terms: [
       {
         name: "Indulgences",
         prompt: "In your own words - what were indulgences, and why did they cause so much anger?",
         outcome: "pass",
         answer: "Right — indulgences were paid pardons, and selling them looked like buying grace.",
-        miss: "Not quite. Indulgences were pardons sold for money, which is what caused the anger.",
+        miss: "Not this time — that isn’t why indulgences caused anger. A hint can point you back to it.",
         partial: "Partly — you had the payment, but not why it outraged people.",
         hint: "Think about what was being sold, and to whom.",
       },
@@ -122,7 +143,7 @@ export const dueTopics: DueTopic[] = [
         prompt: "How would you explain predestination to someone who’s never heard the term?",
         outcome: "incorrect",
         answer: "Exactly — predestination holds that salvation is already decided by God.",
-        miss: "Not quite. Predestination means salvation is settled in advance, not earned.",
+        miss: "That isn’t it — the way you’ve framed predestination doesn’t hold. Try the hint, then say it again.",
         partial: "Close — you had God deciding, but not that it is decided beforehand.",
         hint: "Think about when the decision is made.",
       },
@@ -131,7 +152,7 @@ export const dueTopics: DueTopic[] = [
         prompt: "What was iconoclasm, and what were reformers trying to achieve by it?",
         outcome: "partial",
         answer: "Yes — iconoclasm tore out religious images to strip worship back down.",
-        miss: "Not quite. Iconoclasm was the removal of religious images, not of the clergy.",
+        miss: "Not this one — you may be thinking of a different reform. A hint can bring you back.",
         partial: "Nearly — you had images being destroyed, but not what reformers wanted from it.",
         hint: "Think about what was removed from churches.",
       },
@@ -140,6 +161,17 @@ export const dueTopics: DueTopic[] = [
     illustration: "variation",
   },
 ];
+
+// What a term's result reads once the student has taken the hint and
+// answered again (decided 2026-09-21). Judging stays scripted and still
+// ignores what was said; the only input is *whether the hint was taken*, so
+// the miss loop can close — a nudge, a second try, and a result that moves —
+// instead of returning the identical verdict forever. One step kinder: a
+// miss becomes partial, a partial becomes a pass. A first attempt is
+// untouched, so one session still walks all three result screens.
+export function outcomeAfterHint(outcome: TermOutcome): TermOutcome {
+  return outcome === "incorrect" ? "partial" : "pass";
+}
 
 export const totalDueTerms = dueTopics.reduce(
   (sum, topic) => sum + topic.terms.length,

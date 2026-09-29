@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { VoiceInput } from './VoiceInput';
 
 const DESCRIPTION =
-  "The tap target that starts and shows the state of voice capture. USE: the tap target that starts and shows the state of voice capture. DON'T: rely on the glow color alone to convey Listening — mascot status already has to survive with motion and color stripped out, and this affordance carries the same requirement. Idle: not recording, waiting for a tap. Disabled: Knowie is processing; nothing should register as a tap while in this state. Listening: actively capturing the student's answer; carries a waveform mark, not a mic icon, in its center.";
+  "The tap target that starts and shows the state of voice capture. USE: the tap target that starts and shows the state of voice capture. DON'T: rely on the glow color alone to convey Listening — mascot status already has to survive with motion and color stripped out, and this affordance carries the same requirement. Idle: not recording, waiting for a tap. Disabled: Knowie is processing; nothing should register as a tap while in this state. Listening: actively capturing the student's answer; carries a waveform mark, not a mic icon, in its center, and breathes on a loop so the state reads as live. Paused: a take has been captured and stopped — keeps Listening's fill so the audio reads as still there, but is static and carries a pause mark; no Figma frame draws it (the stopped frame reuses Idle), so it is a logged departure.";
 
 const meta = {
   title: 'Components/VoiceInput',
@@ -17,7 +17,7 @@ const meta = {
     },
   },
   argTypes: {
-    state: { control: 'select', options: ['idle', 'disabled', 'listening'] },
+    state: { control: 'select', options: ['idle', 'disabled', 'listening', 'paused'] },
   },
 } satisfies Meta<typeof VoiceInput>;
 
@@ -45,5 +45,13 @@ export const StateListening: Story = {
   parameters: { docs: { description: { story: DESCRIPTION } } },
   args: {
     state: 'listening',
+  },
+};
+
+export const StatePaused: Story = {
+  name: 'state=Paused',
+  parameters: { docs: { description: { story: DESCRIPTION } } },
+  args: {
+    state: 'paused',
   },
 };

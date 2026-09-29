@@ -42,3 +42,15 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+/* One focus ring for the whole app, in the token that exists for it.
+   Without this the browser's own default ring showed instead
+   (rgb(153, 200, 255) auto 1px) — an undesigned colour from outside the
+   palette, on a dark-mode-only product. Components that already declare
+   their own :focus-visible (voiceInput, chips, pill, radio) keep theirs;
+   this is the floor for everything else. Added 2026-09-21.
+   :focus-visible, not :focus, so a tap doesn't leave a ring behind. */
+:focus-visible {
+  outline: var(--size-stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--size-space-100);
+}

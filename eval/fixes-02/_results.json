@@ -1,0 +1,214 @@
+{
+ "miss-loop-voice": {
+  "first": "TERM 2 OF 3 · ANTHROPOCENTRISM Incorrect That isn’t it — you’ve pointed anthropocentrism the wrong way. A hint can help you re-aim. Hint Rate how easy it was to recall that answer Easy Review in 1 week Medium Review in 2 days Difficult Review tomorrow Retry Continue",
+  "firstBubble": {
+   "l": 110,
+   "t": 131,
+   "w": 256,
+   "h": 160
+  },
+  "firstHasHint": 1,
+  "firstSelected": "Difficult\nReview tomorrow",
+  "hintGeo": {
+   "frame": {
+    "l": 0,
+    "t": 0,
+    "w": 390,
+    "h": 844
+   },
+   "header": {
+    "l": 0,
+    "t": 0,
+    "w": 390,
+    "h": 64
+   },
+   "bar": {
+    "l": 84,
+    "t": 20,
+    "w": 222,
+    "h": 24
+   },
+   "barNow": "75",
+   "mic": {
+    "l": 139,
+    "t": 585,
+    "w": 112,
+    "h": 112
+   },
+   "sw": 390,
+   "cw": 390
+  },
+  "backNoAnswer": "TERM 2 OF 3 · ANTHROPOCENTRISM Incorrect That isn’t it — you’ve pointed anthropocentrism the wrong way. A hint can help you re-aim. Rate how easy it was to recall that answer Easy Review in 1 week Medium Review in 2 days Difficult Review tomorrow Retry Continue",
+  "backHasHint": 0,
+  "second": "TERM 2 OF 3 · ANTHROPOCENTRISM Almost! Half there — you named the human focus, but not what it displaced. Rate how easy it was to recall that answer Easy Review in 1 week Medium Review in 2 days Difficult Review tomorrow Retry Continue",
+  "secondHasHint": 0,
+  "secondSelected": "Medium\nReview in 2 days",
+  "secondBubble": {
+   "l": 110,
+   "t": 131,
+   "w": 256,
+   "h": 132
+  },
+  "secondGeo": {
+   "frame": {
+    "l": 0,
+    "t": 0,
+    "w": 390,
+    "h": 844
+   },
+   "header": {
+    "l": 0,
+    "t": 0,
+    "w": 390,
+    "h": 64
+   },
+   "bar": {
+    "l": 84,
+    "t": 20,
+    "w": 222,
+    "h": 24
+   },
+   "barNow": "75",
+   "mic": null,
+   "sw": 390,
+   "cw": 390
+  },
+  "afterRetry": "TERM 2 OF 3 · ANTHROPOCENTRISM Almost! Half there — you named the human focus, but not what it displaced. Rate how easy it was to recall that answer Easy Review in 1 week Medium Review in 2 days Difficult Review tomorrow Retry Continue",
+  "summaryRows": "Anthropocentrism Medium Review in 2 days ",
+  "afterReset": "TERM 2 OF 3 · ANTHROPOCENTRISM Incorrect That isn’t it — you’ve pointed anthropocentrism the wrong way. A hint can help you re-aim. Hint Rate how easy it was to recall that answer Easy Review in 1 week Medium Review in 2 days Difficult Review tomorrow Retry Continue",
+  "afterResetHasHint": 1,
+  "afterResetSelected": "Difficult\nReview tomorrow",
+  "errs": []
+ },
+ "partial-loop-typed": {
+  "first": "TERM 3 OF 3 · THEOCENTRISM Almost! Close — God at the centre is right, but the contrast with humanism is missing. Hint Rate how easy it was to recall that answer Easy Review in 1 week Medium Review in 2 days Difficult Review tomorrow Retry Continue",
+  "firstHasHint": 1,
+  "second": "TERM 3 OF 3 · THEOCENTRISM YOU TYPED The God-centred view that humanism moved away from. Correct! Yes — theocentrism placed God, not people, at the centre of life. Rate how easy it was to recall that answer Easy Review in 1 week Medium Review in 2 days Difficult Review tomorrow Retry Continue",
+  "secondHasHint": 0,
+  "secondSelected": "Easy\nReview in 1 week",
+  "errs": []
+ },
+ "pass-and-plain-retry": {
+  "pass": "TERM 1 OF 3 · HUMANISM Correct! Right — humanism put human reason, dignity and the classics at the centre. Rate how easy it was to recall that answer Easy Review in 1 week Medium Review in 2 days Difficult Review tomorrow Retry Continue",
+  "passHint": 0,
+  "plainRetry": "TERM 2 OF 3 · ANTHROPOCENTRISM Incorrect That isn’t it — you’ve pointed anthropocentrism the wrong way. A hint can help you re-aim. Hint Rate how easy it was to recall that answer Easy Review in 1 week Medium Review in 2 days Difficult Review tomorrow Retry Continue",
+  "plainRetryHasHint": 1,
+  "errs": []
+ },
+ "denied-prompt": {
+  "idleGeo": {
+   "frame": {
+    "l": 0,
+    "t": 0,
+    "w": 390,
+    "h": 844
+   },
+   "header": {
+    "l": 0,
+    "t": 0,
+    "w": 390,
+    "h": 64
+   },
+   "bar": {
+    "l": 84,
+    "t": 20,
+    "w": 222,
+    "h": 24
+   },
+   "barNow": "25",
+   "mic": {
+    "l": 139,
+    "t": 585,
+    "w": 112,
+    "h": 112
+   },
+   "sw": 390,
+   "cw": 390
+  },
+  "idleBubble": {
+   "l": 110,
+   "t": 131,
+   "w": 256,
+   "h": 128
+  },
+  "idleEyebrow": {
+   "l": 24,
+   "t": 88,
+   "w": 342,
+   "h": 15
+  },
+  "textboxCount": 1,
+  "notice": [
+   "Microphone is off. Type your answer, or allow it again in Settings."
+  ],
+  "noticeBox": {
+   "l": 25.5,
+   "t": 518,
+   "w": 339,
+   "h": 48
+  },
+  "zone": {
+   "l": 0,
+   "t": 585,
+   "w": 390,
+   "h": 259
+  },
+  "field": {
+   "l": 24,
+   "t": 585,
+   "w": 342,
+   "h": 82
+  },
+  "bubbleAfter": {
+   "l": 110,
+   "t": 131,
+   "w": 256,
+   "h": 128
+  },
+  "eyebrowAfter": {
+   "l": 24,
+   "t": 88,
+   "w": 342,
+   "h": 15
+  },
+  "micButtons": 0,
+  "useVoice": 1,
+  "skip": 1,
+  "t2Textbox": 1,
+  "t2Notice": 1,
+  "voiceBack": 1,
+  "noticeInVoice": 1,
+  "textAgain": 1,
+  "noticeAgain": 1,
+  "errs": []
+ },
+ "denied-hint": {
+  "zoneVoice": {
+   "l": 0,
+   "t": 585,
+   "w": 390,
+   "h": 259
+  },
+  "textbox": 1,
+  "notice": [
+   "Microphone is off. Type your answer, or allow it again in Settings."
+  ],
+  "noticeBox": {
+   "l": 24,
+   "t": 545,
+   "w": 342,
+   "h": 16
+  },
+  "zone": {
+   "l": 0,
+   "t": 585,
+   "w": 390,
+   "h": 259
+  },
+  "errs": []
+ },
+ "grant-after-deny-and-entry": {
+  "callsOnEntry": 0,
+  "errs": []
+ }
+}

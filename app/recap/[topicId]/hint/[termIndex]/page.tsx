@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { notFound, useParams, useRouter } from "next/navigation";
 
 import { Scaffold } from "@/stories/components/Scaffold/Scaffold";
@@ -8,10 +8,11 @@ import { AppBar } from "@/stories/components/AppBar/AppBar";
 import { ChatBubble } from "@/stories/components/ChatBubble/ChatBubble";
 import { Mascot } from "@/stories/components/Mascot/Mascot";
 import { Button } from "@/stories/components/Button/Button";
+import { TextLink } from "@/stories/components/TextLink/TextLink";
 import { getTopic, progressForTerm } from "../../../../due-terms";
 import { MicTrigger, requestMicAccess } from "../../MicTrigger";
 import { TypeTrigger } from "../../TypeTrigger";
-import { saveTypedAnswer, useTextMode } from "../../textMode";
+import { saveTypedAnswer, setMicDenied, useMicDenied, useTextMode, markHinted } from "../../sessionState";
 import { ExitSessionSheet, useExitSession } from "../../ExitSession";
 import styles from "./page.module.css";
 
@@ -62,13 +63,20 @@ export default function Hint() {
   const index = Number(termIndex);
   const term = topic?.terms[index];
 
-  const [denied, setDenied] = useState(false);
   const [textMode, setTextMode] = useTextMode();
+  const micDenied = useMicDenied();
   const [typed, setTyped] = useState("");
 
   // ⋯ → End session → confirm → Home (SPEC.md #15/#16). Terms left
   // counts the current term too, since leaving abandons it as well.
   const exit = useExitSession((topic?.terms.length ?? 0) - index);
+
+  // Opening this screen is what "taking the hint" means: the result the
+  // student reaches after answering again reads as a second attempt, and
+  // Hint is not offered on it (no second hint — sprint-context.md).
+  useEffect(() => {
+    if (term) markHinted(topicId, index);
+  }, [term, topicId, index]);
 
   if (!topic || !term || !Number.isInteger(index)) {
     notFound();
@@ -80,12 +88,13 @@ export default function Hint() {
   }
 
   async function handleMicTap() {
-    if (denied) return;
-
     if (await requestMicAccess()) {
+      setMicDenied(false);
       router.push(`/recap/${topicId}/prompt/${index}?record=1`);
     } else {
-      setDenied(true);
+      // Refused: the field takes over, as on the prompt screen.
+      setMicDenied(true);
+      setTextMode(true);
     }
   }
 
@@ -100,9 +109,15 @@ export default function Hint() {
       }
     >
       <div className={styles.body}>
-        <p className={styles.eyebrow}>
+        {/* The screen's heading. An <h1> rather than a <p>: prompt,
+            processing and hint rendered no heading at all, so the flow's
+            three main screens were headingless to a screen reader while
+            every other screen had one. The term is what this screen is
+            about, and .eyebrow carries all of the styling, so nothing
+            moves. Added 2026-09-21. */}
+        <h1 className={styles.eyebrow}>
           Term {index + 1} of {topic.terms.length} · {term.name}
-        </p>
+        </h1>
 
         <div className={styles.replyGroup}>
           <div className={styles.mascotChatRow}>
@@ -121,6 +136,12 @@ export default function Hint() {
             Repeat question
           </Button>
         </div>
+
+        {textMode && micDenied && (
+          <p className={`${styles.callout} ${styles.notice}`} role="status">
+            Microphone is off. Type your answer, or allow it again in Settings.
+          </p>
+        )}
       </div>
 
       {textMode ? (
@@ -132,18 +153,12 @@ export default function Hint() {
         />
       ) : (
         <div className={styles.triggerZone}>
-          <MicTrigger
-            state={denied ? "disabled" : "idle"}
-            label={denied ? "Microphone is off" : undefined}
-            onTap={handleMicTap}
-          >
-            <p className={styles.callout}>
-              {denied ? "Microphone is off" : "Tap to try again"}
-            </p>
+          <MicTrigger state="idle" onTap={handleMicTap}>
+            <p className={styles.callout}>Tap to try again</p>
           </MicTrigger>
-          <button type="button" className={styles.nextLink} onClick={() => setTextMode(true)}>
+          <TextLink flush onClick={() => setTextMode(true)}>
             Type instead
-          </button>
+          </TextLink>
         </div>
       )}
 

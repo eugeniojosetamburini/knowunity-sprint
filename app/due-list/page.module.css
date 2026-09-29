@@ -79,21 +79,6 @@
   align-items: center;
   gap: var(--size-space-400);
 }
-
-.chooseOwnLink {
-  border: none;
-  background: none;
-  padding: var(--size-space-300) var(--size-space-200);
-  text-decoration: underline;
-  font-family: var(--typography-linkCondensed-fontFamily);
-  font-weight: var(--typography-linkCondensed-fontWeight);
-  font-size: var(--typography-linkCondensed-fontSize);
-  line-height: var(--typography-linkCondensed-lineHeight);
-  letter-spacing: var(--typography-linkCondensed-letterSpacing);
-  color: var(--color-text-primary);
-  cursor: pointer;
-}
-
 /* All caught up (SPEC.md #2a, `?caughtUp=1`) — no Figma frame. Sits where
    the card list sits, at the cards' 16px inline edge plus the greeting
    block's 8px, so the line starts on the same x as the headline above it. */

@@ -1,0 +1,45 @@
+/*
+ * TextLink — the underlined text link, promoted out of five page modules
+ * (see TextLink.tsx). Every value is the one the five copies already
+ * shared; the only thing reconciled is the padding, which had drifted into
+ * two variants and is now the default vs `flush` distinction.
+ */
+
+.root {
+  border: none;
+  background: none;
+  /* 44pt tap area around the 20px line (rubric hard gate) — 12px above and
+     below, 8px either side. */
+  padding: var(--size-space-300) var(--size-space-200);
+  text-decoration: underline;
+  color: var(--color-text-primary);
+  font-family: var(--typography-linkCondensed-fontFamily);
+  font-weight: var(--typography-linkCondensed-fontWeight);
+  font-size: var(--typography-linkCondensed-fontSize);
+  line-height: var(--typography-linkCondensed-lineHeight);
+  letter-spacing: var(--typography-linkCondensed-letterSpacing);
+  cursor: pointer;
+  transition: transform var(--motion-press-duration) var(--motion-press-easing);
+}
+
+.root:active:not(:disabled) {
+  transform: scale(var(--motion-press-scale));
+}
+
+/* Both axes of tap padding handed back, so the link's margin box is exactly
+   its text box and it sits where a bare 20px line would — while the tap
+   area stays 44pt tall and 16px wider than the text. */
+.flush {
+  margin-block: var(--size-space-negative-300);
+  margin-inline: var(--size-space-negative-200);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    transition: none;
+  }
+
+  .root:active:not(:disabled) {
+    transform: none;
+  }
+}

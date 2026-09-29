@@ -47,7 +47,14 @@
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
   grid-template-rows: 84px; /* frame value, no matching token — see file header */
-  column-gap: 10px; /* frame value, no matching token — see file header */
+  /* 16px, the same gap the recap, result and hint screens use, rather than
+     this frame's own 10px. The frames disagree with each other — 10 on the
+     prompt and processing frames, 16 on the recap, result and hint frames —
+     so Knowie's bubble slid 6px sideways on every prompt → result step and
+     back again. Standardised on the majority value, which is also the only
+     one of the two that is a token, by the same reasoning already applied
+     to the 259px trigger zone (docs/sprint-context.md). Logged there. */
+  column-gap: var(--size-space-400);
   width: 100%;
 }
 

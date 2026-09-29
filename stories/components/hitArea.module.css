@@ -1,0 +1,34 @@
+/*
+ * hitArea — grows a control's tap area to the 44×44pt minimum (the rubric's
+ * hard gate) without changing how it looks or how much room it takes.
+ *
+ * Several library controls are drawn smaller than 44pt in their Figma
+ * frames — Chips M and Pill 40px tall, Badge 41–54×40, the bottom-nav
+ * Avatar 24px — and shipping them at the frame's size is right for the
+ * picture but wrong for a thumb. Resizing them would move every frame
+ * measurement, so the tap area is widened instead: a transparent box
+ * centred on the control, never smaller than the control itself, so a
+ * control already past 44pt is left exactly as it was.
+ *
+ * Use by adding `hit.hitArea` (import hit from '../hitArea.module.css') to
+ * the control's root, which must not clip its own overflow — a clipped
+ * `::after` receives no taps.
+ *
+ * 44 has no token; it is space.800 + space.300, the same sum the voice
+ * screens already use for their 44px bottom padding.
+ */
+
+.hitArea {
+  --hit-target-min: calc(var(--size-space-800) + var(--size-space-300));
+  position: relative;
+}
+
+.hitArea::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, var(--hit-target-min));
+  height: max(100%, var(--hit-target-min));
+  transform: translate(-50%, -50%);
+}

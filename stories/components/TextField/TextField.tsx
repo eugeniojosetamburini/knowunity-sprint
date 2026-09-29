@@ -22,7 +22,7 @@ import styles from './TextField.module.css';
 // Because nothing is drawn, **every visual decision here is composed from
 // tokens rather than traced**, and each one is named in the CSS:
 // background.surface, border.default (whose own token description is
-// "resting input borders"), border.focus for the ring, text.disabled for
+// "resting input borders"), border.focus for the ring, text.placeholder for
 // the placeholder (its description: "empty-field placeholders"), and
 // radius.400 to match the surfaces it sits among. Nothing invented, but
 // nothing measured either — it will want checking against a real frame if

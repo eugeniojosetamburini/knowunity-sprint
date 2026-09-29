@@ -19,6 +19,38 @@
  * not here: the Listening state's three drop-shadow layers use alpha steps
  * (0.4/0.2/0.1) that don't match any token, though their color does
  * (voice.listening). Flagged there, not silently invented.
+ *
+ * ---------------------------------------------------------------------
+ * Motion, added 2026-09-21. docs/voice-ux.md §1 ("the student is talking
+ * into the void unless the screen tells them what's happening", and colour
+ * alone is not enough) and §6 ("a calm animated thinking state, not a dead
+ * spinner") both land on this one component, and neither was built: every
+ * state here was a still picture, including the two that exist precisely
+ * because something is happening.
+ *
+ *   - Listening breathes: the glow scales on a loop, so a student mid-answer
+ *     can see they are still being heard.
+ *   - Disabled breathes too, on the same loop, which is the wait in §6.
+ *   - Idle and Paused do not move. They are resting states, and holding
+ *     them still is what makes the two live ones legible as live.
+ *   - Every tappable state takes press.scale under a finger. There is no
+ *     hover on mobile, so this is the only tap feedback there is.
+ *
+ * All of it goes through semantic.motion (added with this change), never
+ * the primitives underneath it. Everything is turned off wholesale under
+ * prefers-reduced-motion: reduce — the loops are the decoration, and each
+ * state is still told apart by fill and by mark with every animation gone.
+ *
+ * ---------------------------------------------------------------------
+ * The Paused state, added 2026-09-21, has no Figma frame and is a
+ * deliberate departure. The stopped frame (15783:7103) draws this
+ * component as Idle, so a student who had just recorded a take saw the
+ * same circle as one who had not — the only difference on the whole screen
+ * being a Submit pill and a line of caption. Paused keeps voice.listening's
+ * fill, so a take reads as captured, drops the glow and the waveform, and
+ * carries a pause mark instead: different in fill, in mark and in motion
+ * from both neighbours, which is what docs/voice-ux.md §1 asks for. The
+ * frame wants the state adding at source.
  */
 
 .root {
@@ -33,6 +65,17 @@
   border-radius: var(--size-radius-full);
   background: none;
   cursor: pointer;
+  /* The state swap itself, e.g. idle → paused on a tap. */
+  transition:
+    background-color var(--motion-stateChange-duration) var(--motion-stateChange-easing),
+    box-shadow var(--motion-stateChange-duration) var(--motion-stateChange-easing),
+    transform var(--motion-press-duration) var(--motion-press-easing);
+}
+
+/* Tap feedback. :disabled is excluded — a control that can't act shouldn't
+   answer a finger as though it can. */
+.root:active:not(:disabled) {
+  transform: scale(var(--motion-press-scale));
 }
 
 .root:disabled {
@@ -52,11 +95,56 @@
 .disabled {
   background-color: var(--color-voice-processing);
   opacity: var(--opacity-disabled);
+  /* Knowie is thinking. The same breathing loop Listening uses, so the two
+     live states share one motion vocabulary and are told apart by fill and
+     mark instead (docs/voice-ux.md §6). Scale, not opacity: the disc is
+     already dimmed to opacity.disabled, and fading it further would drag
+     anything drawn on it toward the contrast floor. */
+  animation: voiceInputBreatheScale var(--motion-breathe-duration) var(--motion-breathe-easing) infinite;
+}
+
+/* Same fill as Listening, so a captured take still reads as "there is
+   audio here", but static and marked with a pause instead of a waveform.
+   No frame draws this state — see the file header. */
+.paused {
+  background-color: var(--color-voice-listening);
+  border: none;
 }
 
 .listening {
   overflow: visible;
   border: none;
+}
+
+/* The Listening glow breathes, so the state reads as live rather than as a
+   colour the screen happens to be. The transform sits on the SVG, not the
+   button, so the 112px tap target never moves under the finger. */
+.listening > svg {
+  animation: voiceInputBreatheScale var(--motion-breathe-duration) var(--motion-breathe-easing) infinite;
+}
+
+@keyframes voiceInputBreatheScale {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(var(--motion-breathe-scale));
+  }
+}
+
+/* Every state stays legible by fill and mark with the motion gone. */
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .listening > svg,
+  .disabled {
+    animation: none;
+    transition: none;
+  }
+
+  .root:active:not(:disabled) {
+    transform: none;
+  }
 }
 
 /* The Listening mark is a 182×184 SVG whose disc is the inner 112×114 and
@@ -66,6 +154,11 @@
    it did until this was measured against frame 15783:6833. */
 .listening > svg {
   flex-shrink: 0;
+  /* The glow is decoration that overflows the 112px button, and as the
+     button's child it would otherwise take taps meant for what it overlaps —
+     it covered the bottom 16px of Cancel, leaving that button ~32pt tall.
+     The button's own 112px box still receives taps. */
+  pointer-events: none;
 }
 
 .innerCircle {

@@ -156,7 +156,7 @@ button's own Pressed, which it already has as a real instance), and no
 empty/loading state for the illustration.
 
 ### `voiceInput`
-Variant axis: `state` — `Idle` / `Disabled` / `Listening`.
+Variant axis: `state` — `Idle` / `Disabled` / `Listening` / `Paused`.
 
 **Description, as written on the component:**
 > The tap target that starts and shows the state of voice capture.
@@ -173,9 +173,29 @@ this state. `Listening` — actively capturing the student's answer; carries a
 waveform mark, not a mic icon, in its center (layer name `waveformMark` —
 don't rename it back to a mic icon, it was confused for one once already).
 
+`Paused` — a take has been recorded and stopped, waiting on Submit. **Added
+in code 2026-09-21, no Figma frame**: the stopped frame (15783:7103) draws
+this component as `Idle`, so the recorded state was pixel-identical to the
+resting one. `Paused` keeps `Listening`'s fill (the audio is still there),
+drops the glow and the waveform, and carries a pause mark. Wants adding to
+the Figma set.
+
+**Motion (added in code 2026-09-21, nothing in Figma covers it).** `Listening`
+scales its glow on a loop and `Disabled` breathes its opacity, both on
+`semantic.motion.breathe`; every tappable state takes `motion.press.scale`
+under a finger; state swaps use `motion.stateChange`. `Idle` and `Paused`
+hold still on purpose, so the two live states read as the live ones. All of
+it is disabled under `prefers-reduced-motion: reduce`, where fill and mark
+still tell every state apart. `semantic.motion` was added with this change —
+`primitive.motion` had existed since the token import with nothing bound to
+it.
+
 **Known gaps:** the `voice/onListening` token exists for a waveform-mark use
 that isn't fully resolved yet — check with whoever owns that token before
-assuming its current binding is final.
+assuming its current binding is final. The new `Paused` mark binds to it
+(a meaningful graphic wants 3:1, and white on `voice/listening` measures
+about 2:1); the older `waveformMark` still fills with `text/primary`, so the
+two marks disagree until that token's binding is settled.
 
 ### `chatBubble`
 Variant axis: `State` — `Default` / `Correct` / `Incorrect` / `partial`.
@@ -384,9 +404,12 @@ No variant axis. Built: `stories/components/TextField`.
 The typeable field this file used to call `textBlock`. Nothing in Figma
 draws it, so unlike every other entry here its appearance is composed from
 tokens rather than measured — each choice justified by the token's own
-description: `border.default` ("…resting input borders"), `text.disabled`
-("…empty-field placeholders"), `background.surface`, `border.focus`, and
-`radius.400` to match the surfaces around it. **It wants checking against a
+description: `border.default` ("…resting input borders"), `background.surface`,
+`border.focus`, `text.placeholder`, and `radius.400` to match the surfaces
+around it. The placeholder token is its own: `text.disabled` used to name
+this use, but it resolves to 3.69:1 on the field — under the 4.5:1 gate, and
+a placeholder is a field's only instruction, not a disabled label. The two
+were split at the token layer (2026-09-21). **It wants checking against a
 real frame if one is ever drawn.**
 
 **Properties:** `value` · `onValueChange` · `placeholder` · `multiline`

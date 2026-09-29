@@ -1,0 +1,47 @@
+/*
+ * The 404 screen's layout. No Figma frame backs it (see not-found.tsx), so
+ * the rhythm is borrowed from the due list's all-caught-up state, which is
+ * the closest frameless screen: the same space-800 / space-400 / space-600
+ * padding, the same body type, and the headline in headline.m like every
+ * other screen-level h1.
+ *
+ * Centred rather than top-aligned, because there is no bar above it and no
+ * content below it — the mascot, the headline and the line of copy are the
+ * whole screen, and stacking them at the top would leave the frame looking
+ * unfinished rather than calm.
+ */
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-space-400);
+  padding: var(--size-space-800) var(--size-space-400) var(--size-space-600);
+  text-align: center;
+}
+
+.mascot {
+  margin-bottom: var(--size-space-400);
+}
+
+.headline {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-family: var(--typography-headline-m-fontFamily);
+  font-weight: var(--typography-headline-m-fontWeight);
+  font-size: var(--typography-headline-m-fontSize);
+  line-height: var(--typography-headline-m-lineHeight);
+  letter-spacing: var(--typography-headline-m-letterSpacing);
+}
+
+.body {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-family: var(--typography-body-m-regular-fontFamily);
+  font-weight: var(--typography-body-m-regular-fontWeight);
+  font-size: var(--typography-body-m-regular-fontSize);
+  line-height: var(--typography-body-m-regular-lineHeight);
+  letter-spacing: var(--typography-body-m-regular-letterSpacing);
+}

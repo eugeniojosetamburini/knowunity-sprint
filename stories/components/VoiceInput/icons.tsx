@@ -120,3 +120,23 @@ export function MicButtonCoreIcon() {
     </svg>
   );
 }
+
+// The Paused state's mark — two bars, drawn to the waveformMark's own
+// geometry (4px wide, fully rounded, centred on the 112px disc) so the two
+// marks read as the same family. Not a Figma export: no frame draws this
+// state (see VoiceInput.module.css's header for why it exists).
+//
+// Filled with voice.onListening rather than the waveform's text.primary:
+// this mark is what tells Paused from Listening, so it is a meaningful
+// graphic and wants 3:1 against the disc it sits on. White on
+// voice.listening measures about 2:1; onListening measures about 8:1, and
+// is the token whose $description names exactly this job. The waveform's
+// own white fill is the older treatment and is left alone here.
+export function PauseIcon() {
+  return (
+    <svg width="112" height="112" viewBox="0 0 112 112" fill="none" aria-hidden="true" focusable="false">
+      <rect x="46" y="44" width="6" height="24" rx="3" fill="var(--color-voice-onListening)" />
+      <rect x="60" y="44" width="6" height="24" rx="3" fill="var(--color-voice-onListening)" />
+    </svg>
+  );
+}

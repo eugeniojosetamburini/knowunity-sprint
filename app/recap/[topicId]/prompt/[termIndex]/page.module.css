@@ -6,10 +6,11 @@
  * frames share that composition.
  *
  * Values with no matching token, flagged rather than invented:
- * - The mascot/bubble column gap is 10px in all three frames; the space
- *   scale jumps 8 → 12, so neither token is the frame's value. Left as the
- *   frame's 10px here (the same call Card and Badge document for their own
- *   off-scale gaps).
+ * - The mascot/bubble column gap is 10px in all three frames, which is off
+ *   the space scale (it jumps 8 → 12 → 16). **Not used**: the recap, result
+ *   and hint frames draw the same row at 16px, so following each frame made
+ *   the bubble hop 6px sideways between screens. One value throughout —
+ *   space-400 — decided 2026-09-21, logged in docs/sprint-context.md.
  * - The action slot (Cancel while listening, Submit once stopped) sits at
  *   y=518 in the frames, which is a fixed distance above the trigger zone
  *   rather than a step on any spacing scale; `margin-top: auto` pins it to
@@ -43,7 +44,14 @@
 .contentRow {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
-  column-gap: 10px; /* frame value, no matching token — see file header */
+  /* 16px, the same gap the recap, result and hint screens use, rather than
+     this frame's own 10px. The frames disagree with each other — 10 on the
+     prompt and processing frames, 16 on the recap, result and hint frames —
+     so Knowie's bubble slid 6px sideways on every prompt → result step and
+     back again. Standardised on the majority value, which is also the only
+     one of the two that is a token, by the same reasoning already applied
+     to the 259px trigger zone (docs/sprint-context.md). Logged there. */
+  column-gap: var(--size-space-400);
   width: 100%;
 }
 
@@ -100,18 +108,4 @@
   font-size: var(--typography-callout-hint-fontSize);
   line-height: var(--typography-callout-hint-lineHeight);
   letter-spacing: var(--typography-callout-hint-letterSpacing);
-}
-
-.nextLink {
-  border: none;
-  background: none;
-  padding: 0;
-  text-decoration: underline;
-  color: var(--color-text-primary);
-  font-family: var(--typography-linkCondensed-fontFamily);
-  font-weight: var(--typography-linkCondensed-fontWeight);
-  font-size: var(--typography-linkCondensed-fontSize);
-  line-height: var(--typography-linkCondensed-lineHeight);
-  letter-spacing: var(--typography-linkCondensed-letterSpacing);
-  cursor: pointer;
 }

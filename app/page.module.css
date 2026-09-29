@@ -69,6 +69,11 @@
 .pillRow {
   display: flex;
   gap: var(--size-space-200);
+  /* overflow-x also clips vertically, and the pills' tap area (44pt) is
+     taller than their 40px box — so the row gets 4px of room each side,
+     given back by the negative margin so nothing on the screen moves. */
+  padding-block: var(--size-space-100);
+  margin-block: var(--size-space-negative-100);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;

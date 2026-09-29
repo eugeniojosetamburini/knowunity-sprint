@@ -61,7 +61,9 @@
   padding-block: 0;
   border: none;
   border-radius: var(--size-radius-full);
-  overflow: hidden;
+  /* No overflow clip: the tap area (hitArea.module.css) extends past this
+     box, and a clipped ::after would receive no taps. Nothing inside
+     overflows the 40px box, so the clip clipped nothing. */
   font-family: var(--font-family-default);
   background: none;
   cursor: pointer;

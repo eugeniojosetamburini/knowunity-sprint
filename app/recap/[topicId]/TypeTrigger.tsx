@@ -2,6 +2,7 @@
 
 import { TextField } from "@/stories/components/TextField/TextField";
 import { Button } from "@/stories/components/Button/Button";
+import { TextLink } from "@/stories/components/TextLink/TextLink";
 import styles from "./TypeTrigger.module.css";
 
 // The text fallback's trigger zone (SPEC.md #14) — what replaces the mic
@@ -38,32 +39,37 @@ export function TypeTrigger({
 
   return (
     <div className={styles.zone}>
-      <TextField
-        multiline
-        rows={3}
-        value={value}
-        onValueChange={onValueChange}
-        placeholder="Type your answer"
-        aria-label="Your answer"
-      />
+      {/* Field and Submit share one block whose height is the voice zone's
+          mic-plus-callout block, so the link below lands on the same row in
+          both modes by construction rather than by arithmetic. */}
+      <div className={styles.inputBlock}>
+          <TextField
+          multiline
+          rows={2}
+          value={value}
+          onValueChange={onValueChange}
+          placeholder="Type your answer"
+          aria-label="Your answer"
+        />
 
-      <Button
-        variant="primary"
-        size="s"
-        state={isEmpty ? "disabled" : "default"}
-        onClick={isEmpty ? undefined : onSubmit}
-      >
-        Submit
-      </Button>
+        <Button
+          variant="primary"
+          size="s"
+          state={isEmpty ? "disabled" : "default"}
+          onClick={isEmpty ? undefined : onSubmit}
+        >
+          Submit
+        </Button>
+      </div>
 
       {/* The way back. docs/sprint-context.md requires a route to re-enable
           the mic ("so no student is trapped by a 'no'"), while SPEC.md #14
           makes text mode sticky — both hold if stickiness is a default, not
           a one-way door. Sits exactly where "Type instead" sits in voice
           mode, so the toggle is in one place in both directions. */}
-      <button type="button" className={styles.voiceLink} onClick={onUseVoice}>
+      <TextLink flush onClick={onUseVoice}>
         Use voice instead
-      </button>
+      </TextLink>
     </div>
   );
 }

@@ -14,7 +14,9 @@
   width: var(--size-icon-300);
   height: var(--size-icon-300);
   padding: var(--size-space-0);
-  overflow: hidden;
+  /* No overflow clip on the button: the tap area (hitArea.module.css)
+     extends past the 24px circle, and a clipped ::after receives no taps.
+     The photo is rounded itself instead — same visible circle. */
   border: var(--size-stroke-border) solid var(--color-border-default);
   border-radius: var(--size-radius-full);
   background-color: var(--color-background-surface);
@@ -24,6 +26,10 @@
 .root:focus-visible {
   outline: var(--size-stroke-heavy-border) solid var(--color-border-focus);
   outline-offset: var(--size-space-100);
+}
+
+.root > * {
+  border-radius: inherit;
 }
 
 .root img {

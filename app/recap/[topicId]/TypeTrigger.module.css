@@ -10,9 +10,22 @@
  * point here: the eyebrow, mascot, bubble and Skip must not shift when the
  * mic becomes a field.
  *
- * Content measures 204px inside the zone's 215px of usable height (field
- * 104 + 24 + Submit 32 + 24 + link 20), so it fits without changing the
- * zone. Side padding is the body's own space-600, so the field's edges line
+ * **The link used to sit 27px below where "Type instead" sits in voice
+ * mode** (measured 768 against 741), so the one control that toggles
+ * between the two modes moved when you used it. The comment here claimed
+ * the content measured 204px in 215px of usable height (field 104 + 24 +
+ * Submit 32 + 24 + link 20); rendered, the field was 99 and Submit 48, so
+ * it measured 239 and overflowed the zone by 24px. Both numbers were wrong
+ * and the overflow is what pushed the link down.
+ *
+ * Fixed 2026-09-21 by construction rather than by arithmetic: the field and
+ * Submit share `.inputBlock`, whose height *is* the voice zone's
+ * mic-plus-callout block (112px mic + 16px gap + one 16px callout line),
+ * so the link after it starts from the same row in both modes and cannot
+ * drift again if either control's height changes. The field is rows=2,
+ * which is what fits that block; rows=3 did not.
+ *
+ * Side padding is the body's own space-600, so the field's edges line
  * up with the eyebrow and bubble above it rather than with the mic's
  * centred 112px circle.
  *
@@ -31,23 +44,24 @@
   padding-bottom: calc(var(--size-space-800) + var(--size-space-300)); /* 44px, as on every other voice screen */
 }
 
-/* The field spans the body's width; everything under it stays centred. */
-.zone > :first-child {
+/* Exactly the height of MicTrigger's `.trigger` — the 112px mic, the 16px
+   gap under it, and the callout's single 16px line — expressed from those
+   same tokens rather than as the 144px it comes to, so it follows if any of
+   them changes. Field at the top, Submit at the bottom; the space between
+   them is what is left over, not a chosen value. */
+.inputBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
+  height: calc(
+    var(--size-illustration-1400) + var(--size-space-400) +
+      var(--typography-callout-hint-lineHeight)
+  );
 }
 
-/* Same underlined condensed link as "Type instead", which it replaces —
-   the toggle looks the same in both directions. */
-.voiceLink {
-  border: none;
-  background: none;
-  padding: 0;
-  text-decoration: underline;
-  color: var(--color-text-primary);
-  font-family: var(--typography-linkCondensed-fontFamily);
-  font-weight: var(--typography-linkCondensed-fontWeight);
-  font-size: var(--typography-linkCondensed-fontSize);
-  line-height: var(--typography-linkCondensed-lineHeight);
-  letter-spacing: var(--typography-linkCondensed-letterSpacing);
-  cursor: pointer;
+/* The field spans the body's width; everything under it stays centred. */
+.inputBlock > :first-child {
+  width: 100%;
 }

@@ -2,6 +2,7 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import Image from 'next/image';
 
 import styles from './Avatar.module.css';
+import hit from '../hitArea.module.css';
 import defaultAvatar from '../../../public/images/mascot-avatar.png';
 
 export type AvatarProps = {
@@ -17,7 +18,7 @@ export type AvatarProps = {
 
 export function Avatar({ children, className, type = 'button', ...rest }: AvatarProps) {
   return (
-    <button type={type} className={[styles.root, className].filter(Boolean).join(' ')} {...rest}>
+    <button type={type} className={[styles.root, hit.hitArea, className].filter(Boolean).join(' ')} {...rest}>
       {children ?? <Image src={defaultAvatar} alt="" />}
     </button>
   );

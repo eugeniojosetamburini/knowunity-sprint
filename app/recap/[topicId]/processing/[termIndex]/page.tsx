@@ -9,6 +9,7 @@ import { ChatBubble } from "@/stories/components/ChatBubble/ChatBubble";
 import { Mascot } from "@/stories/components/Mascot/Mascot";
 import { VoiceInput } from "@/stories/components/VoiceInput/VoiceInput";
 import { getTopic, progressForTerm } from "../../../../due-terms";
+import { markRetriedIfHinted } from "../../sessionState";
 import { ExitSessionSheet, useExitSession } from "../../ExitSession";
 import styles from "./page.module.css";
 
@@ -41,8 +42,13 @@ import styles from "./page.module.css";
 // - The progress bar reads this term's value, the same one its prompt
 //   screen shows: processing never advances it (see progressForTerm).
 // - No mic permission is touched on this screen — nothing is requested on
-//   entry anywhere in this flow (CLAUDE.md), and by here it was already
-//   asked for on the entry screen's mic tap.
+//   entry anywhere in this flow (CLAUDE.md); it is asked for on the prompt
+//   and hint screens' mic taps (../../MicTrigger.tsx).
+// - **Arriving here is what makes a hinted answer a second attempt**: if the
+//   student took this term's hint, this screen records that they answered
+//   again, and the result reads the second attempt's outcome
+//   (`outcomeAfterHint`). It is the one screen every submission — spoken from
+//   the prompt, typed from the prompt, typed from the hint — passes through.
 
 // Fixed, not variable (SPEC.md, "Processing is a fixed ~1.5–2s delay").
 const JUDGE_DELAY_MS = 1800;
@@ -56,10 +62,12 @@ export default function Processing() {
   const term = topic?.terms[index];
 
   useEffect(() => {
-    // Lands on this term's result once the mocked judge has "decided".
-    // Every term currently resolves to Pass (#7) — the per-term scripted
-    // outcome SPEC.md describes goes into app/due-terms.ts when Incorrect
-    // (#8) is built, and this becomes a lookup rather than a fixed route.
+    if (term) markRetriedIfHinted(topicId, index);
+  }, [term, topicId, index]);
+
+  useEffect(() => {
+    // Lands on this term's result once the mocked judge has "decided"; the
+    // result route picks the scripted outcome (app/due-terms.ts).
     // replace(), not push(): the back arrow on the result should step to
     // the question, not back into a wait that would immediately re-fire.
     const timer = setTimeout(() => {
@@ -82,9 +90,15 @@ export default function Processing() {
       topBar={<AppBar menuItems={exit.menuItems} backHref={`/recap/${topicId}/prompt/${index}`} backLabel="Back to the question" progress={progressForTerm(index)} />}
     >
       <div className={styles.body}>
-        <p className={styles.eyebrow}>
+        {/* The screen's heading. An <h1> rather than a <p>: prompt,
+            processing and hint rendered no heading at all, so the flow's
+            three main screens were headingless to a screen reader while
+            every other screen had one. The term is what this screen is
+            about, and .eyebrow carries all of the styling, so nothing
+            moves. Added 2026-09-21. */}
+        <h1 className={styles.eyebrow}>
           Term {index + 1} of {topic.terms.length} · {term.name}
-        </p>
+        </h1>
 
         <div className={styles.contentRow}>
           <div className={styles.mascotCell}>

@@ -1,0 +1,709 @@
+[
+ {
+  "name": "01-home",
+  "hash": "15eeafd10678bfdab951f038479eb7f3",
+  "note": "",
+  "url": "/",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Invite a friend, you both get $0.50",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "02-due-list",
+  "hash": "171a53f89d4af5147207928877a61e5b",
+  "note": "",
+  "url": "/due-list",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Let’s review what you’ve learned so far",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "03-due-list-caught-up",
+  "hash": "1569bd51ac909347c4e99781e3c19c3a",
+  "note": "",
+  "url": "/due-list?caughtUp=1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "You’re all caught up",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "04-recap-t1",
+  "hash": "82b2b07920e8e7ed6ccaa6ecdf8634d6",
+  "note": "",
+  "url": "/recap/renaissance-philosophy",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Check what you remember",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "04b-recap-t2",
+  "hash": "922e86d1fe4428a4d9ebfa3ec730cc01",
+  "note": "",
+  "url": "/recap/the-reformation",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Check what you remember",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "nav-console",
+  "errs": [
+   "warning: Image with src \"/_next/static/media/card-image.2zm2_wyzysmya.png\" was detected as the Largest Contentful Paint (LCP). Please add the `loading=\"eager\"` property if this image is above the fold.\nRead mo"
+  ]
+ },
+ {
+  "name": "05-prompt-t1-idle",
+  "hash": "2a6e2ee46730c2cf61bbb05e6818268c",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "05x-prompt-t1-menu-open",
+  "hash": "36993ea970e42c79cd23ead4a90cce5c",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "06-prompt-t1-listening",
+  "hash": "505eede769dad8c50130128409dd72ae",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "06b-prompt-t1-listening-later",
+  "hash": "505eede769dad8c50130128409dd72ae",
+  "note": "same state 600ms later: motion check",
+  "url": "/recap/renaissance-philosophy/prompt/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "07-prompt-t1-stopped",
+  "hash": "3243f7245c1621964d8ac54bf4880a6e",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "08-processing-t1-early",
+  "hash": "c7e7dedf94101ae2243585128f549383",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/processing/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "08b-processing-t1-late",
+  "hash": "fe3b4eca06ba4e9b44a23ccf8505e0b6",
+  "note": "same state ~1s later: motion check",
+  "url": "/recap/renaissance-philosophy/processing/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "09-result-t1",
+  "hash": "0df6e06006d71bfb6a65462059e5e121",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/result/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Rate how easy it was to recall that answer",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "voice-t1-console",
+  "errs": []
+ },
+ {
+  "name": "05-prompt-t2-idle",
+  "hash": "62ff70d1534d9268725be3f699237960",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "06-prompt-t2-listening",
+  "hash": "ccb31221e7191b2e7d73c1fa1f5a0f76",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "06b-prompt-t2-listening-later",
+  "hash": "ccb31221e7191b2e7d73c1fa1f5a0f76",
+  "note": "same state 600ms later: motion check",
+  "url": "/recap/renaissance-philosophy/prompt/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "07-prompt-t2-stopped",
+  "hash": "abbedb54af888e4d9080251c85aaaad9",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "08-processing-t2-early",
+  "hash": "354cd3aa9aed8f647b61021e5b9ec5f4",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/processing/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "08b-processing-t2-late",
+  "hash": "8867bf8b441b51db7c328dad2a955773",
+  "note": "same state ~1s later: motion check",
+  "url": "/recap/renaissance-philosophy/processing/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "09-result-t2",
+  "hash": "20accb63346791d8a87ad83384416fa1",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/result/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Rate how easy it was to recall that answer",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "voice-t2-console",
+  "errs": []
+ },
+ {
+  "name": "05-prompt-t3-idle",
+  "hash": "bdcde0e9a545141482dcfbcb280b2995",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/2",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 3 of 3 · Theocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "06-prompt-t3-listening",
+  "hash": "c0bdbb407eefda219a112c25f6c23d0c",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/2",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 3 of 3 · Theocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "06b-prompt-t3-listening-later",
+  "hash": "c0bdbb407eefda219a112c25f6c23d0c",
+  "note": "same state 600ms later: motion check",
+  "url": "/recap/renaissance-philosophy/prompt/2",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 3 of 3 · Theocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "07-prompt-t3-stopped",
+  "hash": "978d5dab12940a5b11e9c36dead63cae",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/2",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 3 of 3 · Theocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "08-processing-t3-early",
+  "hash": "4d6bae3716d8e4c3a6f1089b5d6dd4cd",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/processing/2",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 3 of 3 · Theocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "08b-processing-t3-late",
+  "hash": "2fe154e92b00307d28de0579e9253365",
+  "note": "same state ~1s later: motion check",
+  "url": "/recap/renaissance-philosophy/processing/2",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 3 of 3 · Theocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "09-result-t3",
+  "hash": "74ca7c43ef7c74c01fd128e1c9dbfe1c",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/result/2",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Rate how easy it was to recall that answer",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "voice-t3-console",
+  "errs": []
+ },
+ {
+  "name": "05z-prompt-t1-after-cancel",
+  "hash": "2a6e2ee46730c2cf61bbb05e6818268c",
+  "note": "should equal idle",
+  "url": "/recap/renaissance-philosophy/prompt/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "05x-prompt-t1-menu-open",
+  "hash": "36993ea970e42c79cd23ead4a90cce5c",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "05y-prompt-t1-exit-sheet",
+  "hash": "300c88cc90d1a8332e9bb5cd99ba15ca",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "05w-skip-on-last-term",
+  "hash": "0a9f3ef782e1f69d2443d1c9094a3a9d",
+  "note": "expect summary",
+  "url": "/recap/renaissance-philosophy/summary",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Renaissance Philosophy",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "cancel-skip-exit-console",
+  "errs": []
+ },
+ {
+  "name": "20-prompt-t1-denied",
+  "hash": "1c4c69a83ed889334df51554fd470d2b",
+  "note": "auto-switched to text + notice",
+  "url": "/recap/renaissance-philosophy/prompt/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "20d-prompt-t2-after-denial",
+  "hash": "f45695165bed006bea639418bdd3b8da",
+  "note": "text mode + notice persist across terms",
+  "url": "/recap/renaissance-philosophy/prompt/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "20e-prompt-t2-voice-restored",
+  "hash": "62ff70d1534d9268725be3f699237960",
+  "note": "mic back, notice gone",
+  "url": "/recap/renaissance-philosophy/prompt/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "20f-prompt-t2-denied-again",
+  "hash": "f45695165bed006bea639418bdd3b8da",
+  "note": "second refusal returns to the field",
+  "url": "/recap/renaissance-philosophy/prompt/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "denied-console",
+  "errs": []
+ },
+ {
+  "name": "10-hint-t2-idle",
+  "hash": "b9611ac289c441464e066dbfad58cd66",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/hint/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "21-hint-t2-denied",
+  "hash": "0fc320cb49c38588264bed395428da1a",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/hint/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "denied-hint-console",
+  "errs": []
+ },
+ {
+  "name": "22-prompt-t1-text-empty",
+  "hash": "bec7cda5c32239b6a23637f11ce4b27d",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "23-prompt-t1-text-filled",
+  "hash": "f34b5a20fdc0eb80f5fbbc58f22b5ecb",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "24-processing-typed",
+  "hash": "95a7919af19f4997d5d07f7ef83ee961",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/processing/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 1 of 3 · Humanism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "25-result-t1-typed-echo",
+  "hash": "498049bf9d0ccde0f7967c8110a8ffb0",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/result/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Rate how easy it was to recall that answer",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "25b-prompt-t2-text-sticky",
+  "hash": "d7673f6a0a203b16cdc77d7bc66991f5",
+  "note": "text mode sticky across terms",
+  "url": "/recap/renaissance-philosophy/prompt/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "typed-console",
+  "errs": []
+ },
+ {
+  "name": "09-result-t2-fresh",
+  "hash": "20accb63346791d8a87ad83384416fa1",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/result/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Rate how easy it was to recall that answer",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "10-hint-t2",
+  "hash": "b9611ac289c441464e066dbfad58cd66",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/hint/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "13-hint-to-prompt-record1",
+  "hash": "ccb31221e7191b2e7d73c1fa1f5a0f76",
+  "note": "arrives listening",
+  "url": "/recap/renaissance-philosophy/prompt/1?record=1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "13b-prompt-t2-stopped-after-hint",
+  "hash": "abbedb54af888e4d9080251c85aaaad9",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/1?record=1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 2 of 3 · Anthropocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "13c-result-t2-after-hint-rerecord",
+  "hash": "c68cbd0bf28b663eddb35eedcefa3161",
+  "note": "compare with 09-result-t2-fresh: does hinting change anything",
+  "url": "/recap/renaissance-philosophy/result/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Rate how easy it was to recall that answer",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "09-result-t3-fresh",
+  "hash": "74ca7c43ef7c74c01fd128e1c9dbfe1c",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/result/2",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Rate how easy it was to recall that answer",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "10-hint-t3",
+  "hash": "474dbe3b13f7799daf489b4f8cfc1988",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/hint/2",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 3 of 3 · Theocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "13d-prompt-t3-after-repeat-question",
+  "hash": "bdcde0e9a545141482dcfbcb280b2995",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/2",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Term 3 of 3 · Theocentrism",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "miss-loop-console",
+  "errs": []
+ },
+ {
+  "name": "09b-result-t1-graded-difficult",
+  "hash": "89d3b8ba0604b448832fc2624e63a2cd",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/result/0",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Rate how easy it was to recall that answer",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "09b-result-t2-graded-easy",
+  "hash": "76c4142ee85255c8fb59c636c0c18b6a",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/result/1",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Rate how easy it was to recall that answer",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "09b-result-t3-graded-difficult",
+  "hash": "0bf83cebb1c578a7f3216982ad606b5f",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/result/2",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Rate how easy it was to recall that answer",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "09c-result-t3-exit-sheet",
+  "hash": "64aabb8452051cd989c20042bb6c664a",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/result/2",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Rate how easy it was to recall that answer",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "11-summary-after-grading",
+  "hash": "22a9840256bea8c8450ca93b5d84ff27",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/summary",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Renaissance Philosophy",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "11b-summary-topic2-ungraded",
+  "hash": "6807698671fd4a75cf49fcd42d1f9147",
+  "note": "",
+  "url": "/recap/the-reformation/summary",
+  "sw": 390,
+  "cw": 390,
+  "h1": "The Reformation",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "grade-summary-console",
+  "errs": []
+ },
+ {
+  "name": "11a-summary-fresh",
+  "hash": "0a9f3ef782e1f69d2443d1c9094a3a9d",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/summary",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Renaissance Philosophy",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "11c-summary-continue",
+  "hash": "922e86d1fe4428a4d9ebfa3ec730cc01",
+  "note": "chain to next topic",
+  "url": "/recap/the-reformation",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Check what you remember",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "summary-fresh-console",
+  "errs": []
+ },
+ {
+  "name": "12-404-topic",
+  "hash": "811c2ecbfd3ca985cfdbcf925f4d8744",
+  "note": "",
+  "url": "/recap/nope",
+  "sw": 390,
+  "cw": 390,
+  "h1": "That page isn’t here",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "12b-404-term",
+  "hash": "811c2ecbfd3ca985cfdbcf925f4d8744",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/9",
+  "sw": 390,
+  "cw": 390,
+  "h1": "That page isn’t here",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "12c-404-route",
+  "hash": "811c2ecbfd3ca985cfdbcf925f4d8744",
+  "note": "",
+  "url": "/nowhere",
+  "sw": 390,
+  "cw": 390,
+  "h1": "That page isn’t here",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "12d-404-processing",
+  "hash": "811c2ecbfd3ca985cfdbcf925f4d8744",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/processing/9",
+  "sw": 390,
+  "cw": 390,
+  "h1": "That page isn’t here",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "12e-404-nan",
+  "hash": "811c2ecbfd3ca985cfdbcf925f4d8744",
+  "note": "",
+  "url": "/recap/renaissance-philosophy/prompt/abc",
+  "sw": 390,
+  "cw": 390,
+  "h1": "That page isn’t here",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "12f-404-way-out",
+  "hash": "171a53f89d4af5147207928877a61e5b",
+  "note": "",
+  "url": "/due-list",
+  "sw": 390,
+  "cw": 390,
+  "h1": "Let’s review what you’ve learned so far",
+  "bg": "rgb(9, 12, 24)"
+ },
+ {
+  "name": "404-console",
+  "errs": [
+   "http 404 /recap/nope",
+   "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "http 404 /nowhere",
+   "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "http 404 /recap/renaissance-philosophy/processing/9",
+   "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+ },
+ {
+  "name": "perm-on-entry",
+  "getUserMediaCallsOnEntry": 0
+ },
+ {
+  "name": "perm-on-entry-console",
+  "errs": [
+   "warning: Image with src \"/_next/static/media/card-image.2zm2_wyzysmya.png\" was detected as the Largest Contentful Paint (LCP). Please add the `loading=\"eager\"` property if this image is above the fold.\nRead mo"
+  ]
+ }
+]

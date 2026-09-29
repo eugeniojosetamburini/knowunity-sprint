@@ -1,6 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 import styles from './Pill.module.css';
+import hit from '../hitArea.module.css';
 import { ScanIcon, FlashcardsIcon, QuizIcon, SummarizeIcon } from './icons';
 
 export type PillVariant = 'scan' | 'flashcards' | 'quiz' | 'summarize';
@@ -20,7 +21,7 @@ export function Pill({ variant = 'scan', className, type = 'button', ...rest }: 
   const { icon, label } = CONTENT[variant];
 
   return (
-    <button type={type} className={[styles.root, className].filter(Boolean).join(' ')} {...rest}>
+    <button type={type} className={[styles.root, hit.hitArea, className].filter(Boolean).join(' ')} {...rest}>
       <span className={styles.icon}>{icon}</span>
       <span className={styles.label}>{label}</span>
     </button>

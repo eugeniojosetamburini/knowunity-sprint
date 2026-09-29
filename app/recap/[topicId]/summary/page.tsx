@@ -8,15 +8,18 @@ import { Mascot } from "@/stories/components/Mascot/Mascot";
 import { ResultCard } from "@/stories/components/ResultCard/ResultCard";
 import { ResultTable, type ResultTableRow } from "@/stories/components/ResultTable/ResultTable";
 import { Button } from "@/stories/components/Button/Button";
+import { TextLink } from "@/stories/components/TextLink/TextLink";
 import {
   GRADE_FOR_OUTCOME,
   INTERVAL_FOR_GRADE,
   getTopic,
   nextTopic,
+  outcomeAfterHint,
   summaryReview,
   summarySubtitle,
   tallyTopic,
 } from "../../../due-terms";
+import { useGrades, useHints } from "../sessionState";
 import styles from "./page.module.css";
 
 // Summary (SPEC.md #10, Figma `knowledge-check-results`, node 15731:3960) —
@@ -50,9 +53,12 @@ import styles from "./page.module.css";
 // 3. **No "Try again", no XP.** SPEC.md #10 lists both as gaps between the
 //    brief and this frame. The frame draws neither, XP has no defined
 //    mechanic, component or token anywhere, and both stay logged as open.
-// 4. **The grades shown are each result screen's pre-selected grade**, not
-//    what the student tapped — nothing stores that (SPEC.md, "nothing
-//    consumes a grade"). See GRADE_FOR_OUTCOME in app/due-terms.ts.
+// 4. **The grades shown are the ones the student tapped**, read from the
+//    session store (../textMode). Until 2026-09-21 nothing stored the tap,
+//    so this table printed each outcome's *recommended* grade and the
+//    review interval beside it was one the student had never chosen. A term
+//    they never graded still falls back to GRADE_FOR_OUTCOME, which is what
+//    that screen had pre-selected for them anyway.
 //
 // Continue chains into the next due topic's recap screen, and after the
 // last topic into the due list's all-caught-up state (#2a, built alongside
@@ -64,6 +70,13 @@ export default function Summary() {
 
   const topic = getTopic(topicId);
 
+  // Read before the notFound() below, which throws: a hook called after it
+  // would be a conditional hook. Keyed on the route's own topicId rather
+  // than topic.id for the same reason — it exists whether the topic does
+  // or not. Same ordering the result screen uses.
+  const grades = useGrades(topicId);
+  const hints = useHints(topicId);
+
   if (!topic) {
     notFound();
   }
@@ -71,8 +84,11 @@ export default function Summary() {
   const tally = tallyTopic(topic);
   const next = nextTopic(topic.id);
 
-  const rows: ResultTableRow[] = topic.terms.map((term) => {
-    const grade = GRADE_FOR_OUTCOME[term.outcome];
+  const rows: ResultTableRow[] = topic.terms.map((term, index) => {
+    // The student's own tap, falling back to what the result screen
+    // pre-selected if they never changed it.
+    const outcome = hints[index] === "retried" ? outcomeAfterHint(term.outcome) : term.outcome;
+    const grade = grades[index] ?? GRADE_FOR_OUTCOME[outcome];
     return { term: term.name, difficulty: grade, dueText: INTERVAL_FOR_GRADE[grade] };
   });
 
@@ -99,8 +115,11 @@ export default function Summary() {
     >
       <div className={styles.content}>
         {/* Decorative, and drawn *behind* the card in the frame — the card
-            clips its lower half, which is what gives it the peeking look. */}
-        <Mascot state="excited" className={styles.mascot} />
+            clips its lower half, which is what gives it the peeking look.
+            `peeking` is public/images/mascot-peeking.png, uploaded for this
+            slot; this used to render `excited` instead, which is the
+            component's art for a different moment (changed 2026-09-21). */}
+        <Mascot state="peeking" className={styles.mascot} />
 
         <div className={styles.titleBlock}>
           <h1 className={styles.title}>{topic.title}</h1>
@@ -122,9 +141,7 @@ export default function Summary() {
         {/* A real tap target with nowhere to go — no reschedule screen
             exists and none is in scope, the same shape of gap as the due
             list's "Choose your own topics". Logged in component-gaps.md. */}
-        <button type="button" className={styles.drillDownLink}>
-          Change review time
-        </button>
+        <TextLink className={styles.drillDownLink}>Change review time</TextLink>
       </div>
     </Scaffold>
   );

@@ -8,6 +8,7 @@
   --motion-duration-fast: 0.10s; /** Tap/press feedback on any tappable component (button, card, chip, badge) — below conscious perception, feels instant. Style Dictionary's time/seconds transform expects a bare ms number here (Style Dictionary's own 'time' type predates DTCG's 'duration' object shape), not a value-plus-unit dimension. */
   --motion-duration-base: 0.20s; /** State changes within a screen: a chip appearing, a list item's hover/press settle, VoiceInput's own state swap. */
   --motion-duration-slow: 0.30s; /** Screen-level motion: page entrance, the due-list card stagger. Context shifts need more processing time than a single component's feedback. */
+  --motion-duration-breathe: 1.40s; /** One cycle of a slow, repeating loop for a state that persists while the student waits or speaks (voiceInput Listening and Disabled). The three durations above are one-shot transition lengths — the longest, slow/300ms, reads as a blink when looped, which is the opposite of the calm state docs/voice-ux.md §6 asks for. Same bare-ms shape as its siblings, for Style Dictionary's time/seconds transform. */
   --motion-easing-out: cubic-bezier(0, 0, 0.2, 1); /** Standard decelerate — the default for anything entering or appearing (page entrance, a card fading up, a chip landing). */
   --motion-easing-in: cubic-bezier(0.4, 0, 1, 1); /** Standard accelerate — for anything leaving. Used less often than easing.out; most exits in this app are instant navigations, not animated departures. */
   --motion-easing-inOut: cubic-bezier(0.4, 0, 0.2, 1); /** Smooth start and stop — for a value that changes while staying on screen (VoiceInput's idle glow breathing, a progress bar filling). */
@@ -214,12 +215,13 @@
   --color-pro-onBold: #2a1d04; /** Text and icons on pro.bold. */
   --color-pro-onSubtle: #fcd34d; /** Text and icons on pro.subtle. */
   --color-pro-subtle: #3a2d0b; /** Low emphasis PRO fill. */
-  --color-text-disabled: rgba(255, 255, 255, 0.4000000059604645); /** Low-contrast text for disabled controls and empty-field placeholders, not secondary labels or metadata. */
+  --color-text-disabled: rgba(255, 255, 255, 0.4000000059604645); /** Low-contrast text for the label of a disabled control, not secondary labels or metadata. Measures 3.69:1 on background.surface, below WCAG AA's 4.5:1 — which is correct here only because WCAG exempts disabled controls. It used to name empty-field placeholders too; a placeholder is not disabled text but a field's only instruction, so that use is text.placeholder's and was split out (2026-09-21, after a contrast audit measured the text field's placeholder at 3.69:1). */
   --color-text-error: #fca5a5; /** Validation message text for the line under a failed field, not destructive button labels. */
   --color-text-inverse: #090c18; /** Dark text for use on background.inverse and bright accent fills, not on the dark page background. */
   --color-text-link: #9178e6; /** Inline hyperlink text for linked body copy and "Learn more" links only, not buttons, nav items, or non-clickable accent text. */
   --color-text-linkHover: #a78bfa; /** Hover state of text.link, for pointer hover on inline hyperlinks. */
   --color-text-onAccent: #0e0a18; /** Text on any accent.*.bold fill; must contrast at least 4.5:1 against it. */
+  --color-text-placeholder: rgba(245, 243, 255, 0.52); /** The prompt text inside an empty input, dimmer than the value that replaces it but still readable — it is usually the field's only instruction, so it is held to body text's 4.5:1 and measures 4.86:1 on background.surface, 5.28:1 on background.page. Not for disabled controls (text.disabled) or for hints beside a field (text.tertiary). Split from text.disabled 2026-09-21, which named placeholders but resolves to light-40 at 3.69:1; light-52 is the same step text.tertiary was bumped to for the same reason. */
   --color-text-primary: #f4f2ff; /** Highest-contrast text for headlines, body copy, titles, and card labels; the default choice when unsure. */
   --color-text-secondary: rgba(245, 243, 255, 0.6784313917160034); /** Reduced-emphasis text for subtitles, captions, timestamps, and metadata, not primary headlines or disabled labels. */
   --color-text-success: #4ae5b0; /** Confirmation text for messages like "Correct," not for use as a fill (use feedback.success.bold). */
@@ -234,6 +236,14 @@
   --effect-emboss-s: inset 0px -2px 0px 0px rgb(3.9216% 3.9216% 3.9216% / 0.15); /** Bottom emboss drawn inside a filled control, 2px deep — button/pill have none at this depth; buttonIcon uses it at xs, s and m. Color aliases color/alpha/dark-15. */
   --effect-emboss-m: inset 0px -4px 0px 0px rgb(3.9216% 3.9216% 3.9216% / 0.15); /** Bottom emboss drawn inside a filled control, 4px deep — button (all sizes), pill, and buttonIcon at l. Color aliases color/alpha/dark-15. */
   --opacity-disabled: 0.5; /** Dimming applied on top of a control's own fill when it's non-interactive, e.g. voiceInput's Disabled state layers this over color.voice.processing. */
+  --motion-press-duration: 0.10s; /** How long a control takes to acknowledge a tap. Paired with press.scale and press.easing; every tappable component uses the three together so a tap feels the same everywhere. */
+  --motion-press-easing: cubic-bezier(0, 0, 0.2, 1); /** Decelerate, so the control settles into the press rather than snapping. */
+  --motion-press-scale: 0.97; /** How far a control shrinks under a finger. Small enough to read as give rather than as movement, and the one value every tappable component shares — a per-component number would make the same tap feel different on each screen. There is no hover on mobile, so this press state is the only tap feedback a student gets. */
+  --motion-stateChange-duration: 0.20s; /** A control changing state in place — voiceInput idle → listening → paused. Long enough to read as one thing changing rather than two things swapping. */
+  --motion-stateChange-easing: cubic-bezier(0.4, 0, 0.2, 1); /** Smooth at both ends, for a value that changes while staying on screen. */
+  --motion-breathe-duration: 1.40s; /** One cycle of the repeating loop that says a state is live: voiceInput while listening (the student is being heard) and while disabled (Knowie is thinking). docs/voice-ux.md §1 and §6 both ask for this — a state that persists needs motion, not only a colour. */
+  --motion-breathe-easing: cubic-bezier(0.4, 0, 0.2, 1); /** Smooth at both ends so the loop has no seam where it restarts. */
+  --motion-breathe-scale: 1.04; /** The peak of the breathing loop. Deliberately small: at 390px the mic is 112px, so 4% is about 4px of travel — visible as life, not as something moving across the screen. */
   --typography-display-l-fontFamily: 'Greed Standard-TRIAL', Arial, Helvetica, sans-serif; /** Largest display size, for hero numbers and level-up moments. */
   --typography-display-l-fontWeight: 900; /** Largest display size, for hero numbers and level-up moments. */
   --typography-display-l-fontSize: 103px; /** Largest display size, for hero numbers and level-up moments. */

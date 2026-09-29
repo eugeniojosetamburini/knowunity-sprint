@@ -60,6 +60,11 @@ export type BottomSheetProps = {
   'aria-label'?: string;
 } & Omit<HTMLAttributes<HTMLDivElement>, 'children'>;
 
+// Everything that can take focus inside the sheet. Kept as one list so the
+// trap and any future consumer agree on what counts.
+const FOCUSABLE =
+  'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])';
+
 export function BottomSheet({
   open,
   onDismiss,
@@ -88,6 +93,50 @@ export function BottomSheet({
   // reader user keep operating the thing the sheet is interrupting.
   useEffect(() => {
     if (open) surfaceRef.current?.focus();
+  }, [open]);
+
+  // ...and keep it there. Moving focus in is only half of aria-modal:
+  // without this, Tab past the last button walked straight back out into
+  // the screen the sheet is dimming (the back arrow, ⋯ and Skip were all
+  // still reachable), so a keyboard or screen-reader user could operate
+  // the thing being interrupted while the confirm was still up. Added
+  // 2026-09-21. Escape and the sheet's own actions are still the ways out,
+  // so this traps focus, never the student.
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return;
+
+      const surface = surfaceRef.current;
+      if (!surface) return;
+
+      const focusable = [...surface.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
+        (el) => !el.hasAttribute('disabled') && el.tabIndex !== -1,
+      );
+      if (focusable.length === 0) {
+        // Nothing to land on: hold focus on the surface itself rather than
+        // letting Tab escape to the screen underneath.
+        event.preventDefault();
+        surface.focus();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (event.shiftKey && (active === first || active === surface)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
   }, [open]);
 
   if (!open) return null;

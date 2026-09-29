@@ -9,6 +9,7 @@ import { TopNav } from "@/stories/components/TopNav/TopNav";
 import { Card } from "@/stories/components/Card/Card";
 import { MascotSlot } from "@/stories/components/MascotSlot/MascotSlot";
 import { BottomNav } from "@/stories/components/BottomNav/BottomNav";
+import { TextLink } from "@/stories/components/TextLink/TextLink";
 import { dueTopics, dueCountLabel, topicCountText } from "../due-terms";
 import variationIllustration from "../../public/images/card-image-variation.png";
 import styles from "./page.module.css";
@@ -92,9 +93,7 @@ export function DueListScreen({ caughtUp }: { caughtUp: boolean }) {
           <MascotSlot size="XL" />
           {/* Real tap target per docs/sprint-context.md; no on-demand topic
               picker screen exists yet, so it has nowhere to navigate to. */}
-          <button type="button" className={styles.chooseOwnLink}>
-            Choose your own topics
-          </button>
+          <TextLink>Choose your own topics</TextLink>
         </div>
       </div>
     </Scaffold>

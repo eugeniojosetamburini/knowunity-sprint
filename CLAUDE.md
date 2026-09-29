@@ -18,6 +18,7 @@
 - Before building or fixing any screen, `ls public/images/` (and `docs/reference/`): the assets a screen needs are uploaded there, and a name like `card-image-variation.png` is the second card's illustration. Use the uploaded file; never fall back to a component's default image or a downloaded Figma export when a matching file exists.
 - Every route renders inside `Scaffold` (`stories/components/Scaffold`); never hand-roll a screen shell in a page's CSS module. Shell behavior (width, centering, scrolling, sticky bottom nav) is fixed in `Scaffold` and `app/globals.css` only.
 - Before reporting any screen done, verify it by measurement in the real app on `localhost:3000` — `node scripts/verify-screen.mjs <route> --figma <png>` — against the Figma render, and confirm frame/bar/nav positions are identical to the route you came from. Not from Storybook, not by eye (`.claude/skills/build-screen`, step 9).
+- Run `npm run check:tokens` after building or changing anything, and before reporting it done. It fails on any raw hex color in `app/` or `stories/` and prints the file and line for each one. It skips comment lines, so a hex named in a comment is fine — a hex in code is not. A failure means a value that has a token was hardcoded: look it up in `tokens/tokens.json` and go through the semantic layer.
 - Storybook is the source of truth for components, not for screens: its preview does not load `app/globals.css` (no `box-sizing` reset), so screen layout is only trusted on `localhost:3000`.
 
 # Never
@@ -95,5 +96,5 @@ curl -s --max-time 6 -X POST http://localhost:6006/mcp \
 - `.claude/skills/prototyping-v5/` — interactive React-artifact prototype craft (swipe, sheets, gestures). Loads when building an interactive prototype.
 - `.claude/launch.json` — VS Code launch config for `npm run dev` on port 3000.
 - `next.config.ts`, `tsconfig.json`, `eslint.config.mjs` — standard Next.js/TS/ESLint config, no project-specific overrides.
-- `package.json` — Next 16.3.5 / React 19.2.8, scripts: `dev`, `build`, `start`, `lint`.
+- `package.json` — Next 16.3.5 / React 19.2.8, scripts: `dev`, `build`, `start`, `lint`, `tokens`, `storybook`, `check:tokens` (the raw-hex gate).
 - `README.md` — default create-next-app instructions, not project-specific.

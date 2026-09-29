@@ -125,3 +125,25 @@
   border: var(--size-stroke-border) solid var(--color-accent-brand-bold);
   color: var(--color-accent-brand-onSubtle);
 }
+
+/* Tap feedback (added 2026-09-21). There is no hover on mobile, so a press
+   is the only acknowledgement a finger gets; the scale, duration and easing
+   are semantic.motion.press, shared with every other tappable component so
+   a tap feels the same everywhere. Off under prefers-reduced-motion. */
+.root {
+  transition: transform var(--motion-press-duration) var(--motion-press-easing);
+}
+
+.root:active:not(:disabled) {
+  transform: scale(var(--motion-press-scale));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    transition: none;
+  }
+
+  .root:active:not(:disabled) {
+    transform: none;
+  }
+}
