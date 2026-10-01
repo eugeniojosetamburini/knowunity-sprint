@@ -1,6 +1,25 @@
+'use client';
+
+import { motion, useReducedMotion } from 'motion/react';
 import type { HTMLAttributes, ReactNode } from 'react';
 
+import tokens from '../../../tokens/tokens.json';
 import styles from './Scaffold.module.css';
+
+/*
+ * Screen entrance — content fades in and rises a short way, so a navigation
+ * reads as arriving rather than as a hard swap. Only <main> moves: the bars
+ * and the bottom nav are the frame and must not shift between routes.
+ * motion.js needs numbers, so these come from tokens.json by path rather
+ * than from the generated CSS variables. There is no semantic token for
+ * screen transitions (semantic.motion has press / stateChange / breathe
+ * only), so the primitives are read directly here — flagged in
+ * component-gaps.md. Enter only: motion.easing.in's note says most exits in
+ * this app are instant navigations.
+ */
+const { duration, easing } = tokens.primitive.motion;
+const ENTER_OFFSET = tokens.primitive.size.space['200'].$value.value;
+const ENTER_TRANSITION = { duration: duration.slow.$value / 1000, ease: easing.out.$value as [number, number, number, number] };
 
 export type ScaffoldProps = {
   /** Slot – Top navigation. A TopNav, or a screen's own progress/back row. It owns its own padding. */
@@ -21,11 +40,21 @@ export type ScaffoldProps = {
 } & Omit<HTMLAttributes<HTMLDivElement>, 'children'>;
 
 export function Scaffold({ topBar, children, bottomNav, bottomNavFlush = false, className, ...rest }: ScaffoldProps) {
+  // Reduced motion keeps the fade (a state change the student can still see) and drops the travel.
+  const reduceMotion = useReducedMotion();
+
   return (
     <div className={[styles.screen, className].filter(Boolean).join(' ')} {...rest}>
       <div className={styles.frame}>
         {topBar && <header className={styles.topBar}>{topBar}</header>}
-        <main className={styles.main}>{children}</main>
+        <motion.main
+          className={styles.main}
+          initial={{ opacity: 0, y: reduceMotion ? 0 : ENTER_OFFSET }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={ENTER_TRANSITION}
+        >
+          {children}
+        </motion.main>
         {bottomNav && (
           <div className={[styles.bottomNav, bottomNavFlush && styles.flush].filter(Boolean).join(' ')}>{bottomNav}</div>
         )}
