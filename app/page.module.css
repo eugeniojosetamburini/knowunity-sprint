@@ -18,9 +18,26 @@
  * 3. The gap between the AiChat row and the bottom nav is 12px in Figma
  *    (space-300), carried as this block's bottom padding since the nav
  *    itself lives in Scaffold's slot.
+ * 4. The coach mark's four numbers have no tokens, and all four come from
+ *    one fact: Figma aims the bubble's tail at the recall badge. Measured
+ *    off frame 15702:3864 (its 48px status bar is not rendered here, so
+ *    every y below is Figma's minus 48): the badge's centre is at x=270.7,
+ *    the bubble is the component's own 256 wide, and its tail apex sits
+ *    208.5 from its left edge — so left: 63px and a 200px tail inset put
+ *    the apex at x=271, within a third of a pixel of the badge. top: -4px
+ *    anchors the bubble BODY, not the frame: Figma's chatBubble frame
+ *    starts at y=50 but its top 1.2px is empty space inside the tail band,
+ *    and this tail is 12px tall against the ~13px Figma draws. Lining the
+ *    frames up would leave the body 2px high; lining the body up puts it at
+ *    y=63-115 exactly as Figma has it, and costs 0.8px on the tail's apex,
+ *    which points at open space under the badge. Either way the bubble
+ *    overhangs the 56px top bar's bottom edge. Nothing clips it: neither
+ *    TopNav nor Scaffold sets overflow or z-index, and a positioned element
+ *    paints over the static header.
  */
 
 .intro {
+  position: relative; /* the coach mark's containing block; its padding box starts at the frame's edge */
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -29,6 +46,19 @@
   gap: var(--size-space-600);
   padding: var(--size-space-800) var(--size-space-600); /* 40px vertical — no matching token, see file header */
   text-align: center;
+}
+
+/* See note 4 in the file header for where these four numbers come from. */
+.coachMark {
+  position: absolute;
+  top: -4px;
+  left: 63px;
+  width: 256px;
+  /* Aims ChatBubble's top tail at the recall badge instead of centring it. */
+  --chat-bubble-tail-inset: 200px;
+  /* Not interactive — the badge it points at is the affordance — so it must
+     never swallow a tap meant for anything beneath it. */
+  pointer-events: none;
 }
 
 .introText {

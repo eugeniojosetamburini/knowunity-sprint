@@ -5,8 +5,24 @@ import { CorrectIcon, IncorrectIcon } from './icons';
 
 export type ChatBubbleState = 'default' | 'correct' | 'incorrect' | 'partial';
 
+export type ChatBubbleTail = 'left' | 'top';
+
 export type ChatBubbleProps = {
   state?: ChatBubbleState;
+  /**
+   * Which edge the tail sits on, and so which way it points. `left` (the
+   * default) is every voice screen — Knowie talking beside the mascot.
+   * `top` hangs the bubble below what it is talking about and points up at
+   * it: Figma's Home coach mark (16615:4178), which is this same tail frame
+   * rotated −90°, not a second shape.
+   *
+   * With `tail="top"` the tail's horizontal position comes from the
+   * `--chat-bubble-tail-inset` custom property — the distance from the
+   * bubble's left edge to the tail's left edge. It defaults to centred; a
+   * consumer that points at one specific element sets it from its own CSS
+   * module (Home aims it at the recall badge).
+   */
+  tail?: ChatBubbleTail;
   /** Shown when state="default". Independent from correctText/incorrectText/partialText — switching state never overwrites another state's text. */
   neutralText?: string;
   /** Shown when state="correct". */
@@ -25,6 +41,7 @@ const LABEL_TEXT: Record<Exclude<ChatBubbleState, 'default'>, string> = {
 
 export function ChatBubble({
   state = 'default',
+  tail = 'left',
   neutralText = "Tell me what you remember in your own words — I'll nudge you if you get stuck.",
   correctText = 'Humanism means this and that, maybe a little more detail here.',
   incorrectText = 'Not quite, humanism means this and that, but not what you said, and some detail here.',
@@ -36,7 +53,10 @@ export function ChatBubble({
     state === 'correct' ? correctText : state === 'incorrect' ? incorrectText : state === 'partial' ? partialText : neutralText;
 
   return (
-    <div className={[styles.root, className].filter(Boolean).join(' ')} {...rest}>
+    <div
+      className={[styles.root, tail === 'top' ? styles.tailTop : styles.tailLeft, className].filter(Boolean).join(' ')}
+      {...rest}
+    >
       <span className={[styles.tail, styles[state]].join(' ')} aria-hidden="true" />
       <div className={[styles.bubble, styles[state]].join(' ')}>
         {state !== 'default' && (

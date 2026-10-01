@@ -214,6 +214,27 @@ below, which is about the mid-ladder nudge screen (still unresolved; adding
 single shared property. Sharing one across all four overwrites each state's
 own default message; keep them separate if this gets rebuilt.
 
+**Second axis, added in code 2026-10-01 — `tail`: `left` / `top`.** Figma
+has no such property, but it draws both: the component set's tail band sits
+on the bubble's left, while Home's coach mark (`16615:4178`) is that same
+band rotated −90° so the tail points up at the `recall` badge. Same 15×19
+polygon either way, so in code it is one clip-path triangle with its width
+and height swapped, not a second shape. `left` is the default and is what
+every voice screen uses. With `top`, the tail's horizontal position comes
+from the `--chat-bubble-tail-inset` custom property (default: centred), so
+a screen can aim it at a specific element from its own CSS module.
+
+**Flagged with that change:** `top` also makes the default state's body
+`Body S Bold` (15/20) instead of `Body M Regular` (18/24), and lets it hug
+rather than fill so a short line centres. Both come from the Home node,
+which is a *detached* copy the designer re-typed — not a variant of the
+component. It is load-bearing rather than cosmetic (at 18px that copy wraps
+to two lines and the bubble stands 76px rather than Figma's 52px), but it
+does mean `tail="top"` currently reads as "the coach-mark configuration"
+rather than a pure orientation. A second top-tail usage wanting `Body M`
+would need a real type axis here — which Figma's component set does not
+have either.
+
 **Token note:** `partial`'s label, tail, and body all bind to
 `accent.coral.bold` / `accent.coral.onBold`, not a `feedback.*` token —
 tokens.json has no `feedback.warning` scale (bold/subtle/onBold/onSubtle)

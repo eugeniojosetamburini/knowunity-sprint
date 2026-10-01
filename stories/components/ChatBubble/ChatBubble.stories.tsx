@@ -18,6 +18,7 @@ const meta = {
   },
   argTypes: {
     state: { control: 'select', options: ['default', 'correct', 'incorrect', 'partial'] },
+    tail: { control: 'inline-radio', options: ['left', 'top'] },
   },
 } satisfies Meta<typeof ChatBubble>;
 
@@ -57,5 +58,22 @@ export const StatePartial: Story = {
   args: {
     state: 'partial',
     partialText: 'You got this and that right, but something else is missing. Would you like me to share a hint?',
+  },
+};
+
+export const TailTop: Story = {
+  name: 'tail=top (the Home coach mark)',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The tail on the bubble's top edge, pointing up at whatever the bubble is talking about — Figma's Home coach mark (16615:4178), which is the same tail frame rotated −90°. Home aims it at the recall badge in the top nav by setting --chat-bubble-tail-inset from its own CSS module; left unset here, so the tail sits centred.",
+      },
+    },
+  },
+  args: {
+    state: 'default',
+    tail: 'top',
+    neutralText: 'You\u2019ve got subjects to review!',
   },
 };

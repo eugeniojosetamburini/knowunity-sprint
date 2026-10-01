@@ -37,8 +37,9 @@ Ordered by how much is already real in Figma/Storybook vs. still needs building.
 
 ### 1. Home screen
 **States:** one.
-**Components:** `Badge` (variant=`recall`/`streak`/`fire`/`pro`), `Pill` (variant=`scan`/`flashcards`/`quiz`/`summarize`), `Mascot` (state=standby — used in Figma, not yet a Storybook entry).
+**Components:** `Badge` (variant=`recall`/`streak`/`fire`/`pro`), `Pill` (variant=`scan`/`flashcards`/`quiz`/`summarize`), `Mascot` (state=standby — used in Figma, not yet a Storybook entry), `ChatBubble` (state=default, **tail=top** — the coach mark, Figma `16615:4178`).
 **Student can:** tap the `recall` `Badge` → Due list (now a real tap target — see `stories/components/Badge/Badge.tsx`). Tap a `Pill` → other tools, out of scope for this feature.
+**The coach mark** ("You’ve got subjects to review!") hangs under the top bar with its tail pointing up at the `recall` `Badge` — it names the entry point rather than being one. It is not interactive and not dismissible: it fades in 1s after the screen settles, holds 5s, then fades out on its own, and it replays on every visit to Home. Added 2026-10-01.
 
 ### 2. Due list
 **States:** two — the list (built), and an all-caught-up state (#2a, not built).

@@ -29,6 +29,21 @@
  * state. A hint-ladder nudge currently has nothing between Default and
  * Correct/Incorrect/Partial — not invented here either.
  *
+ * The tail has two orientations, matching Figma: `left` (every voice
+ * screen) and `top` (the Home coach mark, 16615:4178). Figma draws both
+ * with the SAME 15x19 polygon — the Home one is the whole tail frame
+ * rotated -90 degrees — so the two orientations here are one shape with its
+ * width and height swapped, not two different triangles. Measured from the
+ * Figma renders: pointing left it is 12.84 x 11.88, pointing up 11.70 x
+ * 13.03, i.e. the same ~13 protrusion and ~11.8 base either way.
+ *
+ * Deviation, pre-existing and now inherited by `top`: the clip-path sizes
+ * the base to icon.200 (16px) where Figma draws ~11.8px, so both tails are
+ * ~4px wider across the base than the render. Kept rather than corrected,
+ * because one tail shape shared by every screen matters more here than
+ * either orientation matching on its own, and changing it would move the
+ * tail on all seven voice screens.
+ *
  * The tail is a plain CSS triangle (clip-path), not the Figma SVG asset.
  * The asset is a non-square shape; rotating it with a CSS transform left a
  * subpixel seam against the bubble's edge (transforms don't reflow layout,
@@ -42,18 +57,46 @@
 
 .root {
   display: flex;
-  align-items: flex-end;
   width: 100%;
   max-width: 256px;
 }
 
+.tailLeft {
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.tailTop {
+  flex-direction: column;
+  align-items: stretch;
+}
+
 .tail {
-  align-self: center;
   flex-shrink: 0;
+}
+
+/* Pointing left: the protrusion is horizontal (icon.150) and the base
+   vertical (icon.200). The -1px closes the subpixel seam against the
+   bubble's edge. */
+.tailLeft .tail {
+  align-self: center;
   width: var(--size-icon-150);
   height: var(--size-icon-200);
   margin-right: -1px;
   clip-path: polygon(100% 0%, 100% 100%, 0% 50%);
+}
+
+/* Pointing up: the same triangle rotated, so the two sizes swap — base
+   horizontal (icon.200), protrusion vertical (icon.150). The default
+   inset centres it; a consumer aiming the tail at one element overrides
+   --chat-bubble-tail-inset. The 50% resolves against .root's own width. */
+.tailTop .tail {
+  align-self: flex-start;
+  width: var(--size-icon-200);
+  height: var(--size-icon-150);
+  margin-bottom: -1px;
+  margin-left: var(--chat-bubble-tail-inset, calc(50% - var(--size-icon-200) / 2));
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
 }
 
 .tail.default {
@@ -151,6 +194,35 @@
   flex: 1 0 0;
   min-width: 0;
   color: var(--color-text-primary);
+}
+
+/* Home's coach mark is one short line, and Figma centres it inside the
+   bubble (the bubble frame's primary axis is CENTER and the text node hugs
+   at 195 of the 224 content box). Letting the body hug instead of grow
+   hands the centring to .bubble.default's existing justify-content. Scoped
+   to the top tail so the seven voice screens, whose copy fills the width
+   anyway, are untouched. No text-align: multi-line copy then wraps
+   left-aligned inside a centred box, exactly as Figma lays it out.
+
+   The type is Figma's too, and it is NOT the type the library component
+   uses: the component set's state=Default text is Greed/Body M Regular
+   (18/24), while the coach-mark node is Greed/Body S Bold (15/20). That is
+   a local override the designer made on a detached copy, not a variant of
+   the component — but it is load-bearing, not cosmetic: at 18px this copy
+   measures wider than the 224px content box, so it would wrap to two lines
+   and stand 76px tall where Figma draws one line and 52px.
+
+   FLAGGED: this ties compact type to the top tail, i.e. it treats
+   tail="top" as "the coach-mark configuration" rather than purely as an
+   orientation. It holds while that is the only top-tail usage. A second one
+   wanting Body M would need a real type axis on this component instead —
+   which Figma's component set does not have either. */
+.tailTop .body.default {
+  flex: 0 1 auto;
+  font-weight: var(--typography-body-s-bold-fontWeight);
+  font-size: var(--typography-body-s-bold-fontSize);
+  line-height: var(--typography-body-s-bold-lineHeight);
+  letter-spacing: var(--typography-body-s-bold-letterSpacing);
 }
 
 .body.correct {
